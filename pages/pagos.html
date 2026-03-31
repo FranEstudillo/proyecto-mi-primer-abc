@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi Primer ABC — Pagos</title>
+
+    <link rel="stylesheet" href="../css/design-system.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+
+    <style>
+        /* ── Selector de alumno ──────────────────────────────── */
+        .student-selector-bar {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4) var(--space-6);
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+            flex-wrap: wrap;
+        }
+
+        .student-selector-bar__label {
+            font-size: var(--text-sm);
+            font-weight: var(--font-bold);
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+        }
+
+        .student-selector-bar select {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        /* Chip del alumno seleccionado */
+        .student-chip {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-2) var(--space-4) var(--space-2) var(--space-2);
+            background: var(--grade-light, var(--color-bg));
+            border: 2px solid var(--grade-color, var(--color-border));
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: var(--font-bold);
+            color: var(--grade-dark, var(--color-text-primary));
+        }
+
+        .student-chip__avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--grade-color, var(--color-primary));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-extrabold);
+            font-size: var(--text-xs);
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+
+        /* ── Tabs de conceptos ───────────────────────────────── */
+        .concept-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid var(--color-border);
+            margin-bottom: var(--space-6);
+            overflow-x: auto;
+        }
+
+        .concept-tab {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-5);
+            font-size: var(--text-sm);
+            font-weight: var(--font-bold);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            white-space: nowrap;
+            transition: all var(--transition-fast);
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-family: var(--font-body);
+        }
+
+        .concept-tab:hover {
+            color: var(--color-text-primary);
+        }
+
+        .concept-tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        .concept-tab .tab-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-border);
+            flex-shrink: 0;
+        }
+
+        .concept-tab .tab-status.liquidado {
+            background: var(--color-success);
+        }
+
+        .concept-tab .tab-status.parcial {
+            background: var(--color-warning);
+        }
+
+        .concept-tab .tab-status.pendiente {
+            background: var(--color-border);
+        }
+
+        /* ── Panel de concepto ───────────────────────────────── */
+        .concept-panel {
+            display: none;
+        }
+
+        .concept-panel.active {
+            display: block;
+            animation: fadeInUp .25s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Resumen del concepto */
+        .concept-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+
+        .summary-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+        }
+
+        .summary-card__label {
+            font-size: var(--text-xs);
+            font-weight: var(--font-bold);
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-2);
+        }
+
+        .summary-card__value {
+            font-family: var(--font-heading);
+            font-size: var(--text-2xl);
+            font-weight: var(--font-extrabold);
+            color: var(--color-text-primary);
+        }
+
+        .summary-card__value.success {
+            color: var(--color-success);
+        }
+
+        .summary-card__value.warning {
+            color: var(--color-warning);
+        }
+
+        .summary-card__value.muted {
+            color: var(--color-text-muted);
+        }
+
+        .summary-card__sub {
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+            margin-top: var(--space-1);
+        }
+
+        /* ── Layout de dos columnas: form + historial ────────── */
+        .payment-layout {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: var(--space-6);
+            align-items: start;
+        }
+
+        /* ── Formulario de pago ──────────────────────────────── */
+        .payment-form-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .payment-form-card__header {
+            padding: var(--space-4) var(--space-5);
+            background: var(--color-bg);
+            border-bottom: 1px solid var(--color-border);
+            font-family: var(--font-heading);
+            font-weight: var(--font-bold);
+            font-size: var(--text-base);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .payment-form-card__body {
+            padding: var(--space-5);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+
+        /* Selector de precio (Nuevo Ingreso / Reinscripción / Otro) */
+        .price-type-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-2);
+            margin-bottom: var(--space-1);
+        }
+
+        .price-type-option {
+            position: relative;
+        }
+
+        .price-type-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .price-type-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--space-3) var(--space-2);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--transition-fast);
+            font-size: var(--text-xs);
+            font-weight: var(--font-bold);
+            color: var(--color-text-secondary);
+            line-height: 1.3;
+        }
+
+        .price-type-label .price-amount {
+            font-family: var(--font-heading);
+            font-size: var(--text-base);
+            font-weight: var(--font-extrabold);
+            margin-top: 2px;
+        }
+
+        .price-type-option input:checked+.price-type-label {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .price-type-option.otro input:checked+.price-type-label {
+            border-color: #7B5EA7;
+            background: #F3EEF9;
+            color: #7B5EA7;
+        }
+
+        .price-otro-input {
+            display: none;
+        }
+
+        .price-otro-input.visible {
+            display: block;
+        }
+
+        /* Toggle parcial / total */
+        .payment-type-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-2);
+        }
+
+        .payment-type-btn {
+            padding: var(--space-3);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-surface);
+            font-family: var(--font-body);
+            font-size: var(--text-sm);
+            font-weight: var(--font-bold);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-align: center;
+        }
+
+        .payment-type-btn.active.total {
+            border-color: var(--color-success);
+            background: #E8F5EE;
+            color: var(--color-success);
+        }
+
+        .payment-type-btn.active.parcial {
+            border-color: var(--color-warning);
+            background: #FFFDE7;
+            color: #F9A825;
+        }
+
+        /* Método de pago */
+        .method-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-2);
+        }
+
+        .method-btn {
+            padding: var(--space-3);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-surface);
+            font-family: var(--font-body);
+            font-size: var(--text-sm);
+            font-weight: var(--font-bold);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+        }
+
+        .method-btn.active {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        /* ── Historial de pagos ──────────────────────────────── */
+        .history-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .history-card__header {
+            padding: var(--space-4) var(--space-5);
+            background: var(--color-bg);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .history-card__title {
+            font-family: var(--font-heading);
+            font-weight: var(--font-bold);
+            font-size: var(--text-base);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .history-empty {
+            padding: var(--space-10) var(--space-6);
+            text-align: center;
+            color: var(--color-text-muted);
+            font-size: var(--text-sm);
+        }
+
+        .history-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto;
+            align-items: center;
+            gap: var(--space-4);
+            padding: var(--space-4) var(--space-5);
+            border-bottom: 1px solid var(--color-border);
+            transition: background var(--transition-fast);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-item:hover {
+            background: var(--color-bg);
+        }
+
+        .history-item__icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .history-item__icon.total {
+            background: #E8F5EE;
+        }
+
+        .history-item__icon.parcial {
+            background: #FFF3E0;
+        }
+
+        .history-item__info {}
+
+        .history-item__date {
+            font-size: var(--text-sm);
+            font-weight: var(--font-semibold);
+            color: var(--color-text-primary);
+        }
+
+        .history-item__meta {
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .history-item__amount {
+            font-family: var(--font-heading);
+            font-size: var(--text-lg);
+            font-weight: var(--font-extrabold);
+            color: var(--color-text-primary);
+            white-space: nowrap;
+        }
+
+        .history-item__actions {
+            display: flex;
+            gap: var(--space-1);
+        }
+
+        .icon-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .8rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+        }
+
+        .icon-btn-edit {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .icon-btn-del {
+            background: #FFEBEE;
+            color: var(--color-error);
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Estado vacío de panel */
+        .panel-empty {
+            text-align: center;
+            padding: var(--space-12);
+            color: var(--color-text-muted);
+        }
+
+        /* ── Responsive ──────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .payment-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .concept-summary {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .concept-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .price-type-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar__brand">
+                <div class="sidebar__logo-placeholder">A</div>
+                <div class="sidebar__brand-text">
+                    <div class="sidebar__brand-name">Mi Primer ABC</div>
+                    <div class="sidebar__brand-sub">Jardín de Niños</div>
+                </div>
+            </div>
+            <nav class="sidebar__nav">
+                <span class="nav-section-label">Principal</span>
+                <a href="dashboard.html" class="nav-item"><span class="nav-item__icon">🏠</span><span
+                        class="nav-item__text">Dashboard</span></a>
+                <a href="alumnos.html" class="nav-item"><span class="nav-item__icon">👦</span><span
+                        class="nav-item__text">Alumnos</span></a>
+                <span class="nav-section-label">Financiero</span>
+                <a href="pagos.html" class="nav-item active"><span class="nav-item__icon">💳</span><span
+                        class="nav-item__text">Pagos</span></a>
+                <a href="colegiaturas.html" class="nav-item"><span class="nav-item__icon">📅</span><span
+                        class="nav-item__text">Colegiaturas</span></a>
+                <a href="ingresos-gastos.html" class="nav-item"><span class="nav-item__icon">📊</span><span
+                        class="nav-item__text">Ingresos y Gastos</span></a>
+                <span class="nav-section-label">Sistema</span>
+                <a href="configuracion.html" class="nav-item"><span class="nav-item__icon">⚙️</span><span
+                        class="nav-item__text">Configuración</span></a>
+            </nav>
+            <div class="sidebar__footer">
+                <div class="sidebar__user" id="sidebarUser">
+                    <div class="sidebar__user-avatar" id="userInitial">D</div>
+                    <div class="sidebar__user-info">
+                        <div class="sidebar__user-name" id="userName">Directora</div>
+                        <div class="sidebar__user-role">Administradora</div>
+                    </div>
+                    <span style="color:var(--color-text-muted);font-size:.75rem;">↩</span>
+                </div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- CONTENIDO -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar__left">
+                    <button class="btn btn-icon btn-secondary" id="menuToggle" style="display:none">☰</button>
+                    <div class="topbar__breadcrumb">
+                        <span>Financiero</span><span>›</span>
+                        <span style="color:var(--color-text-primary);font-weight:600;">Pagos</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-content">
+                <div class="page-header" style="margin-bottom:var(--space-6);">
+                    <div class="page-header__text">
+                        <h1 class="page-title">Pagos del Alumno</h1>
+                        <p class="page-subtitle">Inscripción, Material Escolar, Libros y Manuales</p>
+                    </div>
+                </div>
+
+                <!-- Selector de alumno -->
+                <div class="student-selector-bar">
+                    <span class="student-selector-bar__label">Alumno:</span>
+                    <select class="form-control" id="studentSelect" style="max-width:320px;">
+                        <option value="">— Selecciona un alumno —</option>
+                    </select>
+                    <div id="studentChip" style="display:none;"></div>
+                    <a href="alumnos.html" class="btn btn-secondary btn-sm" style="margin-left:auto;">
+                        ← Volver a alumnos
+                    </a>
+                </div>
+
+                <!-- Panel principal (oculto hasta seleccionar alumno) -->
+                <div id="mainPanel" style="display:none;">
+
+                    <!-- Tabs de conceptos -->
+                    <div class="concept-tabs" id="conceptTabs"></div>
+
+                    <!-- Paneles por concepto -->
+                    <div id="conceptPanels"></div>
+
+                </div>
+
+                <!-- Estado vacío inicial -->
+                <div class="panel-empty" id="emptyPrompt">
+                    <div style="font-size:3rem;margin-bottom:var(--space-4);">💳</div>
+                    <div style="font-family:var(--font-heading);font-size:var(--text-xl);font-weight:700;
+                    color:var(--color-text-secondary);margin-bottom:var(--space-2);">
+                        Selecciona un alumno
+                    </div>
+                    <div style="font-size:var(--text-sm);color:var(--color-text-muted);">
+                        Elige un alumno del selector para ver y registrar sus pagos.
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+     MODAL: REGISTRAR / EDITAR PAGO
+     ══════════════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modalPago">
+        <div class="modal" style="max-width:480px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalPagoTitle">Registrar Pago</h3>
+                <button class="modal-close" onclick="closeModalPago()">✕</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editMovimientoId" />
+                <input type="hidden" id="editPagoId" />
+                <input type="hidden" id="editConcepto" />
+
+                <div style="display:flex;flex-direction:column;gap:var(--space-4);">
+
+                    <!-- Selector de tipo de precio -->
+                    <div class="form-group" id="priceSelectorGroup">
+                        <label class="form-label">Precio de referencia</label>
+                        <div class="price-type-selector" id="priceTypeSelector">
+                            <div class="price-type-option">
+                                <input type="radio" name="priceType" id="ptNuevo" value="nuevo_ingreso" checked />
+                                <label class="price-type-label" for="ptNuevo">
+                                    <span>🟢 Nuevo Ingreso</span>
+                                    <span class="price-amount" id="ptNuevoAmount">$0.00</span>
+                                </label>
+                            </div>
+                            <div class="price-type-option">
+                                <input type="radio" name="priceType" id="ptReinsc" value="reinscripcion" />
+                                <label class="price-type-label" for="ptReinsc">
+                                    <span>🟣 Reinscripción</span>
+                                    <span class="price-amount" id="ptReinscAmount">$0.00</span>
+                                </label>
+                            </div>
+                            <div class="price-type-option otro" style="grid-column:span 2;">
+                                <input type="radio" name="priceType" id="ptOtro" value="otro" />
+                                <label class="price-type-label" for="ptOtro"
+                                    style="flex-direction:row;justify-content:center;gap:var(--space-2);">
+                                    <span>✏️ Otro precio</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="price-otro-input" id="otroInput">
+                            <label class="form-label" style="margin-top:var(--space-3);">Precio manual</label>
+                            <div style="position:relative;">
+                                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);
+                           color:var(--color-text-muted);font-weight:700;">$</span>
+                                <input type="number" class="form-control" id="otroMonto" style="padding-left:24px;"
+                                    placeholder="0.00" min="0" step="0.01" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monto a pagar -->
+                    <div class="form-group">
+                        <label class="form-label">Monto del pago</label>
+                        <div style="position:relative;">
+                            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);
+                         color:var(--color-text-muted);font-weight:700;">$</span>
+                            <input type="number" class="form-control" id="montoPago"
+                                style="padding-left:24px;font-family:var(--font-heading);font-weight:700;font-size:var(--text-lg);"
+                                placeholder="0.00" min="0.01" step="0.01" required />
+                        </div>
+                        <div id="montoHint"
+                            style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:4px;"></div>
+                    </div>
+
+                    <!-- Fecha de pago -->
+                    <div class="form-group">
+                        <label class="form-label">Fecha de pago</label>
+                        <input type="date" class="form-control" id="fechaPago" required />
+                    </div>
+
+                    <!-- Método de pago -->
+                    <div class="form-group">
+                        <label class="form-label">Método de pago</label>
+                        <div class="method-toggle">
+                            <button type="button" class="method-btn active" id="btnEfectivo"
+                                onclick="setMetodo('efectivo')">💵 Efectivo</button>
+                            <button type="button" class="method-btn" id="btnTarjeta" onclick="setMetodo('tarjeta')">💳
+                                Tarjeta</button>
+                        </div>
+                        <input type="hidden" id="metodoPago" value="efectivo" />
+                    </div>
+
+                    <!-- Tipo de pago: parcial / total -->
+                    <div class="form-group">
+                        <label class="form-label">Tipo de pago</label>
+                        <div class="payment-type-toggle">
+                            <button type="button" class="payment-type-btn active total" id="btnTotal"
+                                onclick="setTipoPago('total')">✅ Pago total</button>
+                            <button type="button" class="payment-type-btn parcial" id="btnParcial"
+                                onclick="setTipoPago('parcial')">⚡ Pago parcial</button>
+                        </div>
+                        <input type="hidden" id="tipoPago" value="total" />
+                    </div>
+
+                    <div id="pagoFormError" style="display:none;padding:var(--space-3) var(--space-4);
+                    background:#FFEBEE;border-radius:var(--radius-md);
+                    font-size:var(--text-sm);color:var(--color-error);">
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModalPago()">Cancelar</button>
+                <button class="btn btn-primary" id="btnGuardarPago" onclick="guardarPago()">
+                    Registrar pago
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal confirmar eliminar movimiento -->
+    <div class="modal-overlay" id="modalDelMov">
+        <div class="modal" style="max-width:400px;">
+            <div class="modal-header">
+                <h3 class="modal-title" style="color:var(--color-error);">⚠️ Eliminar pago</h3>
+                <button class="modal-close" onclick="closeDelMov()">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:1.7;">
+                    ¿Eliminar este movimiento de pago? Esta acción no se puede deshacer.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDelMov()">Cancelar</button>
+                <button class="btn btn-danger" id="btnConfirmDelMov" onclick="confirmarEliminarMov()">
+                    Sí, eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/auth.js"></script>
+
+    <script>
+        /* ════════════════════════════════════════════════════════════
+           CONFIGURACIÓN DE CONCEPTOS
+           ════════════════════════════════════════════════════════════ */
+        const CONCEPTOS_CONFIG = [
+            { key: 'inscripcion', label: 'Inscripción', icon: '📝', noMaternal: true },
+            { key: 'material_escolar', label: 'Material Escolar', icon: '📦' },
+            { key: 'libros', label: 'Libros', icon: '📚' },
+            { key: 'manuales', label: 'Manuales', icon: '📒' },
+        ];
+
+        const GRADE_META = {
+            'Maternal': { color: 'var(--color-maternal)', light: 'var(--color-maternal-light)', dark: 'var(--color-maternal-dark)' },
+            'Kinder 1': { color: 'var(--color-kinder1)', light: 'var(--color-kinder1-light)', dark: 'var(--color-kinder1-dark)' },
+            'Kinder 2': { color: 'var(--color-kinder2)', light: 'var(--color-kinder2-light)', dark: 'var(--color-kinder2-dark)' },
+            'Kinder 3': { color: 'var(--color-kinder3)', light: 'var(--color-kinder3-light)', dark: 'var(--color-kinder3-dark)' },
+        };
+
+        /* ════════════════════════════════════════════════════════════
+           ESTADO GLOBAL
+           ════════════════════════════════════════════════════════════ */
+        let allStudents = [];
+        let currentStudent = null;
+        let precios = {};       // precios[concepto] = { nuevo_ingreso, reinscripcion }
+        let pagosData = {};       // pagosData[concepto] = { pago, movimientos[] }
+        let activeConcepto = null;
+        let pendingDelMovId = null;
+        let editingMovId = null;
+        let currentMetodo = 'efectivo';
+        let currentTipoPago = 'total';
+
+        /* ════════════════════════════════════════════════════════════
+           HELPERS
+           ════════════════════════════════════════════════════════════ */
+        function fmt(date) {
+            if (!date) return '—';
+            return new Date(date + 'T12:00:00').toLocaleDateString('es-MX',
+                { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        function fmtMoney(v) {
+            return '$' + Number(v || 0).toLocaleString('es-MX', { minimumFractionDigits: 2 });
+        }
+
+        function initials(name = '') {
+            return name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+        }
+
+        function showToast(msg, type = 'success') {
+            const c = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            t.textContent = msg;
+            c.appendChild(t);
+            setTimeout(() => t.remove(), 3200);
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           CARGAR ALUMNOS
+           ════════════════════════════════════════════════════════════ */
+        async function loadStudents() {
+            try {
+                const { data } = await db.from('alumnos').select('*').eq('activo', true).order('nombre_completo');
+                allStudents = data || [];
+            } catch (e) { allStudents = []; }
+
+            const sel = document.getElementById('studentSelect');
+            sel.innerHTML = '<option value="">— Selecciona un alumno —</option>';
+            allStudents.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = `${s.nombre_completo}${s.grado ? ' — ' + s.grado : ''}`;
+                sel.appendChild(opt);
+            });
+
+            // Si viene ?alumno=ID en la URL, seleccionar automáticamente
+            const params = new URLSearchParams(window.location.search);
+            const urlAlumnoId = params.get('alumno');
+            if (urlAlumnoId) {
+                sel.value = urlAlumnoId;
+                await selectStudent(urlAlumnoId);
+            }
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           SELECCIONAR ALUMNO
+           ════════════════════════════════════════════════════════════ */
+        async function selectStudent(id) {
+            currentStudent = allStudents.find(s => s.id === id);
+            if (!currentStudent) {
+                document.getElementById('mainPanel').style.display = 'none';
+                document.getElementById('emptyPrompt').style.display = 'block';
+                document.getElementById('studentChip').style.display = 'none';
+                return;
+            }
+
+            const meta = GRADE_META[currentStudent.grado] || {};
+            const ini = initials(currentStudent.nombre_completo);
+
+            // Chip del alumno
+            const chip = document.getElementById('studentChip');
+            chip.style.display = 'flex';
+            chip.style.setProperty('--grade-color', meta.color || 'var(--color-primary)');
+            chip.style.setProperty('--grade-light', meta.light || 'var(--color-primary-light)');
+            chip.style.setProperty('--grade-dark', meta.dark || 'var(--color-primary-dark)');
+            chip.innerHTML = `
+    <div class="student-chip" style="--grade-color:${meta.color};--grade-light:${meta.light};--grade-dark:${meta.dark};">
+      ${currentStudent.foto_url
+                    ? `<img class="student-chip__avatar" src="${currentStudent.foto_url}"
+               style="border-radius:50%;object-fit:cover;" />`
+                    : `<div class="student-chip__avatar">${ini}</div>`}
+      <span>${currentStudent.nombre_completo}</span>
+      ${currentStudent.grado
+                    ? `<span style="opacity:.6;font-weight:400;">· ${currentStudent.grado} ${currentStudent.grupo ? 'Gpo. ' + currentStudent.grupo : ''}</span>`
+                    : ''}
+    </div>`;
+
+            document.getElementById('emptyPrompt').style.display = 'none';
+            document.getElementById('mainPanel').style.display = 'block';
+
+            // Cargar precios y pagos
+            await Promise.all([loadPrecios(), loadPagos()]);
+            buildConceptTabs();
+            switchConcepto(activeConcepto || getFirstConcepto());
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           CARGAR PRECIOS DEL GRADO
+           ════════════════════════════════════════════════════════════ */
+        async function loadPrecios() {
+            precios = {};
+            if (!currentStudent?.grado) return;
+            try {
+                const { data } = await db.from('precios')
+                    .select('*')
+                    .eq('grado', currentStudent.grado);
+                (data || []).forEach(r => {
+                    precios[r.concepto] = {
+                        nuevo_ingreso: r.precio_nuevo_ingreso,
+                        reinscripcion: r.precio_reinscripcion,
+                    };
+                });
+            } catch (e) { console.warn('Sin precios:', e.message); }
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           CARGAR PAGOS DEL ALUMNO
+           ════════════════════════════════════════════════════════════ */
+        async function loadPagos() {
+            pagosData = {};
+            try {
+                // Traer pagos
+                const { data: pagos } = await db.from('pagos')
+                    .select('*')
+                    .eq('alumno_id', currentStudent.id);
+
+                // Traer todos los movimientos de esos pagos
+                const pagoIds = (pagos || []).map(p => p.id);
+                let movimientos = [];
+                if (pagoIds.length > 0) {
+                    const { data: movs } = await db.from('movimientos_pago')
+                        .select('*')
+                        .in('pago_id', pagoIds)
+                        .order('fecha_pago');
+                    movimientos = movs || [];
+                }
+
+                // Agrupar
+                (pagos || []).forEach(p => {
+                    pagosData[p.concepto] = {
+                        pago: p,
+                        movimientos: movimientos.filter(m => m.pago_id === p.id),
+                    };
+                });
+            } catch (e) { console.warn('Sin pagos:', e.message); }
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           CONCEPTOS DISPONIBLES PARA EL ALUMNO
+           ════════════════════════════════════════════════════════════ */
+        function getConceptos() {
+            return CONCEPTOS_CONFIG.filter(c =>
+                !(c.noMaternal && currentStudent?.grado === 'Maternal')
+            );
+        }
+
+        function getFirstConcepto() {
+            return getConceptos()[0]?.key || 'material_escolar';
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           BUILD TABS Y PANELES
+           ════════════════════════════════════════════════════════════ */
+        function buildConceptTabs() {
+            const conceptos = getConceptos();
+            const tabsEl = document.getElementById('conceptTabs');
+            const panelsEl = document.getElementById('conceptPanels');
+
+            tabsEl.innerHTML = '';
+            panelsEl.innerHTML = '';
+
+            conceptos.forEach(c => {
+                const data = pagosData[c.key];
+                const estado = data?.pago?.estado || 'pendiente';
+
+                // Tab
+                const tab = document.createElement('button');
+                tab.className = 'concept-tab';
+                tab.dataset.concepto = c.key;
+                tab.innerHTML = `
+      <span class="tab-status ${estado}"></span>
+      ${c.icon} ${c.label}`;
+                tab.addEventListener('click', () => switchConcepto(c.key));
+                tabsEl.appendChild(tab);
+
+                // Panel
+                const panel = document.createElement('div');
+                panel.className = 'concept-panel';
+                panel.id = `panel-${c.key}`;
+                panel.dataset.concepto = c.key;
+                panelsEl.appendChild(panel);
+            });
+        }
+
+        function switchConcepto(key) {
+            activeConcepto = key;
+
+            document.querySelectorAll('.concept-tab').forEach(t => {
+                t.classList.toggle('active', t.dataset.concepto === key);
+            });
+            document.querySelectorAll('.concept-panel').forEach(p => {
+                p.classList.toggle('active', p.dataset.concepto === key);
+            });
+
+            renderConceptoPanel(key);
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           RENDER PANEL DE UN CONCEPTO
+           ════════════════════════════════════════════════════════════ */
+        function renderConceptoPanel(key) {
+            const panel = document.getElementById(`panel-${key}`);
+            const config = CONCEPTOS_CONFIG.find(c => c.key === key);
+            const data = pagosData[key] || { pago: null, movimientos: [] };
+            const pago = data.pago;
+            const movs = data.movimientos || [];
+            const precio = precios[key] || {};
+
+            const montoTotal = pago ? parseFloat(pago.monto_total) : 0;
+            const totalPagado = movs.reduce((s, m) => s + parseFloat(m.monto), 0);
+            const totalEfectivo = movs.filter(m => m.metodo === 'efectivo').reduce((s, m) => s + parseFloat(m.monto), 0);
+            const totalTarjeta = movs.filter(m => m.metodo === 'tarjeta').reduce((s, m) => s + parseFloat(m.monto), 0);
+            const saldo = montoTotal - totalPagado;
+            const estado = pago?.estado || 'pendiente';
+
+            panel.innerHTML = `
+    <!-- Resumen -->
+    <div class="concept-summary">
+      <div class="summary-card">
+        <div class="summary-card__label">💰 Total del concepto</div>
+        <div class="summary-card__value ${montoTotal > 0 ? '' : 'muted'}">
+          ${montoTotal > 0 ? fmtMoney(montoTotal) : '—'}
+        </div>
+        <div class="summary-card__sub">
+          ${pago?.tipo_precio === 'nuevo_ingreso' ? '🟢 Nuevo Ingreso'
+                    : pago?.tipo_precio === 'reinscripcion' ? '🟣 Reinscripción'
+                        : pago?.tipo_precio === 'otro' ? '✏️ Precio especial'
+                            : 'Sin precio asignado'}
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card__label">✅ Total pagado</div>
+        <div class="summary-card__value ${totalPagado > 0 ? 'success' : 'muted'}">
+          ${totalPagado > 0 ? fmtMoney(totalPagado) : '$0.00'}
+        </div>
+        <div class="summary-card__sub">
+          💵 Efectivo: ${fmtMoney(totalEfectivo)} &nbsp; 💳 Tarjeta: ${fmtMoney(totalTarjeta)}
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card__label">⏳ Saldo pendiente</div>
+        <div class="summary-card__value ${saldo > 0 ? 'warning' : saldo < 0 ? 'error' : 'success'}">
+          ${fmtMoney(Math.max(0, saldo))}
+        </div>
+        <div class="summary-card__sub">
+          Estado: <span style="font-weight:700;text-transform:capitalize;">${estado}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layout: form + historial -->
+    <div class="payment-layout">
+
+      <!-- Formulario de pago -->
+      <div class="payment-form-card">
+        <div class="payment-form-card__header">
+          ${config.icon} Registrar pago — ${config.label}
+        </div>
+        <div class="payment-form-card__body">
+          <!-- Precios del catálogo como referencia -->
+          <div style="background:var(--color-bg);border-radius:var(--radius-md);
+                      padding:var(--space-3) var(--space-4);font-size:var(--text-xs);">
+            <div style="font-weight:700;color:var(--color-text-muted);margin-bottom:var(--space-2);
+                        text-transform:uppercase;letter-spacing:.05em;">Precios del catálogo</div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="color:var(--color-primary);font-weight:700;">
+                🟢 Nuevo Ingreso: ${fmtMoney(precio.nuevo_ingreso)}
+              </span>
+              <span style="color:#7B5EA7;font-weight:700;">
+                🟣 Reinscripción: ${fmtMoney(precio.reinscripcion)}
+              </span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-full" onclick="openModalPago('${key}')">
+            ＋ Registrar nuevo pago
+          </button>
+
+          ${estado === 'liquidado'
+                    ? `<div style="text-align:center;padding:var(--space-3);background:#E8F5EE;
+                           border-radius:var(--radius-md);color:var(--color-success);
+                           font-weight:700;font-size:var(--text-sm);">
+                 ✅ Concepto liquidado
+               </div>`
+                    : ''}
+        </div>
+      </div>
+
+      <!-- Historial de pagos -->
+      <div class="history-card">
+        <div class="history-card__header">
+          <div class="history-card__title">📋 Historial de pagos</div>
+          ${movs.length > 0
+                    ? `<span style="font-size:var(--text-xs);color:var(--color-text-muted);">
+                 ${movs.length} movimiento${movs.length !== 1 ? 's' : ''}
+               </span>`
+                    : ''}
+        </div>
+
+        ${movs.length === 0
+                    ? `<div class="history-empty">
+               <div style="font-size:2rem;margin-bottom:var(--space-3);">📭</div>
+               <div>Sin pagos registrados para este concepto.</div>
+             </div>`
+                    : movs.map(m => renderMovimiento(m)).join('')
+                }
+
+        ${movs.length > 0
+                    ? `<div style="padding:var(--space-3) var(--space-5);background:var(--color-bg);
+                          border-top:1px solid var(--color-border);font-size:var(--text-sm);">
+               <div style="display:flex;justify-content:space-between;align-items:center;">
+                 <span style="color:var(--color-text-muted);">Total acumulado:</span>
+                 <span style="font-family:var(--font-heading);font-weight:800;font-size:var(--text-lg);">
+                   ${fmtMoney(totalPagado)}
+                 </span>
+               </div>
+             </div>`
+                    : ''}
+      </div>
+
+    </div>`;
+        }
+
+        function renderMovimiento(m) {
+            const esTotalClass = m.es_total ? 'total' : 'parcial';
+            return `
+    <div class="history-item" id="mov-${m.id}">
+      <div class="history-item__icon ${esTotalClass}">
+        ${m.es_total ? '✅' : '⚡'}
+      </div>
+      <div class="history-item__info">
+        <div class="history-item__date">${fmt(m.fecha_pago)}</div>
+        <div class="history-item__meta">
+          <span>${m.metodo === 'efectivo' ? '💵 Efectivo' : '💳 Tarjeta'}</span>
+          <span>·</span>
+          <span class="badge ${m.es_total ? 'badge-pago-total' : 'badge-pago-parcial'}">
+            ${m.es_total ? 'Pago total' : 'Pago parcial'}
+          </span>
+          ${m.nota ? `<span>· ${m.nota}</span>` : ''}
+        </div>
+      </div>
+      <div class="history-item__amount">${fmtMoney(m.monto)}</div>
+      <div class="history-item__actions">
+        <button class="icon-btn icon-btn-edit"
+                onclick="editarMovimiento('${m.id}')" title="Editar">✏️</button>
+        <button class="icon-btn icon-btn-del"
+                onclick="pedirEliminarMov('${m.id}')" title="Eliminar">🗑️</button>
+      </div>
+    </div>`;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           MODAL PAGO — ABRIR
+           ════════════════════════════════════════════════════════════ */
+        function openModalPago(concepto, movId = null) {
+            const config = CONCEPTOS_CONFIG.find(c => c.key === concepto);
+            const precio = precios[concepto] || {};
+
+            document.getElementById('editMovimientoId').value = movId || '';
+            document.getElementById('editConcepto').value = concepto;
+            document.getElementById('modalPagoTitle').textContent =
+                movId ? `Editar pago — ${config.label}` : `Registrar pago — ${config.label}`;
+
+            // Mostrar precios de catálogo
+            document.getElementById('ptNuevoAmount').textContent = fmtMoney(precio.nuevo_ingreso);
+            document.getElementById('ptReinscAmount').textContent = fmtMoney(precio.reinscripcion);
+
+            // Reset form
+            document.getElementById('pagoFormError').style.display = 'none';
+            document.getElementById('otroInput').classList.remove('visible');
+            document.getElementById('otroMonto').value = '';
+            document.getElementById('fechaPago').value = new Date().toISOString().split('T')[0];
+            document.getElementById('montoPago').value = '';
+            document.getElementById('montoHint').textContent = '';
+
+            setMetodo('efectivo');
+            setTipoPago('total');
+            document.getElementById('ptNuevo').checked = true;
+
+            // Prefill si es edición
+            if (movId) {
+                const conceprData = pagosData[concepto];
+                const mov = conceprData?.movimientos?.find(m => m.id === movId);
+                if (mov) {
+                    document.getElementById('fechaPago').value = mov.fecha_pago;
+                    document.getElementById('montoPago').value = parseFloat(mov.monto).toFixed(2);
+                    setMetodo(mov.metodo);
+                    setTipoPago(mov.es_total ? 'total' : 'parcial');
+                    // Para edición no mostramos el selector de precio tipo
+                    document.getElementById('priceSelectorGroup').style.display = 'none';
+                }
+            } else {
+                document.getElementById('priceSelectorGroup').style.display = 'block';
+            }
+
+            document.getElementById('modalPago').classList.add('active');
+        }
+
+        function closeModalPago() {
+            document.getElementById('modalPago').classList.remove('active');
+        }
+
+        /* Actualizar monto al cambiar tipo de precio */
+        document.querySelectorAll('input[name="priceType"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                const concepto = document.getElementById('editConcepto').value;
+                const precio = precios[concepto] || {};
+                const val = radio.value;
+
+                document.getElementById('otroInput').classList.toggle('visible', val === 'otro');
+
+                if (val === 'nuevo_ingreso') {
+                    document.getElementById('montoPago').value = parseFloat(precio.nuevo_ingreso || 0).toFixed(2);
+                } else if (val === 'reinscripcion') {
+                    document.getElementById('montoPago').value = parseFloat(precio.reinscripcion || 0).toFixed(2);
+                } else {
+                    document.getElementById('montoPago').value = '';
+                }
+            });
+        });
+
+        document.getElementById('otroMonto').addEventListener('input', e => {
+            document.getElementById('montoPago').value = e.target.value;
+        });
+
+        function setMetodo(m) {
+            currentMetodo = m;
+            document.getElementById('metodoPago').value = m;
+            document.getElementById('btnEfectivo').classList.toggle('active', m === 'efectivo');
+            document.getElementById('btnTarjeta').classList.toggle('active', m === 'tarjeta');
+        }
+
+        function setTipoPago(t) {
+            currentTipoPago = t;
+            document.getElementById('tipoPago').value = t;
+            document.getElementById('btnTotal').classList.toggle('active', t === 'total');
+            document.getElementById('btnParcial').classList.toggle('active', t === 'parcial');
+            document.getElementById('btnTotal').className = `payment-type-btn total ${t === 'total' ? 'active' : ''}`;
+            document.getElementById('btnParcial').className = `payment-type-btn parcial ${t === 'parcial' ? 'active' : ''}`;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           GUARDAR PAGO
+           ════════════════════════════════════════════════════════════ */
+        async function guardarPago() {
+            const errEl = document.getElementById('pagoFormError');
+            errEl.style.display = 'none';
+
+            const concepto = document.getElementById('editConcepto').value;
+            const movId = document.getElementById('editMovimientoId').value;
+            const monto = parseFloat(document.getElementById('montoPago').value);
+            const fecha = document.getElementById('fechaPago').value;
+            const metodo = document.getElementById('metodoPago').value;
+            const esTotal = document.getElementById('tipoPago').value === 'total';
+            const priceType = document.querySelector('input[name="priceType"]:checked')?.value;
+
+            if (!monto || monto <= 0) {
+                errEl.textContent = 'El monto debe ser mayor a cero.';
+                errEl.style.display = 'block';
+                return;
+            }
+            if (!fecha) {
+                errEl.textContent = 'La fecha de pago es obligatoria.';
+                errEl.style.display = 'block';
+                return;
+            }
+
+            const btn = document.getElementById('btnGuardarPago');
+            btn.disabled = true;
+            btn.textContent = 'Guardando…';
+
+            try {
+                let pagoId;
+
+                if (movId) {
+                    // ── EDITAR movimiento existente ──
+                    const { error } = await db.from('movimientos_pago')
+                        .update({ monto, fecha_pago: fecha, metodo, es_total: esTotal })
+                        .eq('id', movId);
+                    if (error) throw error;
+                    pagoId = pagosData[concepto].pago.id;
+
+                } else {
+                    // ── NUEVO pago ──
+                    // ¿Ya existe un registro de pago para este concepto?
+                    let pago = pagosData[concepto]?.pago;
+
+                    if (!pago) {
+                        // Crear registro padre en `pagos`
+                        const precio = precios[concepto] || {};
+                        let montoTotal = monto;
+                        if (priceType === 'nuevo_ingreso') montoTotal = parseFloat(precio.nuevo_ingreso) || monto;
+                        else if (priceType === 'reinscripcion') montoTotal = parseFloat(precio.reinscripcion) || monto;
+
+                        const { data: newPago, error: pe } = await db.from('pagos').insert({
+                            alumno_id: currentStudent.id,
+                            concepto,
+                            monto_total: montoTotal,
+                            tipo_precio: priceType,
+                            estado: esTotal ? 'liquidado' : 'parcial',
+                        }).select().single();
+                        if (pe) throw pe;
+                        pago = newPago;
+                    }
+
+                    pagoId = pago.id;
+
+                    // Insertar movimiento
+                    const { error: me } = await db.from('movimientos_pago').insert({
+                        pago_id: pagoId,
+                        monto,
+                        fecha_pago: fecha,
+                        metodo,
+                        es_total: esTotal,
+                    });
+                    if (me) throw me;
+                }
+
+                // Recalcular estado del pago
+                await recalcularEstadoPago(pagoId, concepto);
+
+                // Recargar pagos y re-renderizar
+                await loadPagos();
+                buildConceptTabs();
+                switchConcepto(concepto);
+                closeModalPago();
+                showToast('✅ Pago registrado correctamente', 'success');
+
+            } catch (err) {
+                errEl.textContent = 'Error: ' + err.message;
+                errEl.style.display = 'block';
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = movId ? 'Guardar cambios' : 'Registrar pago';
+            }
+        }
+
+        /* Recalcular estado del pago según movimientos */
+        async function recalcularEstadoPago(pagoId, concepto) {
+            const { data: movs } = await db.from('movimientos_pago')
+                .select('monto, es_total').eq('pago_id', pagoId);
+
+            const { data: pago } = await db.from('pagos')
+                .select('monto_total').eq('id', pagoId).single();
+
+            const total = (movs || []).reduce((s, m) => s + parseFloat(m.monto), 0);
+            const hayTotal = (movs || []).some(m => m.es_total);
+            const montoRef = parseFloat(pago?.monto_total || 0);
+
+            let estado = 'pendiente';
+            if (hayTotal || (montoRef > 0 && total >= montoRef)) estado = 'liquidado';
+            else if (total > 0) estado = 'parcial';
+
+            await db.from('pagos').update({ estado }).eq('id', pagoId);
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           EDITAR MOVIMIENTO
+           ════════════════════════════════════════════════════════════ */
+        function editarMovimiento(movId) {
+            // Encontrar a qué concepto pertenece el movimiento
+            let concepto = null;
+            for (const [key, data] of Object.entries(pagosData)) {
+                if (data.movimientos.find(m => m.id === movId)) {
+                    concepto = key;
+                    break;
+                }
+            }
+            if (!concepto) return;
+            openModalPago(concepto, movId);
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           ELIMINAR MOVIMIENTO
+           ════════════════════════════════════════════════════════════ */
+        function pedirEliminarMov(movId) {
+            pendingDelMovId = movId;
+            document.getElementById('modalDelMov').classList.add('active');
+        }
+
+        function closeDelMov() {
+            document.getElementById('modalDelMov').classList.remove('active');
+            pendingDelMovId = null;
+        }
+
+        async function confirmarEliminarMov() {
+            if (!pendingDelMovId) return;
+            const btn = document.getElementById('btnConfirmDelMov');
+            btn.disabled = true; btn.textContent = 'Eliminando…';
+
+            try {
+                // Encontrar concepto del movimiento
+                let concepto = null, pagoId = null;
+                for (const [key, data] of Object.entries(pagosData)) {
+                    const mov = data.movimientos.find(m => m.id === pendingDelMovId);
+                    if (mov) { concepto = key; pagoId = data.pago.id; break; }
+                }
+
+                const { error } = await db.from('movimientos_pago').delete().eq('id', pendingDelMovId);
+                if (error) throw error;
+
+                if (pagoId) await recalcularEstadoPago(pagoId, concepto);
+
+                await loadPagos();
+                buildConceptTabs();
+                switchConcepto(concepto || activeConcepto);
+                closeDelMov();
+                showToast('🗑️ Pago eliminado', 'success');
+            } catch (err) {
+                showToast('❌ Error: ' + err.message, 'error');
+            } finally {
+                btn.disabled = false; btn.textContent = 'Sí, eliminar';
+            }
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           SELECTOR DE ALUMNO — EVENTO
+           ════════════════════════════════════════════════════════════ */
+        document.getElementById('studentSelect').addEventListener('change', async e => {
+            const id = e.target.value;
+            if (id) {
+                await selectStudent(id);
+                // Actualizar URL sin recargar
+                history.replaceState(null, '', `?alumno=${id}`);
+            } else {
+                currentStudent = null;
+                document.getElementById('mainPanel').style.display = 'none';
+                document.getElementById('emptyPrompt').style.display = 'block';
+                document.getElementById('studentChip').style.display = 'none';
+                history.replaceState(null, '', window.location.pathname);
+            }
+        });
+
+        /* ════════════════════════════════════════════════════════════
+           SIDEBAR MÓVIL
+           ════════════════════════════════════════════════════════════ */
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const menuBtn = document.getElementById('menuToggle');
+        function toggleSidebar() { sidebar.classList.toggle('open'); overlay.classList.toggle('active'); }
+        menuBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+        function handleResize() { menuBtn.style.display = window.innerWidth <= 768 ? 'flex' : 'none'; }
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        /* ════════════════════════════════════════════════════════════
+           INIT
+           ════════════════════════════════════════════════════════════ */
+        Auth.checkSession();
+        Auth.getCurrentUser().then(user => {
+            if (user?.email) {
+                document.getElementById('userName').textContent = user.email.split('@')[0];
+                document.getElementById('userInitial').textContent = user.email[0].toUpperCase();
+            }
+        });
+        document.getElementById('sidebarUser').addEventListener('click', () => {
+            if (confirm('¿Deseas cerrar sesión?')) Auth.logout();
+        });
+
+        loadStudents();
+    </script>
+</body>
+
+</html>
