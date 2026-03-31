@@ -1,0 +1,236 @@
+/* ============================================================
+   MI PRIMER ABC — Design System
+   Sistema de Control Escolar
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap');
+
+/* ============================================================
+   CSS CUSTOM PROPERTIES
+   ============================================================ */
+:root {
+
+  /* --- Colores principales de marca --- */
+  --color-primary:        #2E9E5B;   /* Verde principal (del logo) */
+  --color-primary-light:  #E8F5EE;
+  --color-primary-dark:   #1F7A42;
+
+  /* --- Colores de acento del sistema --- */
+  --color-pink:           #F06B8A;   /* Alertas / estados */
+  --color-yellow:         #F5C842;   /* Pendientes */
+  --color-bg:             #F5F7FA;   /* Fondo general */
+  --color-surface:        #FFFFFF;   /* Tarjetas y paneles */
+  --color-border:         #E8ECF0;   /* Bordes suaves */
+
+  /* --- Colores por grado --- */
+  --color-maternal:       #64B5F6;   /* Azul cielo */
+  --color-maternal-light: #E3F2FD;
+  --color-maternal-dark:  #1976D2;
+
+  --color-kinder1:        #F5C842;   /* Amarillo */
+  --color-kinder1-light:  #FFFDE7;
+  --color-kinder1-dark:   #F9A825;
+
+  --color-kinder2:        #EF5350;   /* Rojo */
+  --color-kinder2-light:  #FFEBEE;
+  --color-kinder2-dark:   #C62828;
+
+  --color-kinder3:        #2E9E5B;   /* Verde */
+  --color-kinder3-light:  #E8F5EE;
+  --color-kinder3-dark:   #1F7A42;
+
+  /* --- Texto --- */
+  --color-text-primary:   #1A2332;
+  --color-text-secondary: #6B7A90;
+  --color-text-muted:     #A0AABC;
+  --color-text-inverse:   #FFFFFF;
+
+  /* --- Estado --- */
+  --color-success:        #2E9E5B;
+  --color-warning:        #F5C842;
+  --color-error:          #EF5350;
+  --color-info:           #64B5F6;
+
+  /* --- Tipografía --- */
+  --font-heading:  'Quicksand', sans-serif;
+  --font-body:     'Nunito', sans-serif;
+
+  --text-xs:   0.75rem;    /* 12px */
+  --text-sm:   0.875rem;   /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg:   1.125rem;   /* 18px */
+  --text-xl:   1.25rem;    /* 20px */
+  --text-2xl:  1.5rem;     /* 24px */
+  --text-3xl:  1.875rem;   /* 30px */
+  --text-4xl:  2.25rem;    /* 36px */
+
+  --font-normal:    400;
+  --font-medium:    500;
+  --font-semibold:  600;
+  --font-bold:      700;
+  --font-extrabold: 800;
+
+  /* --- Espaciado --- */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* --- Bordes --- */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-full: 9999px;
+
+  /* --- Sombras --- */
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:   0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg:   0 10px 30px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.05);
+  --shadow-xl:   0 20px 50px rgba(0,0,0,0.12);
+
+  /* --- Layout --- */
+  --sidebar-width:        240px;
+  --sidebar-collapsed:    70px;
+  --topbar-height:        64px;
+  --content-max-width:    1280px;
+
+  /* --- Transiciones --- */
+  --transition-fast:    150ms ease;
+  --transition-base:    250ms ease;
+  --transition-slow:    400ms ease;
+}
+
+/* ============================================================
+   RESET Y BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+/* ============================================================
+   TIPOGRAFÍA
+   ============================================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: var(--font-bold);
+  line-height: 1.2;
+  color: var(--color-text-primary);
+}
+
+h1 { font-size: var(--text-4xl); }
+h2 { font-size: var(--text-3xl); }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl); }
+h5 { font-size: var(--text-lg); }
+h6 { font-size: var(--text-base); }
+
+.text-xs      { font-size: var(--text-xs); }
+.text-sm      { font-size: var(--text-sm); }
+.text-base    { font-size: var(--text-base); }
+.text-lg      { font-size: var(--text-lg); }
+.text-xl      { font-size: var(--text-xl); }
+.text-2xl     { font-size: var(--text-2xl); }
+
+.font-medium   { font-weight: var(--font-medium); }
+.font-semibold { font-weight: var(--font-semibold); }
+.font-bold     { font-weight: var(--font-bold); }
+
+.text-primary   { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted     { color: var(--color-text-muted); }
+.text-white     { color: var(--color-text-inverse); }
+.text-success   { color: var(--color-success); }
+.text-error     { color: var(--color-error); }
+.text-warning   { color: var(--color-warning); }
+
+/* ============================================================
+   GRADO — CLASES DE COLOR
+   Aplica el color temático según el grado del alumno
+   ============================================================ */
+.grade-maternal { --grade-color: var(--color-maternal); --grade-light: var(--color-maternal-light); --grade-dark: var(--color-maternal-dark); }
+.grade-kinder1  { --grade-color: var(--color-kinder1);  --grade-light: var(--color-kinder1-light);  --grade-dark: var(--color-kinder1-dark);  }
+.grade-kinder2  { --grade-color: var(--color-kinder2);  --grade-light: var(--color-kinder2-light);  --grade-dark: var(--color-kinder2-dark);  }
+.grade-kinder3  { --grade-color: var(--color-kinder3);  --grade-light: var(--color-kinder3-light);  --grade-dark: var(--color-kinder3-dark);  }
+
+.grade-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background-color: var(--grade-light);
+  color: var(--grade-dark);
+  font-size: var(--text-xs);
+  font-weight: var(--font-bold);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.grade-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background-color: var(--grade-color);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   SCROLLBAR PERSONALIZADO
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
