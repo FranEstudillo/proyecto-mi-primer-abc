@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi Primer ABC — Colegiaturas</title>
+
+    <link rel="stylesheet" href="../css/design-system.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+
+    <style>
+        /* ── Totales globales ────────────────────────────────── */
+        .totales-banner {
+            border-radius: var(--radius-xl);
+            padding: var(--space-6) var(--space-8);
+            margin-bottom: var(--space-6);
+            display: grid;
+            grid-template-columns: 1fr auto auto auto;
+            align-items: center;
+            gap: var(--space-8);
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+        }
+
+        .totales-banner::after {
+            content: '📅';
+            position: absolute;
+            right: var(--space-8);
+            font-size: 6rem;
+            opacity: .08;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .totales-banner__main {}
+
+        .totales-banner__label {
+            font-size: var(--text-xs);
+            font-weight: var(--font-bold);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            opacity: .7;
+            color: white;
+            margin-bottom: var(--space-1);
+        }
+
+        .totales-banner__value {
+            font-family: var(--font-heading);
+            font-size: var(--text-4xl);
+            font-weight: var(--font-extrabold);
+            color: white;
+            line-height: 1;
+        }
+
+        .totales-banner__stat {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .totales-banner__stat::before {
+            content: '';
+            position: absolute;
+            left: calc(-1 * var(--space-4));
+            top: 15%;
+            height: 70%;
+            width: 1px;
+            background: rgba(255, 255, 255, .2);
+        }
+
+        .totales-banner__stat-label {
+            font-size: var(--text-xs);
+            opacity: .7;
+            color: white;
+            font-weight: var(--font-bold);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            white-space: nowrap;
+        }
+
+        .totales-banner__stat-value {
+            font-family: var(--font-heading);
+            font-size: var(--text-2xl);
+            font-weight: var(--font-extrabold);
+            color: white;
+            margin-top: 2px;
+        }
+
+        /* ── Filtros de grado ────────────────────────────────── */
+        .grade-filter-bar {
+            display: flex;
+            gap: var(--space-2);
+            margin-bottom: var(--space-5);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .grade-filter-pill {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-full);
+            border: 2px solid var(--color-border);
+            background: var(--color-surface);
+            font-size: var(--text-xs);
+            font-weight: var(--font-bold);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .grade-filter-pill .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .grade-filter-pill.active {
+            border-color: var(--pill-color);
+            background: var(--pill-light);
+            color: var(--pill-dark);
+        }
+
+        .grade-filter-pill .cnt {
+            background: rgba(0, 0, 0, .08);
+            border-radius: var(--radius-full);
+            padding: 1px 6px;
+            font-size: 10px;
+        }
+
+        /* ── Search ──────────────────────────────────────────── */
+        .search-row {
+            display: flex;
+            gap: var(--space-3);
+            margin-bottom: var(--space-4);
+        }
+
+        .search-wrapper {
+            position: relative;
+            flex: 1;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: var(--space-4);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-muted);
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--space-3) var(--space-4) var(--space-3) calc(var(--space-4) + 1.2rem + var(--space-3));
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: var(--text-sm);
+            background: var(--color-surface);
+            transition: border-color var(--transition-fast);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(46, 158, 91, .12);
+        }
+
+        /* ── Tabla de alumnos ────────────────────────────────── */
+        .student-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto;
+            align-items: center;
+            gap: var(--space-4);
+            padding: var(--space-4) var(--space-5);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-3);
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .student-row:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--grade-color, var(--color-primary));
+            transform: translateX(3px);
+        }
+
+        .student-row__avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--grade-light, var(--color-bg));
+            color: var(--grade-dark, var(--color-primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-weight: var(--font-extrabold);
+            font-size: var(--text-base);
+            border: 2px solid var(--grade-light, var(--color-border));
+            flex-shrink: 0;
+        }
+
+        .student-row__info {}
+
+        .student-row__name {
+            font-weight: var(--font-bold);
+            font-size: var(--text-base);
+            color: var(--color-text-primary);
+        }
+
+        .student-row__meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin-top: 2px;
+        }
+
+        .student-row__grade-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            background: var(--grade-light, var(--color-bg));
+            color: var(--grade-dark, var(--color-primary));
+            font-size: .65rem;
+            font-weight: var(--font-bold);
+            text-transform: uppercase;
+        }
+
+        /* Contador de colegiaturas — el elemento interactivo */
+        .col-counter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            cursor: pointer;
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-md);
+            transition: background var(--transition-fast);
+            min-width: 72px;
+        }
+
+        .col-counter:hover {
+            background: var(--color-bg);
+        }
+
+        .col-counter__number {
+            font-family: var(--font-heading);
+            font-size: var(--text-2xl);
+            font-weight: var(--font-extrabold);
+            color: var(--color-primary);
+            line-height: 1;
+        }
+
+        .col-counter__label {
+            font-size: .65rem;
+            font-weight: var(--font-bold);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            color: var(--color-text-muted);
+            white-space: nowrap;
+        }
+
+        .col-pagar-btn {
+            padding: var(--space-2) var(--space-4);
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: var(--text-xs);
+            font-weight: var(--font-bold);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .col-pagar-btn:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* ── Panel lateral del alumno (drawer) ───────────────── */
+        .detail-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(26, 35, 50, .4);
+            backdrop-filter: blur(4px);
+            z-index: 500;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-base);
+        }
+
+        .detail-drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .detail-drawer {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 480px;
+            max-width: 95vw;
+            background: var(--color-surface);
+            box-shadow: var(--shadow-xl);
+            z-index: 501;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform var(--transition-base);
+        }
+
+        .detail-drawer-overlay.active .detail-drawer {
+            transform: translateX(0);
+        }
+
+        .detail-drawer__header {
+            padding: var(--space-5) var(--space-6);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            flex-shrink: 0;
+        }
+
+        .detail-drawer__close {
+            margin-left: auto;
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: 1rem;
+            border: none;
+            background: none;
+        }
+
+        .detail-drawer__close:hover {
+            background: var(--color-bg);
+            color: var(--color-text-primary);
+        }
+
+        .detail-drawer__body {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-5) var(--space-6);
+        }
+
+        .detail-drawer__footer {
+            padding: var(--space-4) var(--space-6);
+            border-top: 1px solid var(--color-border);
+            background: var(--color-bg);
+            flex-shrink: 0;
+        }
+
+        /* Historial de meses en el drawer */
+        .month-item {
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-3);
+            overflow: hidden;
+        }
+
+        .month-item__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-4) var(--space-5);
+            cursor: pointer;
+            transition: background var(--transition-fast);
+            gap: var(--space-3);
+        }
+
+        .month-item__header:hover {
+            background: var(--color-bg);
+        }
+
+        .month-item__name {
+            font-family: var(--font-heading);
+            font-weight: var(--font-bold);
+            font-size: var(--text-base);
+        }
+
+        .month-item__right {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            flex-shrink: 0;
+        }
+
+        .month-item__total {
+            font-family: var(--font-heading);
+            font-weight: var(--font-extrabold);
+        }
+
+        .month-item__movs {
+            border-top: 1px solid var(--color-border);
+            display: none;
+        }
+
+        .month-item__movs.open {
+            display: block;
+        }
+
+        .month-mov-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-3) var(--space-5);
+            border-bottom: 1px solid var(--color-border);
+            font-size: var(--text-sm);
+            gap: var(--space-3);
+        }
+
+        .month-mov-row:last-child {
+            border-bottom: none;
+        }
+
+        .month-mov-row:hover {
+            background: var(--color-bg);
+        }
+
+        .month-mov-row__info {}
+
+        .month-mov-row__date {
+            font-weight: var(--font-semibold);
+        }
+
+        .month-mov-row__meta {
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+            margin-top: 2px;
+            display: flex;
+            gap: var(--space-2);
+            align-items: center;
+        }
+
+        .month-mov-row__amount {
+            font-family: var(--font-heading);
+            font-weight: var(--font-extrabold);
+            white-space: nowrap;
+        }
+
+        .month-mov-row__actions {
+            display: flex;
+            gap: var(--space-1);
+        }
+
+        /* ── Iconos de acción ────────────────────────────────── */
+        .icon-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .8rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+        }
+
+        .icon-btn-edit {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .icon-btn-del {
+            background: #FFEBEE;
+            color: var(--color-error);
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* ── Responsive ──────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .totales-banner {
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-5);
+            }
+
+            .totales-banner__stat::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .totales-banner {
+                grid-template-columns: 1fr;
+            }
+
+            .student-row {
+                grid-template-columns: auto 1fr;
+            }
+
+            .col-counter,
+            .col-pagar-btn {
+                display: none;
+            }
+        }
+
+        /*Faltantes para los precios de referencia*/
+        .price-type-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--space-3) var(--space-2);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--transition-fast);
+            font-size: var(--text-xs);
+            font-weight: var(--font-bold);
+            color: var(--color-text-secondary);
+            line-height: 1.3;
+        }
+
+        .price-type-label .price-amount {
+            font-family: var(--font-heading);
+            font-size: var(--text-base);
+            font-weight: var(--font-extrabold);
+            margin-top: 2px;
+        }
+
+        .price-type-option input:checked+.price-type-label {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .price-type-option.otro input:checked+.price-type-label {
+            border-color: #7B5EA7;
+            background: #F3EEF9;
+            color: #7B5EA7;
+        }
+
+        /*faltantes de metodo de pago */
+        .method-btn {
+            padding: var(--space-3);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-surface);
+            font-family: var(--font-body);
+            font-size: var(--text-sm);
+            font-weight: var(--font-bold);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+        }
+
+        .method-btn.active {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        /*Faltantes de tipo de pago */
+        .payment-type-btn {
+            padding: var(--space-3);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-surface);
+            font-family: var(--font-body);
+            font-size: var(--text-sm);
+            font-weight: var(--font-bold);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-align: center;
+        }
+
+        .payment-type-btn.active.total {
+            border-color: var(--color-success);
+            background: #E8F5EE;
+            color: var(--color-success);
+        }
+
+        .payment-type-btn.active.parcial {
+            border-color: var(--color-warning);
+            background: #FFFDE7;
+            color: #F9A825;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar__brand">
+                <div class="sidebar__logo-placeholder">A</div>
+                <div class="sidebar__brand-text">
+                    <div class="sidebar__brand-name">Mi Primer ABC</div>
+                    <div class="sidebar__brand-sub">Jardín de Niños</div>
+                </div>
+            </div>
+            <nav class="sidebar__nav">
+                <span class="nav-section-label">Principal</span>
+                <a href="dashboard.html" class="nav-item"><span class="nav-item__icon">🏠</span><span
+                        class="nav-item__text">Dashboard</span></a>
+                <a href="alumnos.html" class="nav-item"><span class="nav-item__icon">👦</span><span
+                        class="nav-item__text">Alumnos</span></a>
+                <span class="nav-section-label">Financiero</span>
+                <a href="pagos.html" class="nav-item"><span class="nav-item__icon">💳</span><span
+                        class="nav-item__text">Pagos</span></a>
+                <a href="colegiaturas.html" class="nav-item active"><span class="nav-item__icon">📅</span><span
+                        class="nav-item__text">Colegiaturas</span></a>
+                <a href="ingresos-gastos.html" class="nav-item"><span class="nav-item__icon">📊</span><span
+                        class="nav-item__text">Ingresos y Gastos</span></a>
+                <span class="nav-section-label">Sistema</span>
+                <a href="configuracion.html" class="nav-item"><span class="nav-item__icon">⚙️</span><span
+                        class="nav-item__text">Configuración</span></a>
+            </nav>
+            <div class="sidebar__footer">
+                <div class="sidebar__user" id="sidebarUser">
+                    <div class="sidebar__user-avatar" id="userInitial">D</div>
+                    <div class="sidebar__user-info">
+                        <div class="sidebar__user-name" id="userName">Directora</div>
+                        <div class="sidebar__user-role">Administradora</div>
+                    </div>
+                    <span style="color:var(--color-text-muted);font-size:.75rem;">↩</span>
+                </div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar__left">
+                    <button class="btn btn-icon btn-secondary" id="menuToggle" style="display:none">☰</button>
+                    <div class="topbar__breadcrumb">
+                        <span>Financiero</span><span>›</span>
+                        <span style="color:var(--color-text-primary);font-weight:600;">Colegiaturas</span>
+                    </div>
+                </div>
+                <div class="topbar__actions">
+                    <span id="lastUpdated" style="font-size:var(--text-xs);color:var(--color-text-muted);"></span>
+                </div>
+            </div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <div class="page-header__text">
+                        <h1 class="page-title">Colegiaturas</h1>
+                        <p class="page-subtitle">Seguimiento de pagos mensuales por alumno</p>
+                    </div>
+                </div>
+
+                <!-- Banner de totales globales -->
+                <div class="totales-banner">
+                    <div class="totales-banner__main">
+                        <div class="totales-banner__label">Total General Cobrado</div>
+                        <div class="totales-banner__value" id="totalGeneral">$0.00</div>
+                    </div>
+                    <div class="totales-banner__stat">
+                        <div class="totales-banner__stat-label">💵 Efectivo</div>
+                        <div class="totales-banner__stat-value" id="totalEfectivo">$0.00</div>
+                    </div>
+                    <div class="totales-banner__stat">
+                        <div class="totales-banner__stat-label">💳 Tarjeta</div>
+                        <div class="totales-banner__stat-value" id="totalTarjeta">$0.00</div>
+                    </div>
+                    <div class="totales-banner__stat">
+                        <div class="totales-banner__stat-label">📅 Colegiaturas</div>
+                        <div class="totales-banner__stat-value" id="totalColegiaturas">0</div>
+                    </div>
+                </div>
+
+                <!-- Filtros de grado -->
+                <div class="grade-filter-bar" id="gradeFilterBar">
+                    <span style="font-size:var(--text-xs);font-weight:700;color:var(--color-text-muted);
+                     text-transform:uppercase;letter-spacing:.05em;">Grado:</span>
+                    <button class="grade-filter-pill active" data-grade="todos"
+                        style="--pill-color:var(--color-primary);--pill-light:var(--color-primary-light);--pill-dark:var(--color-primary-dark)">
+                        Todos <span class="cnt" id="cnt-todos">0</span>
+                    </button>
+                    <button class="grade-filter-pill" data-grade="Maternal"
+                        style="--pill-color:var(--color-maternal);--pill-light:var(--color-maternal-light);--pill-dark:var(--color-maternal-dark)">
+                        <span class="dot" style="background:var(--color-maternal)"></span>
+                        Maternal <span class="cnt" id="cnt-Maternal">0</span>
+                    </button>
+                    <button class="grade-filter-pill" data-grade="Kinder 1"
+                        style="--pill-color:var(--color-kinder1);--pill-light:var(--color-kinder1-light);--pill-dark:var(--color-kinder1-dark)">
+                        <span class="dot" style="background:var(--color-kinder1)"></span>
+                        Kínder 1 <span class="cnt" id="cnt-Kinder 1">0</span>
+                    </button>
+                    <button class="grade-filter-pill" data-grade="Kinder 2"
+                        style="--pill-color:var(--color-kinder2);--pill-light:var(--color-kinder2-light);--pill-dark:var(--color-kinder2-dark)">
+                        <span class="dot" style="background:var(--color-kinder2)"></span>
+                        Kínder 2 <span class="cnt" id="cnt-Kinder 2">0</span>
+                    </button>
+                    <button class="grade-filter-pill" data-grade="Kinder 3"
+                        style="--pill-color:var(--color-kinder3);--pill-light:var(--color-kinder3-light);--pill-dark:var(--color-kinder3-dark)">
+                        <span class="dot" style="background:var(--color-kinder3)"></span>
+                        Kínder 3 <span class="cnt" id="cnt-Kinder 3">0</span>
+                    </button>
+                </div>
+
+                <!-- Búsqueda -->
+                <div class="search-row">
+                    <div class="search-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input class="search-input" type="text" id="searchInput"
+                            placeholder="Buscar alumno por nombre o grupo…" />
+                    </div>
+                </div>
+
+                <!-- Lista de alumnos -->
+                <div id="studentList">
+                    <!-- Skeleton -->
+                    <div id="skeleton" style="opacity:.5;">
+                        <div class="student-row" style="pointer-events:none;" v-for="i in 4">
+                            <div style="width:48px;height:48px;border-radius:50%;background:var(--color-border);"></div>
+                            <div>
+                                <div style="width:180px;height:14px;background:var(--color-border);border-radius:4px;">
+                                </div>
+                                <div
+                                    style="width:100px;height:10px;background:var(--color-border);border-radius:4px;margin-top:6px;">
+                                </div>
+                            </div>
+                            <div style="width:60px;height:40px;background:var(--color-border);border-radius:8px;"></div>
+                            <div style="width:80px;height:32px;background:var(--color-border);border-radius:8px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="empty-state hidden" id="emptyState">
+                    <span class="empty-state__icon">📅</span>
+                    <div class="empty-state__title">Sin alumnos</div>
+                    <div class="empty-state__desc">No hay alumnos que coincidan con tu búsqueda.</div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+     DRAWER: HISTORIAL DE COLEGIATURAS DEL ALUMNO
+     ══════════════════════════════════════════════════════════════ -->
+    <div class="detail-drawer-overlay" id="drawerOverlay" onclick="closeDrawer()">
+        <div class="detail-drawer" onclick="event.stopPropagation()">
+
+            <div class="detail-drawer__header">
+                <div id="drawerAvatarWrap"></div>
+                <div>
+                    <div id="drawerStudentName"
+                        style="font-family:var(--font-heading);font-weight:800;font-size:var(--text-lg);"></div>
+                    <div id="drawerStudentMeta" style="font-size:var(--text-xs);color:var(--color-text-muted);"></div>
+                </div>
+                <button class="detail-drawer__close" onclick="closeDrawer()">✕</button>
+            </div>
+
+            <!-- Totales del alumno -->
+            <div id="drawerStudentTotals" style="padding:var(--space-4) var(--space-6);background:var(--color-bg);
+                border-bottom:1px solid var(--color-border);
+                display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-3);">
+            </div>
+
+            <div class="detail-drawer__body" id="drawerBody">
+                <!-- Meses con pagos -->
+            </div>
+
+            <div class="detail-drawer__footer">
+                <button class="btn btn-primary btn-full" id="drawerBtnPagar" onclick="abrirModalPago()">
+                    ＋ Registrar colegiatura
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+     MODAL: REGISTRAR / EDITAR COLEGIATURA
+     ══════════════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modalColegiatura">
+        <div class="modal" style="max-width:480px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalColTitle">Registrar Colegiatura</h3>
+                <button class="modal-close" onclick="closeModalColegiatura()">✕</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editColMovId" />
+                <input type="hidden" id="editColId" />
+
+                <div style="display:flex;flex-direction:column;gap:var(--space-4);">
+
+                    <!-- Alumno info -->
+                    <div id="modalAlumnoInfo" style="background:var(--color-bg);border-radius:var(--radius-md);
+                    padding:var(--space-3) var(--space-4);font-size:var(--text-sm);
+                    font-weight:var(--font-semibold);color:var(--color-text-secondary);">
+                    </div>
+
+                    <!-- Mes de la colegiatura -->
+                    <div class="form-group" id="mesGroup">
+                        <label class="form-label">Mes de la colegiatura</label>
+                        <select class="form-control" id="mesSelect">
+                            <option value="">— Selecciona el mes —</option>
+                        </select>
+                    </div>
+
+                    <!-- Precio de referencia -->
+                    <div class="form-group" id="precioRefGroup">
+                        <label class="form-label">Precio de referencia</label>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2);">
+                            <div style="position:relative;">
+                                <input type="radio" name="colPriceType" id="colPtNuevo" value="nuevo_ingreso" checked
+                                    style="position:absolute;opacity:0;" />
+                                <label for="colPtNuevo" class="price-type-label" id="colLabelNuevo">
+                                    <span>🟢 Nuevo Ingreso</span>
+                                    <span style="font-family:var(--font-heading);font-size:var(--text-base);
+                             font-weight:800;" id="colNuevoAmount">$0.00</span>
+                                </label>
+                            </div>
+                            <div style="position:relative;">
+                                <input type="radio" name="colPriceType" id="colPtReinsc" value="reinscripcion"
+                                    style="position:absolute;opacity:0;" />
+                                <label for="colPtReinsc" class="price-type-label" id="colLabelReinsc">
+                                    <span>🟣 Reinscripción</span>
+                                    <span style="font-family:var(--font-heading);font-size:var(--text-base);
+                             font-weight:800;" id="colReinscAmount">$0.00</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div style="margin-top:var(--space-2);">
+                            <input type="radio" name="colPriceType" id="colPtOtro" value="otro"
+                                style="position:absolute;opacity:0;" />
+                            <label for="colPtOtro" class="price-type-label" id="colLabelOtro">
+                                ✏️ Otro precio
+                            </label>
+                        </div>
+                        <div id="colOtroInput" style="display:none;margin-top:var(--space-3);">
+                            <label class="form-label">Precio manual</label>
+                            <div style="position:relative;">
+                                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);
+                           color:var(--color-text-muted);font-weight:700;">$</span>
+                                <input type="number" class="form-control" id="colOtroMonto" style="padding-left:24px;"
+                                    placeholder="0.00" min="0" step="0.01"
+                                    oninput="document.getElementById('colMontoPago').value=this.value" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monto del pago -->
+                    <div class="form-group">
+                        <label class="form-label">Monto del pago</label>
+                        <div style="position:relative;">
+                            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);
+                         color:var(--color-text-muted);font-weight:700;">$</span>
+                            <input type="number" class="form-control" id="colMontoPago" style="padding-left:24px;font-family:var(--font-heading);
+                          font-weight:700;font-size:var(--text-lg);" placeholder="0.00" min="0.01" step="0.01" />
+                        </div>
+                    </div>
+
+                    <!-- Fecha -->
+                    <div class="form-group">
+                        <label class="form-label">Fecha del pago</label>
+                        <input type="date" class="form-control" id="colFechaPago" />
+                    </div>
+
+                    <!-- Método -->
+                    <div class="form-group">
+                        <label class="form-label">Método de pago</label>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2);">
+                            <button type="button" class="method-btn active" id="colBtnEfectivo"
+                                onclick="setColMetodo('efectivo')">
+                                💵 Efectivo
+                            </button>
+                            <button type="button" class="method-btn" id="colBtnTarjeta"
+                                onclick="setColMetodo('tarjeta')">
+                                💳 Tarjeta
+                            </button>
+                        </div>
+                        <input type="hidden" id="colMetodo" value="efectivo" />
+                    </div>
+
+                    <!-- Tipo de pago -->
+                    <div class="form-group">
+                        <label class="form-label">Tipo de pago</label>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2);">
+                            <button type="button" class="payment-type-btn active total" id="colBtnTotal"
+                                onclick="setColTipo('total')">
+                                ✅ Pago total
+                            </button>
+                            <button type="button" class="payment-type-btn parcial" id="colBtnParcial"
+                                onclick="setColTipo('parcial')">
+                                ⚡ Pago parcial
+                            </button>
+                        </div>
+                        <input type="hidden" id="colTipoPago" value="total" />
+                    </div>
+
+                    <div id="colFormError" style="display:none;padding:var(--space-3) var(--space-4);
+                    background:#FFEBEE;border-radius:var(--radius-md);
+                    font-size:var(--text-sm);color:var(--color-error);">
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModalColegiatura()">Cancelar</button>
+                <button class="btn btn-primary" id="btnGuardarCol" onclick="guardarColegiatura()">
+                    Registrar colegiatura
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal eliminar movimiento -->
+    <div class="modal-overlay" id="modalDelColMov">
+        <div class="modal" style="max-width:400px;">
+            <div class="modal-header">
+                <h3 class="modal-title" style="color:var(--color-error);">⚠️ Eliminar pago</h3>
+                <button class="modal-close"
+                    onclick="document.getElementById('modalDelColMov').classList.remove('active')">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:1.7;">
+                    ¿Eliminar este pago de colegiatura? Esta acción no se puede deshacer.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    onclick="document.getElementById('modalDelColMov').classList.remove('active')">
+                    Cancelar
+                </button>
+                <button class="btn btn-danger" id="btnConfirmDelColMov" onclick="confirmarDelColMov()">
+                    Sí, eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/auth.js"></script>
+
+    <script>
+        /* ════════════════════════════════════════════════════════════
+           CONSTANTES
+           ════════════════════════════════════════════════════════════ */
+        const MESES = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+
+        const GRADE_META = {
+            'Maternal': { color: 'var(--color-maternal)', light: 'var(--color-maternal-light)', dark: 'var(--color-maternal-dark)', icon: '🔵' },
+            'Kinder 1': { color: 'var(--color-kinder1)', light: 'var(--color-kinder1-light)', dark: 'var(--color-kinder1-dark)', icon: '🟡' },
+            'Kinder 2': { color: 'var(--color-kinder2)', light: 'var(--color-kinder2-light)', dark: 'var(--color-kinder2-dark)', icon: '🔴' },
+            'Kinder 3': { color: 'var(--color-kinder3)', light: 'var(--color-kinder3-light)', dark: 'var(--color-kinder3-dark)', icon: '🟢' },
+        };
+
+        /* ════════════════════════════════════════════════════════════
+           ESTADO
+           ════════════════════════════════════════════════════════════ */
+        let allStudents = [];
+        let allColegiaturas = [];   // Todas las colegiaturas de la escuela
+        let allMovimientos = [];   // Todos los movimientos
+        let precios = {};   // precios[grado] = { nuevo_ingreso, reinscripcion }
+        let activeGrade = 'todos';
+        let searchQuery = '';
+        let drawerStudent = null; // Alumno activo en el drawer
+        let pendingDelColMovId = null;
+
+        /* ════════════════════════════════════════════════════════════
+           HELPERS
+           ════════════════════════════════════════════════════════════ */
+        function fmt(date) {
+            if (!date) return '—';
+            return new Date(date + 'T12:00:00').toLocaleDateString('es-MX',
+                { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+        function fmtMoney(v) {
+            return '$' + Number(v || 0).toLocaleString('es-MX', { minimumFractionDigits: 2 });
+        }
+        function initials(name = '') {
+            return name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+        }
+        function showToast(msg, type = 'success') {
+            const c = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            t.textContent = msg;
+            c.appendChild(t);
+            setTimeout(() => t.remove(), 3200);
+        }
+        function mesLabel(mes, anio) {
+            if (!mes) return '—';
+            const [y, m] = mes.split('-');
+            return `${MESES[parseInt(m) - 1]} ${y || anio}`;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           CARGAR DATOS
+           ════════════════════════════════════════════════════════════ */
+        async function loadAll() {
+            try {
+                // Alumnos
+                const { data: students } = await db.from('alumnos')
+                    .select('*').eq('activo', true).order('nombre_completo');
+                allStudents = students || [];
+
+                // Colegiaturas
+                const { data: cols } = await db.from('colegiaturas').select('*');
+                allColegiaturas = cols || [];
+
+                // Movimientos de colegiaturas
+                const colIds = allColegiaturas.map(c => c.id);
+                if (colIds.length > 0) {
+                    const { data: movs } = await db.from('movimientos_colegiatura')
+                        .select('*').in('colegiatura_id', colIds).order('fecha_pago');
+                    allMovimientos = movs || [];
+                } else {
+                    allMovimientos = [];
+                }
+
+                // Precios por grado
+                const { data: precsData } = await db.from('precios')
+                    .select('*').eq('concepto', 'colegiatura');
+                precios = {};
+                (precsData || []).forEach(p => {
+                    precios[p.grado] = {
+                        nuevo_ingreso: p.precio_nuevo_ingreso,
+                        reinscripcion: p.precio_reinscripcion,
+                    };
+                });
+
+            } catch (e) {
+                console.warn('Sin conexión:', e.message);
+                allStudents = [];
+            }
+
+            updateGlobalTotals();
+            updateCounts();
+            renderList();
+
+            const now = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('lastUpdated').textContent = `Actualizado a las ${now}`;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           TOTALES GLOBALES
+           ════════════════════════════════════════════════════════════ */
+        function updateGlobalTotals() {
+            const totalGeneral = allMovimientos.reduce((s, m) => s + parseFloat(m.monto), 0);
+            const efectivo = allMovimientos.filter(m => m.metodo === 'efectivo').reduce((s, m) => s + parseFloat(m.monto), 0);
+            const tarjeta = allMovimientos.filter(m => m.metodo === 'tarjeta').reduce((s, m) => s + parseFloat(m.monto), 0);
+            const totalCols = allColegiaturas.filter(c => c.estado === 'liquidado').length;
+
+            document.getElementById('totalGeneral').textContent = fmtMoney(totalGeneral);
+            document.getElementById('totalEfectivo').textContent = fmtMoney(efectivo);
+            document.getElementById('totalTarjeta').textContent = fmtMoney(tarjeta);
+            document.getElementById('totalColegiaturas').textContent = totalCols;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           CONTEOS POR GRADO
+           ════════════════════════════════════════════════════════════ */
+        function updateCounts() {
+            const grades = ['Maternal', 'Kinder 1', 'Kinder 2', 'Kinder 3'];
+            document.getElementById('cnt-todos').textContent = allStudents.length;
+            grades.forEach(g => {
+                const el = document.getElementById(`cnt-${g}`);
+                if (el) el.textContent = allStudents.filter(s => s.grado === g).length;
+            });
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           RENDER LISTA DE ALUMNOS
+           ════════════════════════════════════════════════════════════ */
+        function renderList() {
+            document.getElementById('skeleton')?.remove();
+
+            const q = searchQuery.toLowerCase();
+            const filtered = allStudents.filter(s => {
+                const matchGrade = activeGrade === 'todos' || s.grado === activeGrade;
+                const matchSearch = !q || s.nombre_completo?.toLowerCase().includes(q)
+                    || s.grupo?.toLowerCase().includes(q);
+                return matchGrade && matchSearch;
+            });
+
+            const list = document.getElementById('studentList');
+            const empty = document.getElementById('emptyState');
+
+            if (filtered.length === 0) {
+                list.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            list.innerHTML = filtered.map(s => renderStudentRow(s)).join('');
+        }
+
+        function renderStudentRow(s) {
+            const meta = GRADE_META[s.grado] || {};
+            const ini = initials(s.nombre_completo);
+
+            // Colegiaturas de este alumno
+            const cols = allColegiaturas.filter(c => c.alumno_id === s.id);
+            const colsLiquidadas = cols.filter(c => c.estado === 'liquidado').length;
+            const colsPagos = cols.length; // Total de meses con algún movimiento
+
+            return `
+    <div class="student-row"
+         style="--grade-color:${meta.color || 'var(--color-primary)'};
+                --grade-light:${meta.light || 'var(--color-primary-light)'};
+                --grade-dark:${meta.dark || 'var(--color-primary-dark)'};"
+         onclick="openDrawer('${s.id}')">
+
+      <!-- Avatar -->
+      ${s.foto_url
+                    ? `<img class="student-row__avatar" src="${s.foto_url}"
+               style="border:2px solid ${meta.light};" />`
+                    : `<div class="student-row__avatar"
+               style="background:${meta.light};color:${meta.dark};">${ini}</div>`}
+
+      <!-- Nombre y grado -->
+      <div class="student-row__info">
+        <div class="student-row__name">${s.nombre_completo}</div>
+        <div class="student-row__meta">
+          ${s.grado
+                    ? `<span class="student-row__grade-badge"
+                     style="background:${meta.light};color:${meta.dark};">
+                 ${meta.icon || ''} ${s.grado}${s.grupo ? ' · Gpo. ' + s.grupo : ''}
+               </span>`
+                    : '<span style="font-size:.7rem;color:var(--color-text-muted);">Sin grado asignado</span>'}
+        </div>
+      </div>
+
+      <!-- Contador de colegiaturas (clickeable → abre historial) -->
+      <div class="col-counter" onclick="event.stopPropagation();openDrawer('${s.id}')">
+        <span class="col-counter__number">${colsPagos}</span>
+        <span class="col-counter__label">colegiatura${colsPagos !== 1 ? 's' : ''}</span>
+      </div>
+
+      <!-- Botón pagar -->
+      <button class="col-pagar-btn"
+              onclick="event.stopPropagation();openDrawer('${s.id}');setTimeout(abrirModalPago, 300);">
+        ＋ Pagar
+      </button>
+
+    </div>`;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           DRAWER DE HISTORIAL
+           ════════════════════════════════════════════════════════════ */
+        function openDrawer(studentId) {
+            drawerStudent = allStudents.find(s => s.id === studentId);
+            if (!drawerStudent) return;
+
+            const s = drawerStudent;
+            const meta = GRADE_META[s.grado] || {};
+            const ini = initials(s.nombre_completo);
+
+            // Header del drawer
+            document.getElementById('drawerAvatarWrap').innerHTML = s.foto_url
+                ? `<img src="${s.foto_url}"
+           style="width:52px;height:52px;border-radius:50%;object-fit:cover;
+                  border:3px solid ${meta.light};" />`
+                : `<div style="width:52px;height:52px;border-radius:50%;background:${meta.light};
+                   color:${meta.dark};display:flex;align-items:center;justify-content:center;
+                   font-family:var(--font-heading);font-weight:800;font-size:1.2rem;">
+         ${ini}
+       </div>`;
+            document.getElementById('drawerStudentName').textContent = s.nombre_completo;
+            document.getElementById('drawerStudentMeta').textContent =
+                [s.grado, s.grupo ? 'Gpo. ' + s.grupo : null].filter(Boolean).join(' · ') || 'Sin grado asignado';
+
+            renderDrawerBody();
+
+            document.getElementById('drawerOverlay').classList.add('active');
+        }
+
+        function renderDrawerBody() {
+            const s = drawerStudent;
+            const cols = allColegiaturas.filter(c => c.alumno_id === s.id);
+
+            // Totales del alumno
+            const alumnoMovs = allMovimientos.filter(m =>
+                cols.some(c => c.id === m.colegiatura_id)
+            );
+            const totalPagado = alumnoMovs.reduce((sum, m) => sum + parseFloat(m.monto), 0);
+            const efectivo = alumnoMovs.filter(m => m.metodo === 'efectivo').reduce((sum, m) => sum + parseFloat(m.monto), 0);
+            const tarjeta = alumnoMovs.filter(m => m.metodo === 'tarjeta').reduce((sum, m) => sum + parseFloat(m.monto), 0);
+            const liquidadas = cols.filter(c => c.estado === 'liquidado').length;
+
+            document.getElementById('drawerStudentTotals').innerHTML = `
+    <div style="text-align:center;">
+      <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+                  color:var(--color-text-muted);">Total pagado</div>
+      <div style="font-family:var(--font-heading);font-weight:800;font-size:var(--text-xl);
+                  color:var(--color-primary);">${fmtMoney(totalPagado)}</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+                  color:var(--color-text-muted);">Efectivo / Tarjeta</div>
+      <div style="font-size:var(--text-sm);font-weight:700;margin-top:2px;">
+        <span style="color:var(--color-text-secondary);">💵 ${fmtMoney(efectivo)}</span><br/>
+        <span style="color:var(--color-text-secondary);">💳 ${fmtMoney(tarjeta)}</span>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+                  color:var(--color-text-muted);">Liquidadas</div>
+      <div style="font-family:var(--font-heading);font-weight:800;font-size:var(--text-xl);
+                  color:var(--color-success);">${liquidadas}</div>
+    </div>`;
+
+            // Historial de meses
+            const body = document.getElementById('drawerBody');
+
+            if (cols.length === 0) {
+                body.innerHTML = `
+      <div style="text-align:center;padding:var(--space-10) var(--space-6);
+                  color:var(--color-text-muted);">
+        <div style="font-size:2.5rem;margin-bottom:var(--space-3);">📭</div>
+        <div style="font-weight:700;margin-bottom:var(--space-2);">Sin colegiaturas registradas</div>
+        <div style="font-size:var(--text-sm);">Usa el botón de abajo para registrar la primera.</div>
+      </div>`;
+                return;
+            }
+
+            // Ordenar por mes descendente
+            const sorted = [...cols].sort((a, b) => b.mes.localeCompare(a.mes));
+
+            body.innerHTML = sorted.map(col => {
+                const movs = allMovimientos.filter(m => m.colegiatura_id === col.id);
+                const totalCol = movs.reduce((s, m) => s + parseFloat(m.monto), 0);
+                const estado = col.estado || 'pendiente';
+
+                const estadoBadge = estado === 'liquidado'
+                    ? '<span class="badge badge-liquidado">✅ Liquidado</span>'
+                    : estado === 'parcial'
+                        ? '<span class="badge badge-pago-parcial">⚡ Parcial</span>'
+                        : '<span class="badge badge-pendiente">⏳ Pendiente</span>';
+
+                const movsHtml = movs.map(m => `
+      <div class="month-mov-row">
+        <div class="month-mov-row__info">
+          <div class="month-mov-row__date">${fmt(m.fecha_pago)}</div>
+          <div class="month-mov-row__meta">
+            <span>${m.metodo === 'efectivo' ? '💵 Efectivo' : '💳 Tarjeta'}</span>
+            <span>·</span>
+            <span class="badge ${m.es_total ? 'badge-pago-total' : 'badge-pago-parcial'}">
+              ${m.es_total ? 'Pago total' : 'Pago parcial'}
+            </span>
+          </div>
+        </div>
+        <div class="month-mov-row__amount">${fmtMoney(m.monto)}</div>
+        <div class="month-mov-row__actions">
+          <button class="icon-btn icon-btn-edit"
+                  onclick="editarColMov('${m.id}','${col.id}')" title="Editar">✏️</button>
+          <button class="icon-btn icon-btn-del"
+                  onclick="pedirDelColMov('${m.id}')" title="Eliminar">🗑️</button>
+        </div>
+      </div>`).join('');
+
+                return `
+      <div class="month-item">
+        <div class="month-item__header" onclick="toggleMes('mes-${col.id}')">
+          <div>
+            <div class="month-item__name">${mesLabel(col.mes, col.anio)}</div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);">
+              ${movs.length} pago${movs.length !== 1 ? 's' : ''}
+            </div>
+          </div>
+          <div class="month-item__right">
+            <span class="month-item__total">${fmtMoney(totalCol)}</span>
+            ${estadoBadge}
+            <span style="color:var(--color-text-muted);font-size:.8rem;">▾</span>
+          </div>
+        </div>
+        <div class="month-item__movs" id="mes-${col.id}">
+          ${movsHtml || '<div style="padding:var(--space-4);text-align:center;font-size:var(--text-xs);color:var(--color-text-muted);">Sin pagos</div>'}
+        </div>
+      </div>`;
+            }).join('');
+        }
+
+        function toggleMes(id) {
+            document.getElementById(id)?.classList.toggle('open');
+        }
+
+        function closeDrawer() {
+            document.getElementById('drawerOverlay').classList.remove('active');
+            drawerStudent = null;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           MODAL COLEGIATURA
+           ════════════════════════════════════════════════════════════ */
+        function abrirModalPago(movId = null, colId = null) {
+            if (!drawerStudent) return;
+            const s = drawerStudent;
+
+            document.getElementById('editColMovId').value = movId || '';
+            document.getElementById('editColId').value = colId || '';
+            document.getElementById('colFormError').style.display = 'none';
+            document.getElementById('colOtroInput').style.display = 'none';
+            document.getElementById('colOtroMonto').value = '';
+
+            // Info del alumno en el modal
+            document.getElementById('modalAlumnoInfo').innerHTML =
+                `👦 <strong>${s.nombre_completo}</strong>${s.grado ? ' · ' + s.grado : ''}`;
+
+            // Precios del grado
+            const pGrado = precios[s.grado] || {};
+            document.getElementById('colNuevoAmount').textContent = fmtMoney(pGrado.nuevo_ingreso);
+            document.getElementById('colReinscAmount').textContent = fmtMoney(pGrado.reinscripcion);
+
+            if (movId && colId) {
+                // Editar movimiento existente
+                document.getElementById('modalColTitle').textContent = 'Editar pago de colegiatura';
+                document.getElementById('btnGuardarCol').textContent = 'Guardar cambios';
+
+                const col = allColegiaturas.find(c => c.id === colId);
+                const mov = allMovimientos.find(m => m.id === movId);
+
+                if (col) {
+                    document.getElementById('mesSelect').innerHTML =
+                        `<option value="${col.mes}">${mesLabel(col.mes, col.anio)}</option>`;
+                    document.getElementById('mesGroup').style.display = 'none';
+                    document.getElementById('precioRefGroup').style.display = 'none';
+                }
+                if (mov) {
+                    document.getElementById('colMontoPago').value = parseFloat(mov.monto).toFixed(2);
+                    document.getElementById('colFechaPago').value = mov.fecha_pago;
+                    setColMetodo(mov.metodo);
+                    setColTipo(mov.es_total ? 'total' : 'parcial');
+                }
+            } else {
+                // Nuevo pago
+                document.getElementById('modalColTitle').textContent = 'Registrar Colegiatura';
+                document.getElementById('btnGuardarCol').textContent = 'Registrar colegiatura';
+                document.getElementById('mesGroup').style.display = 'block';
+                document.getElementById('precioRefGroup').style.display = 'block';
+
+                // Llenar selector de meses del año actual y anterior
+                populateMesSelect();
+
+                document.getElementById('colMontoPago').value = '';
+                document.getElementById('colFechaPago').value = new Date().toISOString().split('T')[0];
+                setColMetodo('efectivo');
+                setColTipo('total');
+                document.getElementById('colPtNuevo').checked = true;
+                updateColPriceLabels();
+
+                // Autocompletar monto al seleccionar tipo de precio
+                document.querySelectorAll('input[name="colPriceType"]').forEach(r => {
+                    r.onchange = updateColPriceLabels;
+                });
+            }
+
+            document.getElementById('modalColegiatura').classList.add('active');
+        }
+
+        function populateMesSelect() {
+            const sel = document.getElementById('mesSelect');
+            const now = new Date();
+            const mesesUsados = allColegiaturas
+                .filter(c => c.alumno_id === drawerStudent.id)
+                .map(c => c.mes);
+
+            const opciones = [];
+            // Generar 18 meses (12 pasados + mes actual + 5 futuros)
+            for (let i = -12; i <= 5; i++) {
+                const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+                const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                const lbl = `${MESES[d.getMonth()]} ${d.getFullYear()}`;
+                const yaRegistrado = mesesUsados.includes(key);
+                opciones.push({ key, lbl, yaRegistrado });
+            }
+
+            sel.innerHTML = '<option value="">— Selecciona el mes —</option>'
+                + opciones.map(o =>
+                    `<option value="${o.key}" ${o.yaRegistrado ? 'disabled style="color:#aaa;"' : ''}>
+          ${o.lbl}${o.yaRegistrado ? ' (ya registrado)' : ''}
+         </option>`
+                ).join('');
+
+            // Preseleccionar el mes actual si no está registrado
+            const thisMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            if (!mesesUsados.includes(thisMonth)) sel.value = thisMonth;
+        }
+
+        function updateColPriceLabels() {
+            const tipo = document.querySelector('input[name="colPriceType"]:checked')?.value;
+            const grado = drawerStudent?.grado;
+            const pGrado = precios[grado] || {};
+
+            // Estilos activos en las labels
+            const styleActive = 'border-color:var(--color-primary);background:var(--color-primary-light);color:var(--color-primary);';
+            const stylePurple = 'border-color:#7B5EA7;background:#F3EEF9;color:#7B5EA7;';
+            const styleDefault = 'border-color:var(--color-border);background:var(--color-surface);color:var(--color-text-secondary);';
+
+            document.getElementById('colLabelNuevo').style.cssText = tipo === 'nuevo_ingreso' ? styleActive : styleDefault;
+            document.getElementById('colLabelReinsc').style.cssText = tipo === 'reinscripcion' ? stylePurple : styleDefault;
+            document.getElementById('colLabelOtro').style.cssText = tipo === 'otro' ? stylePurple : styleDefault;
+            document.getElementById('colOtroInput').style.display = tipo === 'otro' ? 'block' : 'none';
+
+            if (tipo === 'nuevo_ingreso') {
+                document.getElementById('colMontoPago').value = parseFloat(pGrado.nuevo_ingreso || 0).toFixed(2);
+            } else if (tipo === 'reinscripcion') {
+                document.getElementById('colMontoPago').value = parseFloat(pGrado.reinscripcion || 0).toFixed(2);
+            } else {
+                document.getElementById('colMontoPago').value = '';
+            }
+        }
+
+        function setColMetodo(m) {
+            document.getElementById('colMetodo').value = m;
+            const actStyle = 'border-color:var(--color-primary);background:var(--color-primary-light);color:var(--color-primary);';
+            const defStyle = 'border-color:var(--color-border);background:var(--color-surface);color:var(--color-text-secondary);';
+            document.getElementById('colBtnEfectivo').style.cssText = m === 'efectivo' ? actStyle : defStyle;
+            document.getElementById('colBtnTarjeta').style.cssText = m === 'tarjeta' ? actStyle : defStyle;
+        }
+
+        function setColTipo(t) {
+            document.getElementById('colTipoPago').value = t;
+            const actTotal = 'border-color:var(--color-success);background:#E8F5EE;color:var(--color-success);';
+            const actParcial = 'border-color:var(--color-warning);background:#FFFDE7;color:#F9A825;';
+            const defStyle = 'border-color:var(--color-border);background:var(--color-surface);color:var(--color-text-secondary);';
+            document.getElementById('colBtnTotal').style.cssText = t === 'total' ? actTotal : defStyle;
+            document.getElementById('colBtnParcial').style.cssText = t === 'parcial' ? actParcial : defStyle;
+        }
+
+        function closeModalColegiatura() {
+            document.getElementById('modalColegiatura').classList.remove('active');
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           GUARDAR COLEGIATURA
+           ════════════════════════════════════════════════════════════ */
+        async function guardarColegiatura() {
+            const errEl = document.getElementById('colFormError');
+            errEl.style.display = 'none';
+
+            const movId = document.getElementById('editColMovId').value;
+            const colId = document.getElementById('editColId').value;
+            const mes = document.getElementById('mesSelect').value;
+            const monto = parseFloat(document.getElementById('colMontoPago').value);
+            const fecha = document.getElementById('colFechaPago').value;
+            const metodo = document.getElementById('colMetodo').value;
+            const esTotal = document.getElementById('colTipoPago').value === 'total';
+            const priceType = document.querySelector('input[name="colPriceType"]:checked')?.value;
+            const grado = drawerStudent?.grado;
+            const pGrado = precios[grado] || {};
+
+            if (!monto || monto <= 0) { errEl.textContent = 'El monto debe ser mayor a cero.'; errEl.style.display = 'block'; return; }
+            if (!fecha) { errEl.textContent = 'La fecha es obligatoria.'; errEl.style.display = 'block'; return; }
+
+            const btn = document.getElementById('btnGuardarCol');
+            btn.disabled = true; btn.textContent = 'Guardando…';
+
+            try {
+                if (movId && colId) {
+                    // Editar movimiento existente
+                    const { error } = await db.from('movimientos_colegiatura')
+                        .update({ monto, fecha_pago: fecha, metodo, es_total: esTotal })
+                        .eq('id', movId);
+                    if (error) throw error;
+                    await recalcularEstadoCol(colId);
+
+                } else {
+                    // Calcular monto total de referencia según el tipo de precio
+                    if (!mes) { errEl.textContent = 'Selecciona el mes.'; errEl.style.display = 'block'; btn.disabled = false; btn.textContent = 'Registrar colegiatura'; return; }
+
+                    const [anioStr, mesStr] = mes.split('-');
+                    let montoRef = monto;
+                    if (priceType === 'nuevo_ingreso') montoRef = parseFloat(pGrado.nuevo_ingreso) || monto;
+                    else if (priceType === 'reinscripcion') montoRef = parseFloat(pGrado.reinscripcion) || monto;
+
+                    // Buscar o crear la colegiatura del mes
+                    let col = allColegiaturas.find(c => c.alumno_id === drawerStudent.id && c.mes === mes);
+                    let targetColId;
+
+                    if (!col) {
+                        const { data: newCol, error: ce } = await db.from('colegiaturas').insert({
+                            alumno_id: drawerStudent.id,
+                            mes,
+                            anio: parseInt(anioStr),
+                            monto_total: montoRef,
+                            tipo_precio: priceType,
+                            estado: esTotal ? 'liquidado' : 'parcial',
+                        }).select().single();
+                        if (ce) throw ce;
+                        targetColId = newCol.id;
+                    } else {
+                        targetColId = col.id;
+                    }
+
+                    const { error: me } = await db.from('movimientos_colegiatura').insert({
+                        colegiatura_id: targetColId,
+                        monto,
+                        fecha_pago: fecha,
+                        metodo,
+                        es_total: esTotal,
+                    });
+                    if (me) throw me;
+                    await recalcularEstadoCol(targetColId);
+                }
+
+                // Recargar todo y re-renderizar
+                await loadAll();
+                renderDrawerBody();
+                closeModalColegiatura();
+                showToast('✅ Colegiatura registrada correctamente', 'success');
+
+            } catch (err) {
+                errEl.textContent = 'Error: ' + err.message;
+                errEl.style.display = 'block';
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = movId ? 'Guardar cambios' : 'Registrar colegiatura';
+            }
+        }
+
+        async function recalcularEstadoCol(colId) {
+            const { data: movs } = await db.from('movimientos_colegiatura')
+                .select('monto,es_total').eq('colegiatura_id', colId);
+            const { data: col } = await db.from('colegiaturas')
+                .select('monto_total').eq('id', colId).single();
+
+            const total = (movs || []).reduce((s, m) => s + parseFloat(m.monto), 0);
+            const hayTotal = (movs || []).some(m => m.es_total);
+            const ref = parseFloat(col?.monto_total || 0);
+            let estado = 'pendiente';
+            if (hayTotal || (ref > 0 && total >= ref)) estado = 'liquidado';
+            else if (total > 0) estado = 'parcial';
+
+            await db.from('colegiaturas').update({ estado }).eq('id', colId);
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           EDITAR Y ELIMINAR MOVIMIENTOS
+           ════════════════════════════════════════════════════════════ */
+        function editarColMov(movId, colId) {
+            abrirModalPago(movId, colId);
+        }
+
+        function pedirDelColMov(movId) {
+            pendingDelColMovId = movId;
+            document.getElementById('modalDelColMov').classList.add('active');
+        }
+
+        async function confirmarDelColMov() {
+            if (!pendingDelColMovId) return;
+            const btn = document.getElementById('btnConfirmDelColMov');
+            btn.disabled = true; btn.textContent = 'Eliminando…';
+
+            try {
+                // Encontrar la colegiatura a la que pertenece
+                const mov = allMovimientos.find(m => m.id === pendingDelColMovId);
+                const colId = mov?.colegiatura_id;
+
+                const { error } = await db.from('movimientos_colegiatura')
+                    .delete().eq('id', pendingDelColMovId);
+                if (error) throw error;
+
+                if (colId) await recalcularEstadoCol(colId);
+                await loadAll();
+                renderDrawerBody();
+                document.getElementById('modalDelColMov').classList.remove('active');
+                showToast('🗑️ Pago eliminado', 'success');
+            } catch (err) {
+                showToast('❌ Error: ' + err.message, 'error');
+            } finally {
+                btn.disabled = false; btn.textContent = 'Sí, eliminar';
+                pendingDelColMovId = null;
+            }
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           FILTROS Y BÚSQUEDA
+           ════════════════════════════════════════════════════════════ */
+        document.getElementById('gradeFilterBar').addEventListener('click', e => {
+            const pill = e.target.closest('.grade-filter-pill');
+            if (!pill) return;
+            document.querySelectorAll('.grade-filter-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            activeGrade = pill.dataset.grade;
+            renderList();
+        });
+
+        document.getElementById('searchInput').addEventListener('input', e => {
+            searchQuery = e.target.value;
+            renderList();
+        });
+
+        /* ════════════════════════════════════════════════════════════
+           SIDEBAR MÓVIL
+           ════════════════════════════════════════════════════════════ */
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const menuBtn = document.getElementById('menuToggle');
+        sidebar.addEventListener('click', e => e.stopPropagation());
+        function toggleSidebar() { sidebar.classList.toggle('open'); overlay.classList.toggle('active'); }
+        menuBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+        function handleResize() { menuBtn.style.display = window.innerWidth <= 768 ? 'flex' : 'none'; }
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        /* ════════════════════════════════════════════════════════════
+           INIT
+           ════════════════════════════════════════════════════════════ */
+        Auth.checkSession();
+        Auth.getCurrentUser().then(user => {
+            if (user?.email) {
+                document.getElementById('userName').textContent = user.email.split('@')[0];
+                document.getElementById('userInitial').textContent = user.email[0].toUpperCase();
+            }
+        });
+        document.getElementById('sidebarUser').addEventListener('click', () => {
+            if (confirm('¿Deseas cerrar sesión?')) Auth.logout();
+        });
+
+        loadAll();
+    </script>
+</body>
+
+</html>
