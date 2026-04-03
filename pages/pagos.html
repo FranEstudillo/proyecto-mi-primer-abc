@@ -508,6 +508,322 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* ── Pedidos (Uniforme / Bata) ───────────────────────── */
+        .pedidos-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-5);
+            gap: var(--space-4);
+            flex-wrap: wrap;
+        }
+
+        .pedidos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-4);
+        }
+
+        .pedido-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: box-shadow var(--transition-base);
+        }
+
+        .pedido-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .pedido-card__header {
+            padding: var(--space-4) var(--space-5);
+            background: var(--color-bg);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .pedido-card__num {
+            font-family: var(--font-heading);
+            font-weight: var(--font-extrabold);
+            font-size: var(--text-base);
+        }
+
+        .pedido-card__date {
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+        }
+
+        .pedido-card__body {
+            padding: var(--space-4) var(--space-5);
+        }
+
+        .pedido-card__pieces {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+            margin-bottom: var(--space-4);
+        }
+
+        .pedido-piece-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: var(--text-sm);
+        }
+
+        .pedido-piece-row__name {
+            color: var(--color-text-secondary);
+        }
+
+        .pedido-piece-row__price {
+            font-family: var(--font-heading);
+            font-weight: var(--font-bold);
+        }
+
+        .pedido-card__total {
+            border-top: 1px solid var(--color-border);
+            padding-top: var(--space-3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+        }
+
+        .pedido-card__total-label {
+            font-size: var(--text-sm);
+            font-weight: var(--font-bold);
+        }
+
+        .pedido-card__total-value {
+            font-family: var(--font-heading);
+            font-size: var(--text-xl);
+            font-weight: var(--font-extrabold);
+        }
+
+        .pedido-card__footer {
+            display: flex;
+            gap: var(--space-2);
+            border-top: 1px solid var(--color-border);
+            padding: var(--space-3) var(--space-5);
+            background: var(--color-bg);
+        }
+
+        /* Historial de pagos del pedido (collapsible) */
+        .pedido-history {
+            border-top: 1px solid var(--color-border);
+        }
+
+        /* Contador de piezas en el modal */
+        .piece-counter-grid {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .piece-counter-row {
+            display: grid;
+            grid-template-columns: 1fr auto auto auto auto;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3) var(--space-4);
+            background: var(--color-bg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+
+        .piece-counter-row.has-items {
+            background: var(--color-primary-light);
+            border-color: var(--color-primary);
+        }
+
+        .piece-counter-row__name {
+            font-size: var(--text-sm);
+            font-weight: var(--font-semibold);
+        }
+
+        .piece-counter-row__price {
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+            white-space: nowrap;
+        }
+
+        .counter-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--color-border);
+            background: var(--color-surface);
+            font-size: 1rem;
+            font-weight: var(--font-bold);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+            line-height: 1;
+        }
+
+        .counter-btn:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .counter-btn:disabled {
+            opacity: .35;
+            cursor: not-allowed;
+        }
+
+        .counter-value {
+            font-family: var(--font-heading);
+            font-weight: var(--font-extrabold);
+            font-size: var(--text-base);
+            min-width: 24px;
+            text-align: center;
+        }
+
+        /* Selector de talla */
+        .size-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: var(--space-3);
+        }
+
+        .size-option {
+            position: relative;
+        }
+
+        .size-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .size-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--space-4) var(--space-3);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--transition-fast);
+            font-size: var(--text-sm);
+            font-weight: var(--font-bold);
+            color: var(--color-text-secondary);
+            gap: var(--space-2);
+        }
+
+        .size-label .size-icon {
+            font-size: 1.5rem;
+        }
+
+        .size-label .size-price {
+            font-family: var(--font-heading);
+            font-size: var(--text-base);
+            font-weight: var(--font-extrabold);
+            color: var(--color-text-primary);
+        }
+
+        .size-option input:checked+.size-label {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .size-option input:checked+.size-label .size-price {
+            color: var(--color-primary);
+        }
+
+        /* Precio paquete toggle */
+        .precio-paquete-section {
+            border: 2px dashed var(--color-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-4);
+            transition: border-color var(--transition-fast);
+        }
+
+        .precio-paquete-section.active {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+        }
+
+        .precio-paquete-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            cursor: pointer;
+        }
+
+        /* iOS-style toggle switch */
+        .toggle-switch {
+            position: relative;
+            width: 42px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: var(--color-border);
+            border-radius: 24px;
+            transition: background var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 3px;
+            top: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: transform var(--transition-fast);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+        }
+
+        .toggle-switch input:checked+.toggle-slider {
+            background: var(--color-primary);
+        }
+
+        .toggle-switch input:checked+.toggle-slider::before {
+            transform: translateX(18px);
+        }
+
+        /* Total calculado en el modal de pedido */
+        .order-total-display {
+            background: var(--color-primary);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: var(--space-4) var(--space-5);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .order-total-display__label {
+            font-size: var(--text-sm);
+            opacity: .85;
+        }
+
+        .order-total-display__value {
+            font-family: var(--font-heading);
+            font-size: var(--text-2xl);
+            font-weight: var(--font-extrabold);
+        }
     </style>
 </head>
 
@@ -746,6 +1062,236 @@
         </div>
     </div>
 
+    <!-- ══════════════════════════════════════════════════════════════
+     MODAL: NUEVO PEDIDO UNIFORME
+     ══════════════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modalNuevoPedidoUniforme">
+        <div class="modal" style="max-width:560px;">
+            <div class="modal-header">
+                <h3 class="modal-title">👕 Nuevo Pedido de Uniforme</h3>
+                <button class="modal-close"
+                    onclick="document.getElementById('modalNuevoPedidoUniforme').classList.remove('active')">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-4);">
+                    Selecciona las piezas y la cantidad. El total se calculará automáticamente.
+                </p>
+
+                <div class="piece-counter-grid" id="pieceCounterGrid">
+                    <!-- Se llena dinámicamente -->
+                </div>
+
+                <div style="margin-top:var(--space-5);">
+                    <div class="order-total-display" id="uniformeTotalDisplay">
+                        <span class="order-total-display__label">Total del pedido</span>
+                        <span class="order-total-display__value" id="uniformeTotalValue">$0.00</span>
+                    </div>
+                </div>
+
+                <div style="margin-top:var(--space-4);">
+                    <div class="precio-paquete-section" id="precioPaqueteSection">
+                        <label class="precio-paquete-toggle">
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="togglePrecioPaquete" onchange="onTogglePrecioPaquete()" />
+                                <span class="toggle-slider"></span>
+                            </div>
+                            <div>
+                                <div style="font-size:var(--text-sm);font-weight:var(--font-bold);">Precio Paquete</div>
+                                <div style="font-size:var(--text-xs);color:var(--color-text-muted);">
+                                    Reemplaza el total con un precio manual acordado
+                                </div>
+                            </div>
+                        </label>
+                        <div id="precioPaqueteInput" style="display:none;margin-top:var(--space-3);">
+                            <label class="form-label">Precio paquete</label>
+                            <div style="position:relative;">
+                                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);
+                           color:var(--color-text-muted);font-weight:700;">$</span>
+                                <input type="number" class="form-control" id="precioPaqueteValue"
+                                    style="padding-left:24px;font-family:var(--font-heading);font-weight:700;"
+                                    placeholder="0.00" min="0" step="0.01" oninput="updateUniformeTotal()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="uniformePedidoError" style="display:none;margin-top:var(--space-3);padding:var(--space-3) var(--space-4);
+                  background:#FFEBEE;border-radius:var(--radius-md);font-size:var(--text-sm);
+                  color:var(--color-error);"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    onclick="document.getElementById('modalNuevoPedidoUniforme').classList.remove('active')">
+                    Cancelar
+                </button>
+                <button class="btn btn-primary" id="btnGuardarPedidoUniforme" onclick="guardarPedidoUniforme()">
+                    💾 Guardar pedido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+     MODAL: NUEVO PEDIDO BATA
+     ══════════════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modalNuevoPedidoBata">
+        <div class="modal" style="max-width:440px;">
+            <div class="modal-header">
+                <h3 class="modal-title">🥼 Nuevo Pedido de Bata</h3>
+                <button class="modal-close"
+                    onclick="document.getElementById('modalNuevoPedidoBata').classList.remove('active')">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-5);">
+                    Selecciona la talla de la bata para este pedido.
+                </p>
+
+                <div class="size-selector" id="bataSizeSelector">
+                    <div class="size-option">
+                        <input type="radio" name="bataSize" id="bataChica" value="Chica" />
+                        <label class="size-label" for="bataChica">
+                            <span class="size-icon">🔹</span>
+                            <span>Chica</span>
+                            <span class="size-price" id="bataPrecioChica">$0.00</span>
+                        </label>
+                    </div>
+                    <div class="size-option">
+                        <input type="radio" name="bataSize" id="bataMediana" value="Mediana" />
+                        <label class="size-label" for="bataMediana">
+                            <span class="size-icon">🔷</span>
+                            <span>Mediana</span>
+                            <span class="size-price" id="bataPrecioMediana">$0.00</span>
+                        </label>
+                    </div>
+                    <div class="size-option">
+                        <input type="radio" name="bataSize" id="bataGrande" value="Grande" />
+                        <label class="size-label" for="bataGrande">
+                            <span class="size-icon">🔵</span>
+                            <span>Grande</span>
+                            <span class="size-price" id="bataPrecioGrande">$0.00</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="margin-top:var(--space-5);">
+                    <div class="order-total-display" id="bataTotalDisplay">
+                        <span class="order-total-display__label">Total del pedido</span>
+                        <span class="order-total-display__value" id="bataTotalValue">Selecciona una talla</span>
+                    </div>
+                </div>
+
+                <div id="bataPedidoError" style="display:none;margin-top:var(--space-3);padding:var(--space-3) var(--space-4);
+                  background:#FFEBEE;border-radius:var(--radius-md);font-size:var(--text-sm);
+                  color:var(--color-error);"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    onclick="document.getElementById('modalNuevoPedidoBata').classList.remove('active')">
+                    Cancelar
+                </button>
+                <button class="btn btn-primary" id="btnGuardarPedidoBata" onclick="guardarPedidoBata()">
+                    💾 Guardar pedido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+     MODAL: PAGO DE PEDIDO (Uniforme / Bata)
+     ══════════════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modalPagoPedido">
+        <div class="modal" style="max-width:440px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalPagoPedidoTitle">Registrar pago del pedido</h3>
+                <button class="modal-close" onclick="closeModalPagoPedido()">✕</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="pedidoTipo" />
+                <input type="hidden" id="pedidoId" />
+                <input type="hidden" id="editPedidoMovId" />
+
+                <div id="pedidoResumenInfo" style="background:var(--color-bg);border-radius:var(--radius-md);
+                  padding:var(--space-3) var(--space-4);margin-bottom:var(--space-4);
+                  font-size:var(--text-sm);"></div>
+
+                <div style="display:flex;flex-direction:column;gap:var(--space-4);">
+                    <div class="form-group">
+                        <label class="form-label">Monto del pago</label>
+                        <div style="position:relative;">
+                            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);
+                         color:var(--color-text-muted);font-weight:700;">$</span>
+                            <input type="number" class="form-control" id="pedidoMontoPago"
+                                style="padding-left:24px;font-family:var(--font-heading);font-weight:700;font-size:var(--text-lg);"
+                                placeholder="0.00" min="0.01" step="0.01" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Fecha de pago</label>
+                        <input type="date" class="form-control" id="pedidoFechaPago" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Método de pago</label>
+                        <div class="method-toggle">
+                            <button type="button" class="method-btn active" id="pedidoBtnEfectivo"
+                                onclick="setPedidoMetodo('efectivo')">💵 Efectivo</button>
+                            <button type="button" class="method-btn" id="pedidoBtnTarjeta"
+                                onclick="setPedidoMetodo('tarjeta')">💳 Tarjeta</button>
+                        </div>
+                        <input type="hidden" id="pedidoMetodo" value="efectivo" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Tipo de pago</label>
+                        <div class="payment-type-toggle">
+                            <button type="button" class="payment-type-btn active total" id="pedidoBtnTotal"
+                                onclick="setPedidoTipo('total')">✅ Pago total</button>
+                            <button type="button" class="payment-type-btn parcial" id="pedidoBtnParcial"
+                                onclick="setPedidoTipo('parcial')">⚡ Pago parcial</button>
+                        </div>
+                        <input type="hidden" id="pedidoTipoPago" value="total" />
+                    </div>
+                </div>
+
+                <div id="pagoPedidoError" style="display:none;margin-top:var(--space-3);padding:var(--space-3) var(--space-4);
+                  background:#FFEBEE;border-radius:var(--radius-md);font-size:var(--text-sm);
+                  color:var(--color-error);"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModalPagoPedido()">Cancelar</button>
+                <button class="btn btn-primary" id="btnGuardarPagoPedido" onclick="guardarPagoPedido()">
+                    Registrar pago
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal confirmar eliminar pedido -->
+    <div class="modal-overlay" id="modalDelPedido">
+        <div class="modal" style="max-width:400px;">
+            <div class="modal-header">
+                <h3 class="modal-title" style="color:var(--color-error);">⚠️ Eliminar pedido</h3>
+                <button class="modal-close"
+                    onclick="document.getElementById('modalDelPedido').classList.remove('active')">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:1.7;">
+                    ¿Eliminar este pedido y todos sus pagos? Esta acción no se puede deshacer.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    onclick="document.getElementById('modalDelPedido').classList.remove('active')">
+                    Cancelar
+                </button>
+                <button class="btn btn-danger" id="btnConfirmDelPedido" onclick="confirmarEliminarPedido()">
+                    Sí, eliminar pedido
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="toast-container" id="toastContainer"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -761,6 +1307,18 @@
             { key: 'material_escolar', label: 'Material Escolar', icon: '📦' },
             { key: 'libros', label: 'Libros', icon: '📚' },
             { key: 'manuales', label: 'Manuales', icon: '📒' },
+            { key: 'uniforme', label: 'Uniforme', icon: '👕', tipo: 'pedido' },
+            { key: 'bata', label: 'Bata', icon: '🥼', tipo: 'pedido' },
+        ];
+
+        const PIEZAS_UNIFORME = [
+            { key: 'uniforme_jumper', label: 'Jumper', icon: '👗' },
+            { key: 'uniforme_pantalon', label: 'Pantalón', icon: '👖' },
+            { key: 'uniforme_sueter', label: 'Suéter', icon: '🧥' },
+            { key: 'uniforme_playera_polo', label: 'Playera Polo', icon: '👔' },
+            { key: 'uniforme_pants', label: 'Pants', icon: '🩳' },
+            { key: 'uniforme_chamarra', label: 'Chamarra del Pants', icon: '🧤' },
+            { key: 'uniforme_playera_deportiva', label: 'Playera Deportiva', icon: '👕' },
         ];
 
         const GRADE_META = {
@@ -777,11 +1335,16 @@
         let currentStudent = null;
         let precios = {};       // precios[concepto] = { nuevo_ingreso, reinscripcion }
         let pagosData = {};       // pagosData[concepto] = { pago, movimientos[] }
+        let pedidosUniforme = [];       // Array de pedidos con sus movimientos
+        let pedidosBata = [];
         let activeConcepto = null;
         let pendingDelMovId = null;
         let editingMovId = null;
         let currentMetodo = 'efectivo';
         let currentTipoPago = 'total';
+        let pendingDelPedidoId = null;
+        let pendingDelPedidoTipo = null;
+        let currentPieceCounts = {};   // { pieza_key: cantidad }
 
         /* ════════════════════════════════════════════════════════════
            HELPERS
@@ -873,7 +1436,7 @@
             document.getElementById('mainPanel').style.display = 'block';
 
             // Cargar precios y pagos
-            await Promise.all([loadPrecios(), loadPagos()]);
+            await Promise.all([loadPrecios(), loadPagos(), loadPedidos()]);
             buildConceptTabs();
             switchConcepto(activeConcepto || getFirstConcepto());
         }
@@ -898,8 +1461,41 @@
         }
 
         /* ════════════════════════════════════════════════════════════
-           CARGAR PAGOS DEL ALUMNO
+           CARGAR PEDIDOS (UNIFORME Y BATA)
            ════════════════════════════════════════════════════════════ */
+        async function loadPedidos() {
+            pedidosUniforme = [];
+            pedidosBata = [];
+            try {
+                // Uniforme
+                const { data: pu } = await db.from('pedidos_uniforme')
+                    .select('*').eq('alumno_id', currentStudent.id).order('created_at');
+                const puIds = (pu || []).map(p => p.id);
+                let movU = [];
+                if (puIds.length) {
+                    const { data } = await db.from('movimientos_uniforme')
+                        .select('*').in('pedido_id', puIds).order('fecha_pago');
+                    movU = data || [];
+                }
+                pedidosUniforme = (pu || []).map(p => ({
+                    ...p, movimientos: movU.filter(m => m.pedido_id === p.id)
+                }));
+
+                // Bata
+                const { data: pb } = await db.from('pedidos_bata')
+                    .select('*').eq('alumno_id', currentStudent.id).order('created_at');
+                const pbIds = (pb || []).map(p => p.id);
+                let movB = [];
+                if (pbIds.length) {
+                    const { data } = await db.from('movimientos_bata')
+                        .select('*').in('pedido_id', pbIds).order('fecha_pago');
+                    movB = data || [];
+                }
+                pedidosBata = (pb || []).map(p => ({
+                    ...p, movimientos: movB.filter(m => m.pedido_id === p.id)
+                }));
+            } catch (e) { console.warn('Sin pedidos:', e.message); }
+        }
         async function loadPagos() {
             pagosData = {};
             try {
@@ -954,16 +1550,22 @@
             panelsEl.innerHTML = '';
 
             conceptos.forEach(c => {
-                const data = pagosData[c.key];
-                const estado = data?.pago?.estado || 'pendiente';
+                let estado = 'pendiente';
+                if (c.tipo === 'pedido') {
+                    const lista = c.key === 'uniforme' ? pedidosUniforme : pedidosBata;
+                    if (lista.length > 0) {
+                        const allLiquidados = lista.every(p => p.estado === 'liquidado');
+                        estado = allLiquidados ? 'liquidado' : 'parcial';
+                    }
+                } else {
+                    estado = pagosData[c.key]?.pago?.estado || 'pendiente';
+                }
 
                 // Tab
                 const tab = document.createElement('button');
                 tab.className = 'concept-tab';
                 tab.dataset.concepto = c.key;
-                tab.innerHTML = `
-      <span class="tab-status ${estado}"></span>
-      ${c.icon} ${c.label}`;
+                tab.innerHTML = `<span class="tab-status ${estado}"></span>${c.icon} ${c.label}`;
                 tab.addEventListener('click', () => switchConcepto(c.key));
                 tabsEl.appendChild(tab);
 
@@ -978,7 +1580,6 @@
 
         function switchConcepto(key) {
             activeConcepto = key;
-
             document.querySelectorAll('.concept-tab').forEach(t => {
                 t.classList.toggle('active', t.dataset.concepto === key);
             });
@@ -986,7 +1587,13 @@
                 p.classList.toggle('active', p.dataset.concepto === key);
             });
 
-            renderConceptoPanel(key);
+            const config = CONCEPTOS_CONFIG.find(c => c.key === key);
+            if (config?.tipo === 'pedido') {
+                if (key === 'uniforme') renderUniformePanel();
+                else if (key === 'bata') renderBataPanel();
+            } else {
+                renderConceptoPanel(key);
+            }
         }
 
         /* ════════════════════════════════════════════════════════════
@@ -1379,26 +1986,39 @@
         }
 
         async function confirmarEliminarMov() {
-            if (!pendingDelMovId) return;
+            if (!pendingDelMovId && !pendingDelMovPedido) return;
             const btn = document.getElementById('btnConfirmDelMov');
             btn.disabled = true; btn.textContent = 'Eliminando…';
 
             try {
-                // Encontrar concepto del movimiento
-                let concepto = null, pagoId = null;
-                for (const [key, data] of Object.entries(pagosData)) {
-                    const mov = data.movimientos.find(m => m.id === pendingDelMovId);
-                    if (mov) { concepto = key; pagoId = data.pago.id; break; }
+                // Es un movimiento de pedido (uniforme/bata)
+                if (pendingDelMovPedido) {
+                    const { movId, tipo, pedidoId } = pendingDelMovPedido;
+                    const movTable = tipo === 'uniforme' ? 'movimientos_uniforme' : 'movimientos_bata';
+                    const pedTable = tipo === 'uniforme' ? 'pedidos_uniforme' : 'pedidos_bata';
+                    const { error } = await db.from(movTable).delete().eq('id', movId);
+                    if (error) throw error;
+                    await recalcularEstadoPedido(pedTable, pedidoId);
+                    await loadPedidos();
+                    buildConceptTabs();
+                    switchConcepto(tipo);
+                    pendingDelMovPedido = null;
+                } else {
+                    // Movimiento de concepto simple
+                    let concepto = null, pagoId = null;
+                    for (const [key, data] of Object.entries(pagosData)) {
+                        const mov = data.movimientos.find(m => m.id === pendingDelMovId);
+                        if (mov) { concepto = key; pagoId = data.pago.id; break; }
+                    }
+                    const { error } = await db.from('movimientos_pago').delete().eq('id', pendingDelMovId);
+                    if (error) throw error;
+                    if (pagoId) await recalcularEstadoPago(pagoId, concepto);
+                    await loadPagos();
+                    buildConceptTabs();
+                    switchConcepto(concepto || activeConcepto);
+                    pendingDelMovId = null;
                 }
 
-                const { error } = await db.from('movimientos_pago').delete().eq('id', pendingDelMovId);
-                if (error) throw error;
-
-                if (pagoId) await recalcularEstadoPago(pagoId, concepto);
-
-                await loadPagos();
-                buildConceptTabs();
-                switchConcepto(concepto || activeConcepto);
                 closeDelMov();
                 showToast('🗑️ Pago eliminado', 'success');
             } catch (err) {
@@ -1409,8 +2029,651 @@
         }
 
         /* ════════════════════════════════════════════════════════════
-           SELECTOR DE ALUMNO — EVENTO
+           RENDER PANEL UNIFORME
            ════════════════════════════════════════════════════════════ */
+        function renderUniformePanel() {
+            const panel = document.getElementById('panel-uniforme');
+            const totalPedidos = pedidosUniforme.length;
+            const totalPagado = pedidosUniforme.reduce((s, p) => s + (p.movimientos || []).reduce((a, m) => a + parseFloat(m.monto), 0), 0);
+            const totalMonto = pedidosUniforme.reduce((s, p) => s + parseFloat(p.monto_total || 0), 0);
+            const liquidados = pedidosUniforme.filter(p => p.estado === 'liquidado').length;
+
+            panel.innerHTML = `
+    <!-- Resumen global -->
+    <div class="concept-summary" style="margin-bottom:var(--space-6);">
+      <div class="summary-card">
+        <div class="summary-card__label">📦 Pedidos totales</div>
+        <div class="summary-card__value">${totalPedidos}</div>
+        <div class="summary-card__sub">${liquidados} liquidado(s)</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card__label">💰 Monto total</div>
+        <div class="summary-card__value ${totalMonto > 0 ? '' : 'muted'}">${fmtMoney(totalMonto)}</div>
+        <div class="summary-card__sub">Suma de todos los pedidos</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card__label">✅ Total cobrado</div>
+        <div class="summary-card__value ${totalPagado > 0 ? 'success' : 'muted'}">${fmtMoney(totalPagado)}</div>
+        <div class="summary-card__sub">Saldo: ${fmtMoney(Math.max(0, totalMonto - totalPagado))}</div>
+      </div>
+    </div>
+
+    <div class="pedidos-header">
+      <h3 style="font-family:var(--font-heading);font-size:var(--text-lg);font-weight:700;">
+        Pedidos de Uniforme
+      </h3>
+      <button class="btn btn-primary" onclick="abrirNuevoPedidoUniforme()">
+        ＋ Nuevo pedido
+      </button>
+    </div>
+
+    ${totalPedidos === 0
+                    ? `<div class="panel-empty">
+           <div style="font-size:2.5rem;margin-bottom:var(--space-3);">👕</div>
+           <div style="font-family:var(--font-heading);font-size:var(--text-lg);font-weight:700;
+                       color:var(--color-text-secondary);">Sin pedidos de uniforme</div>
+           <div style="font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-2);">
+             Haz clic en "Nuevo pedido" para crear el primero.
+           </div>
+         </div>`
+                    : `<div class="pedidos-grid">${pedidosUniforme.map(renderPedidoUniforme).join('')}</div>`
+                }`;
+        }
+
+        function renderPedidoUniforme(pedido) {
+            const piezas = pedido.piezas || {};
+            const movs = pedido.movimientos || [];
+            const pagado = movs.reduce((s, m) => s + parseFloat(m.monto), 0);
+            const saldo = parseFloat(pedido.monto_total) - pagado;
+            const estado = pedido.estado || 'pendiente';
+            const usaPaquete = pedido.precio_paquete != null;
+
+            const piezasHtml = PIEZAS_UNIFORME
+                .filter(p => (piezas[p.key] || 0) > 0)
+                .map(p => {
+                    const qty = piezas[p.key];
+                    const price = parseFloat(precios[p.key]?.nuevo_ingreso || 0);
+                    return `<div class="pedido-piece-row">
+        <span class="pedido-piece-row__name">${p.icon} ${p.label} ×${qty}</span>
+        <span class="pedido-piece-row__price">${fmtMoney(price * qty)}</span>
+      </div>`;
+                }).join('');
+
+            const estadoBadge = estado === 'liquidado'
+                ? '<span class="badge badge-liquidado">✅ Liquidado</span>'
+                : estado === 'parcial'
+                    ? '<span class="badge badge-pago-parcial">⚡ Parcial</span>'
+                    : '<span class="badge badge-pendiente">⏳ Pendiente</span>';
+
+            const historial = movs.length > 0
+                ? movs.map(m => `
+        <div style="display:flex;justify-content:space-between;align-items:center;
+                    padding:var(--space-3) var(--space-5);border-bottom:1px solid var(--color-border);
+                    font-size:var(--text-sm);">
+          <div>
+            <div style="font-weight:600;">${fmt(m.fecha_pago)}</div>
+            <div style="font-size:.7rem;color:var(--color-text-muted);">
+              ${m.metodo === 'efectivo' ? '💵 Efectivo' : '💳 Tarjeta'} ·
+              <span class="badge ${m.es_total ? 'badge-pago-total' : 'badge-pago-parcial'}">
+                ${m.es_total ? 'Total' : 'Parcial'}
+              </span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--space-2);">
+            <span style="font-family:var(--font-heading);font-weight:800;">${fmtMoney(m.monto)}</span>
+            <button class="icon-btn icon-btn-edit"
+                    onclick="editarMovPedido('${m.id}','uniforme','${pedido.id}')" title="Editar">✏️</button>
+            <button class="icon-btn icon-btn-del"
+                    onclick="pedirDelMovPedido('${m.id}','uniforme','${pedido.id}')" title="Eliminar">🗑️</button>
+          </div>
+        </div>`).join('')
+                : `<div style="padding:var(--space-4) var(--space-5);text-align:center;
+                   font-size:var(--text-xs);color:var(--color-text-muted);">
+         Sin pagos registrados
+       </div>`;
+
+            return `
+    <div class="pedido-card" id="pedidoU-${pedido.id}">
+      <div class="pedido-card__header">
+        <div>
+          <div class="pedido-card__num">Pedido #${pedido.numero_pedido}</div>
+          <div class="pedido-card__date">${fmt(pedido.created_at?.split('T')[0])}</div>
+        </div>
+        <div style="display:flex;gap:var(--space-2);align-items:center;">
+          ${estadoBadge}
+          <button class="icon-btn icon-btn-del"
+                  onclick="pedirEliminarPedido('${pedido.id}','uniforme')" title="Eliminar pedido">🗑️</button>
+        </div>
+      </div>
+      <div class="pedido-card__body">
+        <div class="pedido-card__pieces">
+          ${piezasHtml || '<span style="font-size:var(--text-xs);color:var(--color-text-muted);">Sin piezas registradas</span>'}
+        </div>
+        ${usaPaquete
+                    ? `<div style="font-size:var(--text-xs);color:var(--color-text-muted);
+                         margin-bottom:var(--space-3);">
+               ✏️ Precio paquete aplicado
+             </div>`
+                    : ''}
+        <div class="pedido-card__total">
+          <span class="pedido-card__total-label">Total del pedido</span>
+          <span class="pedido-card__total-value">${fmtMoney(pedido.monto_total)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);
+                    color:var(--color-text-muted);margin-bottom:var(--space-3);">
+          <span>Pagado: <strong style="color:var(--color-success);">${fmtMoney(pagado)}</strong></span>
+          <span>Saldo: <strong style="color:${saldo > 0 ? 'var(--color-warning)' : 'var(--color-success)'};">${fmtMoney(Math.max(0, saldo))}</strong></span>
+        </div>
+      </div>
+      <div class="pedido-card__footer">
+        <button class="btn btn-primary btn-sm btn-full"
+                onclick="abrirPagoPedido('uniforme','${pedido.id}')">
+          ＋ Registrar pago
+        </button>
+      </div>
+      <div class="pedido-history">
+        ${historial}
+      </div>
+    </div>`;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           RENDER PANEL BATA
+           ════════════════════════════════════════════════════════════ */
+        function renderBataPanel() {
+            const panel = document.getElementById('panel-bata');
+            const totalPedidos = pedidosBata.length;
+            const totalPagado = pedidosBata.reduce((s, p) => s + (p.movimientos || []).reduce((a, m) => a + parseFloat(m.monto), 0), 0);
+            const totalMonto = pedidosBata.reduce((s, p) => s + parseFloat(p.monto_total || 0), 0);
+            const liquidados = pedidosBata.filter(p => p.estado === 'liquidado').length;
+
+            panel.innerHTML = `
+    <div class="concept-summary" style="margin-bottom:var(--space-6);">
+      <div class="summary-card">
+        <div class="summary-card__label">📦 Pedidos totales</div>
+        <div class="summary-card__value">${totalPedidos}</div>
+        <div class="summary-card__sub">${liquidados} liquidado(s)</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card__label">💰 Monto total</div>
+        <div class="summary-card__value ${totalMonto > 0 ? '' : 'muted'}">${fmtMoney(totalMonto)}</div>
+        <div class="summary-card__sub">Suma de todos los pedidos</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card__label">✅ Total cobrado</div>
+        <div class="summary-card__value ${totalPagado > 0 ? 'success' : 'muted'}">${fmtMoney(totalPagado)}</div>
+        <div class="summary-card__sub">Saldo: ${fmtMoney(Math.max(0, totalMonto - totalPagado))}</div>
+      </div>
+    </div>
+
+    <div class="pedidos-header">
+      <h3 style="font-family:var(--font-heading);font-size:var(--text-lg);font-weight:700;">
+        Pedidos de Bata
+      </h3>
+      <button class="btn btn-primary" onclick="abrirNuevoPedidoBata()">
+        ＋ Nuevo pedido
+      </button>
+    </div>
+
+    ${totalPedidos === 0
+                    ? `<div class="panel-empty">
+           <div style="font-size:2.5rem;margin-bottom:var(--space-3);">🥼</div>
+           <div style="font-family:var(--font-heading);font-size:var(--text-lg);font-weight:700;
+                       color:var(--color-text-secondary);">Sin pedidos de bata</div>
+           <div style="font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-2);">
+             Haz clic en "Nuevo pedido" para crear el primero.
+           </div>
+         </div>`
+                    : `<div class="pedidos-grid">${pedidosBata.map(renderPedidoBata).join('')}</div>`
+                }`;
+        }
+
+        function renderPedidoBata(pedido) {
+            const movs = pedido.movimientos || [];
+            const pagado = movs.reduce((s, m) => s + parseFloat(m.monto), 0);
+            const saldo = parseFloat(pedido.monto_total) - pagado;
+            const estado = pedido.estado || 'pendiente';
+
+            const TALLA_ICON = { Chica: '🔹', Mediana: '🔷', Grande: '🔵' };
+
+            const estadoBadge = estado === 'liquidado'
+                ? '<span class="badge badge-liquidado">✅ Liquidado</span>'
+                : estado === 'parcial'
+                    ? '<span class="badge badge-pago-parcial">⚡ Parcial</span>'
+                    : '<span class="badge badge-pendiente">⏳ Pendiente</span>';
+
+            const historial = movs.length > 0
+                ? movs.map(m => `
+        <div style="display:flex;justify-content:space-between;align-items:center;
+                    padding:var(--space-3) var(--space-5);border-bottom:1px solid var(--color-border);
+                    font-size:var(--text-sm);">
+          <div>
+            <div style="font-weight:600;">${fmt(m.fecha_pago)}</div>
+            <div style="font-size:.7rem;color:var(--color-text-muted);">
+              ${m.metodo === 'efectivo' ? '💵 Efectivo' : '💳 Tarjeta'} ·
+              <span class="badge ${m.es_total ? 'badge-pago-total' : 'badge-pago-parcial'}">
+                ${m.es_total ? 'Total' : 'Parcial'}
+              </span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--space-2);">
+            <span style="font-family:var(--font-heading);font-weight:800;">${fmtMoney(m.monto)}</span>
+            <button class="icon-btn icon-btn-edit"
+                    onclick="editarMovPedido('${m.id}','bata','${pedido.id}')" title="Editar">✏️</button>
+            <button class="icon-btn icon-btn-del"
+                    onclick="pedirDelMovPedido('${m.id}','bata','${pedido.id}')" title="Eliminar">🗑️</button>
+          </div>
+        </div>`).join('')
+                : `<div style="padding:var(--space-4) var(--space-5);text-align:center;
+                   font-size:var(--text-xs);color:var(--color-text-muted);">
+         Sin pagos registrados
+       </div>`;
+
+            return `
+    <div class="pedido-card" id="pedidoB-${pedido.id}">
+      <div class="pedido-card__header">
+        <div>
+          <div class="pedido-card__num">Pedido #${pedido.numero_pedido}</div>
+          <div class="pedido-card__date">${fmt(pedido.created_at?.split('T')[0])}</div>
+        </div>
+        <div style="display:flex;gap:var(--space-2);align-items:center;">
+          ${estadoBadge}
+          <button class="icon-btn icon-btn-del"
+                  onclick="pedirEliminarPedido('${pedido.id}','bata')" title="Eliminar pedido">🗑️</button>
+        </div>
+      </div>
+      <div class="pedido-card__body">
+        <div class="pedido-card__pieces">
+          <div class="pedido-piece-row">
+            <span class="pedido-piece-row__name">
+              ${TALLA_ICON[pedido.talla] || '🥼'} Bata talla ${pedido.talla}
+            </span>
+            <span class="pedido-piece-row__price">${fmtMoney(pedido.monto_total)}</span>
+          </div>
+        </div>
+        <div class="pedido-card__total">
+          <span class="pedido-card__total-label">Total del pedido</span>
+          <span class="pedido-card__total-value">${fmtMoney(pedido.monto_total)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);
+                    color:var(--color-text-muted);margin-bottom:var(--space-3);">
+          <span>Pagado: <strong style="color:var(--color-success);">${fmtMoney(pagado)}</strong></span>
+          <span>Saldo: <strong style="color:${saldo > 0 ? 'var(--color-warning)' : 'var(--color-success)'};">${fmtMoney(Math.max(0, saldo))}</strong></span>
+        </div>
+      </div>
+      <div class="pedido-card__footer">
+        <button class="btn btn-primary btn-sm btn-full"
+                onclick="abrirPagoPedido('bata','${pedido.id}')">
+          ＋ Registrar pago
+        </button>
+      </div>
+      <div class="pedido-history">
+        ${historial}
+      </div>
+    </div>`;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           MODAL NUEVO PEDIDO UNIFORME
+           ════════════════════════════════════════════════════════════ */
+        function abrirNuevoPedidoUniforme() {
+            currentPieceCounts = {};
+            PIEZAS_UNIFORME.forEach(p => { currentPieceCounts[p.key] = 0; });
+
+            // Llenar grid de piezas
+            const grid = document.getElementById('pieceCounterGrid');
+            grid.innerHTML = PIEZAS_UNIFORME.map(p => {
+                const precio = parseFloat(precios[p.key]?.nuevo_ingreso || 0);
+                return `
+      <div class="piece-counter-row" id="counterRow-${p.key}">
+        <div>
+          <div class="piece-counter-row__name">${p.icon} ${p.label}</div>
+          <div class="piece-counter-row__price">${fmtMoney(precio)} c/u</div>
+        </div>
+        <span style="flex:1;"></span>
+        <button class="counter-btn" onclick="changePiece('${p.key}', -1)" disabled id="dec-${p.key}">−</button>
+        <span class="counter-value" id="qty-${p.key}">0</span>
+        <button class="counter-btn" onclick="changePiece('${p.key}', 1)" id="inc-${p.key}">＋</button>
+      </div>`;
+            }).join('');
+
+            document.getElementById('togglePrecioPaquete').checked = false;
+            document.getElementById('precioPaqueteInput').style.display = 'none';
+            document.getElementById('precioPaqueteSection').classList.remove('active');
+            document.getElementById('precioPaqueteValue').value = '';
+            document.getElementById('uniformePedidoError').style.display = 'none';
+            updateUniformeTotal();
+            document.getElementById('modalNuevoPedidoUniforme').classList.add('active');
+        }
+
+        function changePiece(key, delta) {
+            currentPieceCounts[key] = Math.max(0, (currentPieceCounts[key] || 0) + delta);
+            const qty = currentPieceCounts[key];
+            document.getElementById(`qty-${key}`).textContent = qty;
+            document.getElementById(`dec-${key}`).disabled = qty === 0;
+            const row = document.getElementById(`counterRow-${key}`);
+            row.classList.toggle('has-items', qty > 0);
+            updateUniformeTotal();
+        }
+
+        function updateUniformeTotal() {
+            const usaPaquete = document.getElementById('togglePrecioPaquete').checked;
+            let total = 0;
+
+            if (usaPaquete) {
+                total = parseFloat(document.getElementById('precioPaqueteValue').value) || 0;
+            } else {
+                PIEZAS_UNIFORME.forEach(p => {
+                    const qty = currentPieceCounts[p.key] || 0;
+                    const price = parseFloat(precios[p.key]?.nuevo_ingreso || 0);
+                    total += qty * price;
+                });
+            }
+
+            document.getElementById('uniformeTotalValue').textContent = fmtMoney(total);
+        }
+
+        function onTogglePrecioPaquete() {
+            const checked = document.getElementById('togglePrecioPaquete').checked;
+            document.getElementById('precioPaqueteInput').style.display = checked ? 'block' : 'none';
+            document.getElementById('precioPaqueteSection').classList.toggle('active', checked);
+            updateUniformeTotal();
+        }
+
+        async function guardarPedidoUniforme() {
+            const errEl = document.getElementById('uniformePedidoError');
+            errEl.style.display = 'none';
+
+            const totalPiezas = PIEZAS_UNIFORME.reduce((s, p) => {
+                return s + (currentPieceCounts[p.key] || 0) * parseFloat(precios[p.key]?.nuevo_ingreso || 0);
+            }, 0);
+
+            const totalItems = Object.values(currentPieceCounts).reduce((s, v) => s + v, 0);
+            const usaPaquete = document.getElementById('togglePrecioPaquete').checked;
+            const paqueteVal = parseFloat(document.getElementById('precioPaqueteValue').value) || 0;
+
+            if (totalItems === 0) {
+                errEl.textContent = 'Agrega al menos una pieza al pedido.';
+                errEl.style.display = 'block';
+                return;
+            }
+            if (usaPaquete && paqueteVal <= 0) {
+                errEl.textContent = 'Ingresa un precio paquete válido.';
+                errEl.style.display = 'block';
+                return;
+            }
+
+            const montoTotal = usaPaquete ? paqueteVal : totalPiezas;
+            const btn = document.getElementById('btnGuardarPedidoUniforme');
+            btn.disabled = true; btn.textContent = 'Guardando…';
+
+            try {
+                const { error } = await db.from('pedidos_uniforme').insert({
+                    alumno_id: currentStudent.id,
+                    piezas: currentPieceCounts,
+                    total_piezas: totalPiezas,
+                    precio_paquete: usaPaquete ? paqueteVal : null,
+                    monto_total: montoTotal,
+                    estado: 'pendiente',
+                });
+                if (error) throw error;
+
+                document.getElementById('modalNuevoPedidoUniforme').classList.remove('active');
+                await loadPedidos();
+                buildConceptTabs();
+                switchConcepto('uniforme');
+                showToast('✅ Pedido de uniforme guardado', 'success');
+            } catch (err) {
+                errEl.textContent = 'Error: ' + err.message;
+                errEl.style.display = 'block';
+            } finally {
+                btn.disabled = false; btn.textContent = '💾 Guardar pedido';
+            }
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           MODAL NUEVO PEDIDO BATA
+           ════════════════════════════════════════════════════════════ */
+        function abrirNuevoPedidoBata() {
+            document.querySelectorAll('input[name="bataSize"]').forEach(r => r.checked = false);
+
+            ['Chica', 'Mediana', 'Grande'].forEach(t => {
+                const key = `bata_${t.toLowerCase()}`;
+                const precio = parseFloat(precios[key]?.nuevo_ingreso || 0);
+                const el = document.getElementById(`bataPrecio${t}`);
+                if (el) el.textContent = fmtMoney(precio);
+            });
+
+            document.getElementById('bataTotalValue').textContent = 'Selecciona una talla';
+            document.getElementById('bataTotalDisplay').style.background = 'var(--color-text-muted)';
+            document.getElementById('bataPedidoError').style.display = 'none';
+
+            // Actualizar total al cambiar talla
+            document.querySelectorAll('input[name="bataSize"]').forEach(r => {
+                r.addEventListener('change', () => {
+                    const key = `bata_${r.value.toLowerCase()}`;
+                    const price = parseFloat(precios[key]?.nuevo_ingreso || 0);
+                    document.getElementById('bataTotalValue').textContent = fmtMoney(price);
+                    document.getElementById('bataTotalDisplay').style.background = 'var(--color-primary)';
+                });
+            });
+
+            document.getElementById('modalNuevoPedidoBata').classList.add('active');
+        }
+
+        async function guardarPedidoBata() {
+            const errEl = document.getElementById('bataPedidoError');
+            errEl.style.display = 'none';
+
+            const talla = document.querySelector('input[name="bataSize"]:checked')?.value;
+            if (!talla) {
+                errEl.textContent = 'Selecciona una talla.';
+                errEl.style.display = 'block';
+                return;
+            }
+
+            const key = `bata_${talla.toLowerCase()}`;
+            const monto = parseFloat(precios[key]?.nuevo_ingreso || 0);
+            const btn = document.getElementById('btnGuardarPedidoBata');
+            btn.disabled = true; btn.textContent = 'Guardando…';
+
+            try {
+                const { error } = await db.from('pedidos_bata').insert({
+                    alumno_id: currentStudent.id,
+                    talla,
+                    monto_total: monto,
+                    estado: 'pendiente',
+                });
+                if (error) throw error;
+
+                document.getElementById('modalNuevoPedidoBata').classList.remove('active');
+                await loadPedidos();
+                buildConceptTabs();
+                switchConcepto('bata');
+                showToast('✅ Pedido de bata guardado', 'success');
+            } catch (err) {
+                errEl.textContent = 'Error: ' + err.message;
+                errEl.style.display = 'block';
+            } finally {
+                btn.disabled = false; btn.textContent = '💾 Guardar pedido';
+            }
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           MODAL PAGO DE PEDIDO
+           ════════════════════════════════════════════════════════════ */
+        function abrirPagoPedido(tipo, pedidoId, movId = null) {
+            const lista = tipo === 'uniforme' ? pedidosUniforme : pedidosBata;
+            const pedido = lista.find(p => p.id === pedidoId);
+            if (!pedido) return;
+
+            const movs = pedido.movimientos || [];
+            const pagado = movs.reduce((s, m) => s + parseFloat(m.monto), 0);
+            const saldo = parseFloat(pedido.monto_total) - pagado;
+
+            document.getElementById('pedidoTipo').value = tipo;
+            document.getElementById('pedidoId').value = pedidoId;
+            document.getElementById('editPedidoMovId').value = movId || '';
+            document.getElementById('pagoPedidoError').style.display = 'none';
+            document.getElementById('pedidoMontoPago').value = '';
+            document.getElementById('pedidoFechaPago').value = new Date().toISOString().split('T')[0];
+            document.getElementById('modalPagoPedidoTitle').textContent =
+                movId ? 'Editar pago del pedido' : `Registrar pago — Pedido #${pedido.numero_pedido}`;
+
+            const label = tipo === 'uniforme' ? 'Uniforme' : `Bata talla ${pedido.talla}`;
+            document.getElementById('pedidoResumenInfo').innerHTML = `
+    <div style="display:flex;justify-content:space-between;gap:var(--space-4);">
+      <div><div style="font-size:.65rem;color:var(--color-text-muted);text-transform:uppercase;
+                       font-weight:700;letter-spacing:.05em;">Concepto</div>
+           <div style="font-weight:700;">${label} — Pedido #${pedido.numero_pedido}</div></div>
+      <div style="text-align:right;">
+        <div style="font-size:.65rem;color:var(--color-text-muted);text-transform:uppercase;
+                    font-weight:700;letter-spacing:.05em;">Saldo pendiente</div>
+        <div style="font-family:var(--font-heading);font-weight:800;color:var(--color-warning);">
+          ${fmtMoney(Math.max(0, saldo))}
+        </div>
+      </div>
+    </div>`;
+
+            if (movId) {
+                const mov = movs.find(m => m.id === movId);
+                if (mov) {
+                    document.getElementById('pedidoMontoPago').value = parseFloat(mov.monto).toFixed(2);
+                    document.getElementById('pedidoFechaPago').value = mov.fecha_pago;
+                    setPedidoMetodo(mov.metodo);
+                    setPedidoTipo(mov.es_total ? 'total' : 'parcial');
+                }
+            } else {
+                setPedidoMetodo('efectivo');
+                setPedidoTipo('total');
+            }
+
+            document.getElementById('modalPagoPedido').classList.add('active');
+        }
+
+        function closeModalPagoPedido() {
+            document.getElementById('modalPagoPedido').classList.remove('active');
+        }
+
+        function setPedidoMetodo(m) {
+            document.getElementById('pedidoMetodo').value = m;
+            document.getElementById('pedidoBtnEfectivo').classList.toggle('active', m === 'efectivo');
+            document.getElementById('pedidoBtnTarjeta').classList.toggle('active', m === 'tarjeta');
+        }
+
+        function setPedidoTipo(t) {
+            document.getElementById('pedidoTipoPago').value = t;
+            document.getElementById('pedidoBtnTotal').className = `payment-type-btn total ${t === 'total' ? 'active' : ''}`;
+            document.getElementById('pedidoBtnParcial').className = `payment-type-btn parcial ${t === 'parcial' ? 'active' : ''}`;
+        }
+
+        async function guardarPagoPedido() {
+            const errEl = document.getElementById('pagoPedidoError');
+            errEl.style.display = 'none';
+
+            const tipo = document.getElementById('pedidoTipo').value;
+            const pedidoId = document.getElementById('pedidoId').value;
+            const movId = document.getElementById('editPedidoMovId').value;
+            const monto = parseFloat(document.getElementById('pedidoMontoPago').value);
+            const fecha = document.getElementById('pedidoFechaPago').value;
+            const metodo = document.getElementById('pedidoMetodo').value;
+            const esTotal = document.getElementById('pedidoTipoPago').value === 'total';
+
+            if (!monto || monto <= 0) { errEl.textContent = 'Ingresa un monto válido.'; errEl.style.display = 'block'; return; }
+            if (!fecha) { errEl.textContent = 'La fecha es obligatoria.'; errEl.style.display = 'block'; return; }
+
+            const btn = document.getElementById('btnGuardarPagoPedido');
+            btn.disabled = true; btn.textContent = 'Guardando…';
+
+            const movTable = tipo === 'uniforme' ? 'movimientos_uniforme' : 'movimientos_bata';
+            const pedTable = tipo === 'uniforme' ? 'pedidos_uniforme' : 'pedidos_bata';
+            const pedFK = tipo === 'uniforme' ? 'pedido_id' : 'pedido_id';
+
+            try {
+                if (movId) {
+                    const { error } = await db.from(movTable)
+                        .update({ monto, fecha_pago: fecha, metodo, es_total: esTotal })
+                        .eq('id', movId);
+                    if (error) throw error;
+                } else {
+                    const { error } = await db.from(movTable).insert({
+                        [pedFK]: pedidoId, monto, fecha_pago: fecha, metodo, es_total: esTotal,
+                    });
+                    if (error) throw error;
+                }
+
+                // Recalcular estado del pedido
+                await recalcularEstadoPedido(pedTable, pedidoId);
+
+                await loadPedidos();
+                buildConceptTabs();
+                switchConcepto(tipo);
+                closeModalPagoPedido();
+                showToast('✅ Pago registrado correctamente', 'success');
+            } catch (err) {
+                errEl.textContent = 'Error: ' + err.message;
+                errEl.style.display = 'block';
+            } finally {
+                btn.disabled = false; btn.textContent = 'Registrar pago';
+            }
+        }
+
+        async function recalcularEstadoPedido(pedTable, pedidoId) {
+            const movTable = pedTable === 'pedidos_uniforme' ? 'movimientos_uniforme' : 'movimientos_bata';
+            const { data: movs } = await db.from(movTable).select('monto,es_total').eq('pedido_id', pedidoId);
+            const { data: pedido } = await db.from(pedTable).select('monto_total').eq('id', pedidoId).single();
+
+            const total = (movs || []).reduce((s, m) => s + parseFloat(m.monto), 0);
+            const hayTotal = (movs || []).some(m => m.es_total);
+            const ref = parseFloat(pedido?.monto_total || 0);
+            let estado = 'pendiente';
+            if (hayTotal || (ref > 0 && total >= ref)) estado = 'liquidado';
+            else if (total > 0) estado = 'parcial';
+
+            await db.from(pedTable).update({ estado }).eq('id', pedidoId);
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           EDITAR / ELIMINAR MOVIMIENTO DE PEDIDO
+           ════════════════════════════════════════════════════════════ */
+        function editarMovPedido(movId, tipo, pedidoId) {
+            abrirPagoPedido(tipo, pedidoId, movId);
+        }
+
+        let pendingDelMovPedido = null;
+        function pedirDelMovPedido(movId, tipo, pedidoId) {
+            pendingDelMovPedido = { movId, tipo, pedidoId };
+            document.getElementById('modalDelMov').classList.add('active');
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           ELIMINAR PEDIDO COMPLETO
+           ════════════════════════════════════════════════════════════ */
+        function pedirEliminarPedido(pedidoId, tipo) {
+            pendingDelPedidoId = pedidoId;
+            pendingDelPedidoTipo = tipo;
+            document.getElementById('modalDelPedido').classList.add('active');
+        }
+
+        async function confirmarEliminarPedido() {
+            const btn = document.getElementById('btnConfirmDelPedido');
+            btn.disabled = true; btn.textContent = 'Eliminando…';
+            const pedTable = pendingDelPedidoTipo === 'uniforme' ? 'pedidos_uniforme' : 'pedidos_bata';
+            try {
+                const { error } = await db.from(pedTable).delete().eq('id', pendingDelPedidoId);
+                if (error) throw error;
+                document.getElementById('modalDelPedido').classList.remove('active');
+                await loadPedidos();
+                buildConceptTabs();
+                switchConcepto(pendingDelPedidoTipo);
+                showToast('🗑️ Pedido eliminado', 'success');
+            } catch (err) {
+                showToast('❌ Error: ' + err.message, 'error');
+            } finally {
+                btn.disabled = false; btn.textContent = 'Sí, eliminar pedido';
+                pendingDelPedidoId = null; pendingDelPedidoTipo = null;
+            }
+        }
         document.getElementById('studentSelect').addEventListener('change', async e => {
             const id = e.target.value;
             if (id) {
