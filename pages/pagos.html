@@ -11,29 +11,92 @@
     <link rel="stylesheet" href="../css/layout.css" />
 
     <style>
-        /* ── Selector de alumno ──────────────────────────────── */
-        .student-selector-bar {
+        /* ── Selector de dos pasos: Grado → Alumno ──────────── */
+        .selector-wrapper {
             background: var(--color-surface);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-lg);
+            margin-bottom: var(--space-6);
+            overflow: hidden;
+        }
+
+        .selector-step {
             padding: var(--space-4) var(--space-6);
             display: flex;
             align-items: center;
             gap: var(--space-4);
-            margin-bottom: var(--space-6);
             flex-wrap: wrap;
         }
 
-        .student-selector-bar__label {
-            font-size: var(--text-sm);
+        .selector-step+.selector-step {
+            border-top: 1px solid var(--color-border);
+            background: var(--color-bg);
+        }
+
+        .selector-step__label {
+            font-size: var(--text-xs);
+            font-weight: var(--font-bold);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--color-text-muted);
+            white-space: nowrap;
+            min-width: 60px;
+        }
+
+        /* Pills de grado */
+        .grade-pills {
+            display: flex;
+            gap: var(--space-2);
+            flex-wrap: wrap;
+        }
+
+        .grade-pill {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-full);
+            border: 2px solid var(--color-border);
+            background: var(--color-surface);
+            font-size: var(--text-xs);
             font-weight: var(--font-bold);
             color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
             white-space: nowrap;
         }
 
-        .student-selector-bar select {
+        .grade-pill .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .grade-pill:hover {
+            border-color: var(--pill-color);
+            color: var(--pill-dark);
+        }
+
+        .grade-pill.active {
+            background: var(--pill-light);
+            border-color: var(--pill-color);
+            color: var(--pill-dark);
+        }
+
+        .grade-pill .cnt {
+            background: rgba(0, 0, 0, .08);
+            border-radius: var(--radius-full);
+            padding: 1px 5px;
+            font-size: 10px;
+        }
+
+        /* Selector de alumno (paso 2) */
+        .student-select-row {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
             flex: 1;
-            min-width: 200px;
+            flex-wrap: wrap;
         }
 
         /* Chip del alumno seleccionado */
@@ -889,16 +952,54 @@
                     </div>
                 </div>
 
-                <!-- Selector de alumno -->
-                <div class="student-selector-bar">
-                    <span class="student-selector-bar__label">Alumno:</span>
-                    <select class="form-control" id="studentSelect" style="max-width:320px;">
-                        <option value="">— Selecciona un alumno —</option>
-                    </select>
-                    <div id="studentChip" style="display:none;"></div>
-                    <a href="alumnos.html" class="btn btn-secondary btn-sm" style="margin-left:auto;">
-                        ← Volver a alumnos
-                    </a>
+                <!-- Selector de dos pasos: Grado → Alumno -->
+                <div class="selector-wrapper">
+
+                    <!-- Paso 1: Filtro por grado -->
+                    <div class="selector-step">
+                        <span class="selector-step__label">Grado</span>
+                        <div class="grade-pills" id="gradePills">
+                            <button class="grade-pill active" data-grade="todos"
+                                style="--pill-color:var(--color-primary);--pill-light:var(--color-primary-light);--pill-dark:var(--color-primary-dark);">
+                                Todos <span class="cnt" id="cnt-todos">0</span>
+                            </button>
+                            <button class="grade-pill" data-grade="Maternal"
+                                style="--pill-color:var(--color-maternal);--pill-light:var(--color-maternal-light);--pill-dark:var(--color-maternal-dark);">
+                                <span class="dot" style="background:var(--color-maternal);"></span>
+                                Maternal <span class="cnt" id="cnt-Maternal">0</span>
+                            </button>
+                            <button class="grade-pill" data-grade="Kinder 1"
+                                style="--pill-color:var(--color-kinder1);--pill-light:var(--color-kinder1-light);--pill-dark:var(--color-kinder1-dark);">
+                                <span class="dot" style="background:var(--color-kinder1);"></span>
+                                Kínder 1 <span class="cnt" id="cnt-Kinder 1">0</span>
+                            </button>
+                            <button class="grade-pill" data-grade="Kinder 2"
+                                style="--pill-color:var(--color-kinder2);--pill-light:var(--color-kinder2-light);--pill-dark:var(--color-kinder2-dark);">
+                                <span class="dot" style="background:var(--color-kinder2);"></span>
+                                Kínder 2 <span class="cnt" id="cnt-Kinder 2">0</span>
+                            </button>
+                            <button class="grade-pill" data-grade="Kinder 3"
+                                style="--pill-color:var(--color-kinder3);--pill-light:var(--color-kinder3-light);--pill-dark:var(--color-kinder3-dark);">
+                                <span class="dot" style="background:var(--color-kinder3);"></span>
+                                Kínder 3 <span class="cnt" id="cnt-Kinder 3">0</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Paso 2: Seleccionar alumno del grado -->
+                    <div class="selector-step">
+                        <span class="selector-step__label">Alumno</span>
+                        <div class="student-select-row">
+                            <select class="form-control" id="studentSelect" style="max-width:340px;">
+                                <option value="">— Selecciona un alumno —</option>
+                            </select>
+                            <div id="studentChip" style="display:none;"></div>
+                        </div>
+                        <a href="alumnos.html" class="btn btn-secondary btn-sm" style="margin-left:auto;">
+                            ← Volver a alumnos
+                        </a>
+                    </div>
+
                 </div>
 
                 <!-- Panel principal (oculto hasta seleccionar alumno) -->
@@ -1375,27 +1476,71 @@
         /* ════════════════════════════════════════════════════════════
            CARGAR ALUMNOS
            ════════════════════════════════════════════════════════════ */
+        let activeGradeFilter = 'todos';
+
         async function loadStudents() {
             try {
                 const { data } = await db.from('alumnos').select('*').eq('activo', true).order('nombre_completo');
                 allStudents = data || [];
             } catch (e) { allStudents = []; }
 
-            const sel = document.getElementById('studentSelect');
-            sel.innerHTML = '<option value="">— Selecciona un alumno —</option>';
-            allStudents.forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s.id;
-                opt.textContent = `${s.nombre_completo}${s.grado ? ' — ' + s.grado : ''}`;
-                sel.appendChild(opt);
+            // Actualizar contadores de las pills
+            const grades = ['Maternal', 'Kinder 1', 'Kinder 2', 'Kinder 3'];
+            document.getElementById('cnt-todos').textContent = allStudents.length;
+            grades.forEach(g => {
+                const el = document.getElementById(`cnt-${g}`);
+                if (el) el.textContent = allStudents.filter(s => s.grado === g).length;
             });
+
+            // Poblar el select con todos los alumnos inicialmente
+            filterStudentsByGrade('todos');
 
             // Si viene ?alumno=ID en la URL, seleccionar automáticamente
             const params = new URLSearchParams(window.location.search);
             const urlAlumnoId = params.get('alumno');
             if (urlAlumnoId) {
-                sel.value = urlAlumnoId;
+                // Detectar grado del alumno y activar el filtro correcto
+                const alumno = allStudents.find(s => s.id === urlAlumnoId);
+                if (alumno?.grado) {
+                    filterStudentsByGrade(alumno.grado);
+                    // Activar la pill correcta
+                    document.querySelectorAll('.grade-pill').forEach(p => {
+                        p.classList.toggle('active', p.dataset.grade === alumno.grado);
+                    });
+                    activeGradeFilter = alumno.grado;
+                }
+                document.getElementById('studentSelect').value = urlAlumnoId;
                 await selectStudent(urlAlumnoId);
+            }
+        }
+
+        function filterStudentsByGrade(grade) {
+            activeGradeFilter = grade;
+            const sel = document.getElementById('studentSelect');
+            const prevValue = sel.value;
+
+            const filtered = grade === 'todos'
+                ? allStudents
+                : allStudents.filter(s => s.grado === grade);
+
+            sel.innerHTML = '<option value="">— Selecciona un alumno —</option>';
+            filtered.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.nombre_completo + (s.grupo ? ' · Gpo. ' + s.grupo : '');
+                sel.appendChild(opt);
+            });
+
+            // Mantener selección si el alumno activo sigue en el filtro
+            if (prevValue && filtered.find(s => s.id === prevValue)) {
+                sel.value = prevValue;
+            } else if (currentStudent && !filtered.find(s => s.id === currentStudent.id)) {
+                // El alumno activo ya no está en el filtro → limpiar
+                currentStudent = null;
+                document.getElementById('mainPanel').style.display = 'none';
+                document.getElementById('emptyPrompt').style.display = 'block';
+                document.getElementById('studentChip').style.display = 'none';
+                history.replaceState(null, '', window.location.pathname);
             }
         }
 
@@ -2674,6 +2819,16 @@
                 pendingDelPedidoId = null; pendingDelPedidoTipo = null;
             }
         }
+        /* ── Filtro de grado ──────────────────────────────────── */
+        document.getElementById('gradePills').addEventListener('click', e => {
+            const pill = e.target.closest('.grade-pill');
+            if (!pill) return;
+            document.querySelectorAll('.grade-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            filterStudentsByGrade(pill.dataset.grade);
+        });
+
+        /* ── Selector de alumno ───────────────────────────────── */
         document.getElementById('studentSelect').addEventListener('change', async e => {
             const id = e.target.value;
             if (id) {
