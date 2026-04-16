@@ -322,8 +322,7 @@
         <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar__brand">
-                <div class="sidebar__logo-placeholder"><img class="hero-logo" src="../assets/img/logo.png"
-                        alt="Mi Primer ABC" /></div>
+                <div class="sidebar__logo-placeholder">A</div>
                 <div class="sidebar__brand-text">
                     <div class="sidebar__brand-name">Mi Primer ABC</div>
                     <div class="sidebar__brand-sub">Jardín de Niños</div>
@@ -353,7 +352,7 @@
                         <div class="sidebar__user-name" id="userName">Directora</div>
                         <div class="sidebar__user-role">Administradora</div>
                     </div>
-                    <span style="color: var(--color-kinder2);font-size: 1 rem;">↩</span>
+                    <span style="color:var(--color-text-muted);font-size:.75rem;">↩</span>
                 </div>
             </div>
         </aside>
@@ -506,6 +505,47 @@
                         <span style="font-size:var(--text-xs);color:var(--color-text-muted);">
                             Clic en la imagen para subir foto del alumno
                         </span>
+                    </div>
+
+                    <!-- Tipo de alumno -->
+                    <div class="form-group" style="margin-bottom:var(--space-4);">
+                        <label class="form-label">Tipo de alumno</label>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
+                            <div style="position:relative;">
+                                <input type="radio" name="tipoAlumno" id="tipoNuevo" value="nuevo_ingreso"
+                                    style="position:absolute;opacity:0;pointer-events:none;" checked />
+                                <label for="tipoNuevo" id="labelTipoNuevo" style="display:flex;flex-direction:column;align-items:center;
+                            padding:var(--space-4) var(--space-3);
+                            border:2px solid var(--color-primary);
+                            background:var(--color-primary-light);color:var(--color-primary);
+                            border-radius:var(--radius-md);cursor:pointer;text-align:center;
+                            font-size:var(--text-sm);font-weight:var(--font-bold);gap:var(--space-1);
+                            transition:all var(--transition-fast);">
+                                    <span style="font-size:1.3rem;">🆕</span>
+                                    <span>Nuevo Ingreso</span>
+                                    <span style="font-size:var(--text-xs);font-weight:var(--font-normal);opacity:.75;">
+                                        Primera vez en el kínder
+                                    </span>
+                                </label>
+                            </div>
+                            <div style="position:relative;">
+                                <input type="radio" name="tipoAlumno" id="tipoReinsc" value="reinscripcion"
+                                    style="position:absolute;opacity:0;pointer-events:none;" />
+                                <label for="tipoReinsc" id="labelTipoReinsc" style="display:flex;flex-direction:column;align-items:center;
+                            padding:var(--space-4) var(--space-3);
+                            border:2px solid var(--color-border);
+                            background:var(--color-surface);color:var(--color-text-secondary);
+                            border-radius:var(--radius-md);cursor:pointer;text-align:center;
+                            font-size:var(--text-sm);font-weight:var(--font-bold);gap:var(--space-1);
+                            transition:all var(--transition-fast);">
+                                    <span style="font-size:1.3rem;">🔄</span>
+                                    <span>Reinscripción</span>
+                                    <span style="font-size:var(--text-xs);font-weight:var(--font-normal);opacity:.75;">
+                                        Ya estuvo inscrito antes
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Datos del alumno -->
@@ -927,8 +967,8 @@
         }
         function editFromDetail() {
             if (!detailStudent) return;
-            openEdit(detailStudent.id);
             closeDetail();
+            openEdit(detailStudent.id);
         }
 
         /* ═══════════════════════════════════════════════════════════
@@ -961,6 +1001,10 @@
                 document.getElementById('telefono1').value = student.telefono_1 || '';
                 document.getElementById('telefono2').value = student.telefono_2 || '';
                 document.getElementById('fechaInscripcion').value = student.fecha_inscripcion || '';
+                // Tipo de alumno
+                const tipo = student.tipo_alumno || 'nuevo_ingreso';
+                document.getElementById(tipo === 'nuevo_ingreso' ? 'tipoNuevo' : 'tipoReinsc').checked = true;
+                updateTipoAlumnoUI(tipo);
                 if (student.foto_url) {
                     document.getElementById('avatarPreview').innerHTML =
                         `<img src="${student.foto_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
@@ -984,6 +1028,22 @@
             photoFile = null;
             photoPreviewUrl = null;
         }
+
+        // Tipo de alumno — toggle visual
+        function updateTipoAlumnoUI(val) {
+            const isNuevo = val === 'nuevo_ingreso';
+            const activeStyle = 'border:2px solid var(--color-primary);background:var(--color-primary-light);color:var(--color-primary);';
+            const purpleStyle = 'border:2px solid #7B5EA7;background:#F3EEF9;color:#7B5EA7;';
+            const defaultStyle = 'border:2px solid var(--color-border);background:var(--color-surface);color:var(--color-text-secondary);';
+            document.getElementById('labelTipoNuevo').style.cssText = (isNuevo ? activeStyle : defaultStyle) +
+                'display:flex;flex-direction:column;align-items:center;padding:var(--space-4) var(--space-3);border-radius:var(--radius-md);cursor:pointer;text-align:center;font-size:var(--text-sm);font-weight:var(--font-bold);gap:var(--space-1);transition:all var(--transition-fast);';
+            document.getElementById('labelTipoReinsc').style.cssText = (!isNuevo ? purpleStyle : defaultStyle) +
+                'display:flex;flex-direction:column;align-items:center;padding:var(--space-4) var(--space-3);border-radius:var(--radius-md);cursor:pointer;text-align:center;font-size:var(--text-sm);font-weight:var(--font-bold);gap:var(--space-1);transition:all var(--transition-fast);';
+        }
+
+        document.querySelectorAll('input[name="tipoAlumno"]').forEach(r => {
+            r.addEventListener('change', () => updateTipoAlumnoUI(r.value));
+        });
 
         // Preview de foto
         document.getElementById('photoInput').addEventListener('change', e => {
@@ -1015,6 +1075,7 @@
                 telefono_1: document.getElementById('telefono1').value.trim() || null,
                 telefono_2: document.getElementById('telefono2').value.trim() || null,
                 fecha_inscripcion: document.getElementById('fechaInscripcion').value || null,
+                tipo_alumno: document.querySelector('input[name="tipoAlumno"]:checked')?.value || 'nuevo_ingreso',
                 activo: true,
             };
 
