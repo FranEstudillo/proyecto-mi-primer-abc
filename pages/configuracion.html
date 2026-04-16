@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi Primer ABC — Configuración de Precios</title>
+
+    <link rel="stylesheet" href="../css/design-system.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+
+    <style>
+        /* ── Grade selector tabs ─────────────────────────────── */
+        .grade-tabs {
+            display: flex;
+            gap: var(--space-2);
+            margin-bottom: var(--space-6);
+            flex-wrap: wrap;
+        }
+
+        .grade-tab-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-5);
+            border-radius: var(--radius-full);
+            border: 2px solid var(--color-border);
+            background: var(--color-surface);
+            font-family: var(--font-body);
+            font-size: var(--text-sm);
+            font-weight: var(--font-bold);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .grade-tab-btn .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .grade-tab-btn:hover {
+            border-color: var(--grade-color);
+            color: var(--color-text-primary);
+        }
+
+        .grade-tab-btn.active {
+            background: var(--grade-light);
+            border-color: var(--grade-color);
+            color: var(--grade-dark);
+        }
+
+        /* ── Price Panel ─────────────────────────────────────── */
+        .price-panel {
+            display: none;
+        }
+
+        .price-panel.active {
+            display: block;
+        }
+
+        /* Panel header con el color del grado */
+        .grade-panel-header {
+            border-radius: var(--radius-lg);
+            padding: var(--space-5) var(--space-6);
+            margin-bottom: var(--space-6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-4);
+            animation: fadeInDown 0.3s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .grade-panel-header__left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .grade-panel-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .grade-panel-title {
+            font-family: var(--font-heading);
+            font-size: var(--text-xl);
+            font-weight: var(--font-extrabold);
+        }
+
+        .grade-panel-subtitle {
+            font-size: var(--text-sm);
+            opacity: 0.75;
+            margin-top: 2px;
+        }
+
+        /* ── Precio section ──────────────────────────────────── */
+        .price-section {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-4);
+            overflow: hidden;
+            transition: box-shadow var(--transition-base);
+        }
+
+        .price-section:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .price-section__header {
+            padding: var(--space-4) var(--space-6);
+            background: var(--color-bg);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .price-section__icon {
+            font-size: 1.1rem;
+        }
+
+        .price-section__title {
+            font-family: var(--font-heading);
+            font-size: var(--text-base);
+            font-weight: var(--font-bold);
+            color: var(--color-text-primary);
+            flex: 1;
+        }
+
+        .price-section__badge {
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+            background: var(--color-border);
+            padding: 2px var(--space-3);
+            border-radius: var(--radius-full);
+        }
+
+        .price-section__body {
+            padding: var(--space-2) 0;
+        }
+
+        /* ── Price Row ───────────────────────────────────────── */
+        .price-row {
+            display: grid;
+            grid-template-columns: 1fr 200px 200px 80px;
+            align-items: center;
+            gap: var(--space-4);
+            padding: var(--space-3) var(--space-6);
+            border-bottom: 1px solid var(--color-border);
+            transition: background var(--transition-fast);
+        }
+
+        .price-row:last-child {
+            border-bottom: none;
+        }
+
+        .price-row:hover {
+            background: var(--color-bg);
+        }
+
+        .price-row__label {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--text-sm);
+            font-weight: var(--font-semibold);
+            color: var(--color-text-primary);
+        }
+
+        .price-row__label-icon {
+            font-size: 0.9rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .price-row__note {
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+            margin-top: 2px;
+            font-weight: var(--font-normal);
+        }
+
+        /* Input de precio */
+        .price-input-wrapper {
+            position: relative;
+        }
+
+        .price-input-wrapper .prefix {
+            position: absolute;
+            left: var(--space-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-muted);
+            font-size: var(--text-sm);
+            font-weight: var(--font-bold);
+            pointer-events: none;
+        }
+
+        .price-input {
+            width: 100%;
+            padding: var(--space-3) var(--space-3) var(--space-3) var(--space-6);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-family: var(--font-heading);
+            font-size: var(--text-sm);
+            font-weight: var(--font-bold);
+            color: var(--color-text-primary);
+            background: var(--color-surface);
+            text-align: right;
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        .price-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(46, 158, 91, 0.12);
+        }
+
+        .price-input:disabled {
+            background: var(--color-bg);
+            color: var(--color-text-muted);
+            cursor: not-allowed;
+            border-style: dashed;
+        }
+
+        /* Columnas de precio — headers */
+        .price-col-header {
+            display: grid;
+            grid-template-columns: 1fr 200px 200px 80px;
+            gap: var(--space-4);
+            padding: var(--space-2) var(--space-6);
+            margin-bottom: var(--space-1);
+        }
+
+        .price-col-label {
+            font-size: var(--text-xs);
+            font-weight: var(--font-bold);
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .price-col-label.nuevo {
+            color: var(--color-primary);
+        }
+
+        .price-col-label.reinscripcion {
+            color: #7B5EA7;
+        }
+
+        /* Botón guardar por fila */
+        .btn-save-row {
+            padding: var(--space-2) var(--space-3);
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: var(--text-xs);
+            font-weight: var(--font-bold);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .btn-save-row:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-save-row.saved {
+            background: #E8F5EE;
+            color: var(--color-primary);
+            cursor: default;
+            transform: none;
+        }
+
+        .btn-save-row.saving {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* ── Toast notification ──────────────────────────────── */
+        .toast-container {
+            position: fixed;
+            bottom: var(--space-6);
+            right: var(--space-6);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--color-text-primary);
+            color: white;
+            padding: var(--space-3) var(--space-5);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-sm);
+            font-weight: var(--font-semibold);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+            pointer-events: auto;
+        }
+
+        .toast.success {
+            background: var(--color-primary);
+        }
+
+        .toast.error {
+            background: var(--color-error);
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(8px) scale(0.95);
+            }
+        }
+
+        /* ── Nota de no inscripción maternal ─────────────────── */
+        .maternal-note {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3) var(--space-5);
+            background: var(--color-maternal-light);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            color: var(--color-maternal-dark);
+            margin: var(--space-3) var(--space-6);
+        }
+
+        /* ── Save all button ─────────────────────────────────── */
+        .save-all-bar {
+            position: sticky;
+            bottom: 0;
+            background: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+            padding: var(--space-4) var(--space-8);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-4);
+            z-index: 50;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .save-all-bar__info {
+            font-size: var(--text-sm);
+            color: var(--color-text-muted);
+        }
+
+        .save-all-bar__info strong {
+            color: var(--color-text-primary);
+        }
+
+        /* ── Responsive ──────────────────────────────────────── */
+        @media (max-width: 900px) {
+
+            .price-col-header,
+            .price-row {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+
+            .price-col-label:last-child,
+            .btn-save-row {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .price-col-header {
+                display: none;
+            }
+
+            .price-row {
+                grid-template-columns: 1fr;
+                gap: var(--space-2);
+            }
+
+            .grade-tab-btn span:not(.dot) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <!-- ════════════════════════════════════════════════════
+       SIDEBAR (idéntico al dashboard, nav activo en config)
+       ════════════════════════════════════════════════════ -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar__brand">
+                <div class="sidebar__logo-placeholder">A</div>
+                <div class="sidebar__brand-text">
+                    <div class="sidebar__brand-name">Mi Primer ABC</div>
+                    <div class="sidebar__brand-sub">Jardín de Niños</div>
+                </div>
+            </div>
+            <nav class="sidebar__nav">
+                <span class="nav-section-label">Principal</span>
+                <a href="dashboard.html" class="nav-item" data-page="dashboard">
+                    <span class="nav-item__icon">🏠</span><span class="nav-item__text">Dashboard</span>
+                </a>
+                <a href="alumnos.html" class="nav-item" data-page="alumnos">
+                    <span class="nav-item__icon">👦</span><span class="nav-item__text">Alumnos</span>
+                </a>
+                <span class="nav-section-label">Financiero</span>
+                <a href="pagos.html" class="nav-item" data-page="pagos">
+                    <span class="nav-item__icon">💳</span><span class="nav-item__text">Pagos</span>
+                </a>
+                <a href="colegiaturas.html" class="nav-item" data-page="colegiaturas">
+                    <span class="nav-item__icon">📅</span><span class="nav-item__text">Colegiaturas</span>
+                </a>
+                <a href="ingresos-gastos.html" class="nav-item" data-page="ingresos">
+                    <span class="nav-item__icon">📊</span><span class="nav-item__text">Ingresos y Gastos</span>
+                </a>
+                <span class="nav-section-label">Sistema</span>
+                <a href="configuracion.html" class="nav-item active" data-page="configuracion">
+                    <span class="nav-item__icon">⚙️</span><span class="nav-item__text">Configuración</span>
+                </a>
+            </nav>
+            <div class="sidebar__footer">
+                <div class="sidebar__user" id="sidebarUser">
+                    <div class="sidebar__user-avatar" id="userInitial">D</div>
+                    <div class="sidebar__user-info">
+                        <div class="sidebar__user-name" id="userName">Directora</div>
+                        <div class="sidebar__user-role">Administradora</div>
+                    </div>
+                    <span style="color:var(--color-text-muted);font-size:.75rem;">↩</span>
+                </div>
+            </div>
+        </aside>
+
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- ════════════════════════════════════════════════════
+       CONTENIDO PRINCIPAL
+       ════════════════════════════════════════════════════ -->
+        <main class="main-content">
+
+            <div class="topbar">
+                <div class="topbar__left">
+                    <button class="btn btn-icon btn-secondary" id="menuToggle" style="display:none">☰</button>
+                    <div>
+                        <div class="topbar__breadcrumb">
+                            <span>Sistema</span>
+                            <span>›</span>
+                            <span style="color:var(--color-text-primary);font-weight:600;">Configuración</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="topbar__actions">
+                    <div id="saveStatus" style="font-size:var(--text-sm);color:var(--color-text-muted);"></div>
+                </div>
+            </div>
+
+            <!-- ── PAGE CONTENT ─────────────────────────────────── -->
+            <div class="page-content" style="padding-bottom: 0;">
+
+                <div class="page-header">
+                    <div class="page-header__text">
+                        <h1 class="page-title">Catálogo de Precios</h1>
+                        <p class="page-subtitle">
+                            Configura los precios por grado para <strong>Nuevo Ingreso</strong> y
+                            <strong>Reinscripción</strong>.
+                            Estos precios se usarán como referencia en todos los formularios de pago.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Selector de grado -->
+                <div class="grade-tabs" id="gradeTabs">
+
+                    <button class="grade-tab-btn active" data-grade="Maternal"
+                        style="--grade-color:var(--color-maternal);--grade-light:var(--color-maternal-light);--grade-dark:var(--color-maternal-dark);">
+                        <span class="dot" style="background:var(--color-maternal)"></span>
+                        <span>Maternal</span>
+                    </button>
+
+                    <button class="grade-tab-btn" data-grade="Kinder 1"
+                        style="--grade-color:var(--color-kinder1);--grade-light:var(--color-kinder1-light);--grade-dark:var(--color-kinder1-dark);">
+                        <span class="dot" style="background:var(--color-kinder1)"></span>
+                        <span>Kínder 1</span>
+                    </button>
+
+                    <button class="grade-tab-btn" data-grade="Kinder 2"
+                        style="--grade-color:var(--color-kinder2);--grade-light:var(--color-kinder2-light);--grade-dark:var(--color-kinder2-dark);">
+                        <span class="dot" style="background:var(--color-kinder2)"></span>
+                        <span>Kínder 2</span>
+                    </button>
+
+                    <button class="grade-tab-btn" data-grade="Kinder 3"
+                        style="--grade-color:var(--color-kinder3);--grade-light:var(--color-kinder3-light);--grade-dark:var(--color-kinder3-dark);">
+                        <span class="dot" style="background:var(--color-kinder3)"></span>
+                        <span>Kínder 3</span>
+                    </button>
+
+                </div>
+
+                <!-- ── Paneles por grado ──────────────────────────── -->
+                <!-- Se generan dinámicamente por JS -->
+                <div id="pricePanels"></div>
+
+            </div><!-- /page-content -->
+
+            <!-- Barra inferior fija: guardar todo el grado -->
+            <div class="save-all-bar">
+                <div class="save-all-bar__info">
+                    Grado activo: <strong id="activeGradeLabel">Maternal</strong>
+                </div>
+                <div style="display:flex;gap:var(--space-3);align-items:center;">
+                    <span id="pendingChanges" style="font-size:var(--text-sm);color:var(--color-text-muted);"></span>
+                    <button class="btn btn-primary" id="btnSaveAll">
+                        💾 Guardar todos los precios del grado
+                    </button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SUPABASE + AUTH
+     ═══════════════════════════════════════════════════════════ -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/auth.js"></script>
+
+    <script>
+        /* ══════════════════════════════════════════════════════════════
+           DATOS DE CONCEPTOS — estructura del catálogo
+           ══════════════════════════════════════════════════════════════ */
+        const CONCEPTOS = {
+            general: {
+                label: 'Conceptos Generales',
+                icon: '📋',
+                items: [
+                    {
+                        key: 'inscripcion', label: 'Inscripción', icon: '📝', noMaternal: true,
+                        note: 'Los alumnos de Maternal no pagan inscripción'
+                    },
+                    { key: 'material_escolar', label: 'Material Escolar', icon: '📦' },
+                    { key: 'libros', label: 'Libros', icon: '📚' },
+                    { key: 'manuales', label: 'Manuales', icon: '📒' },
+                    {
+                        key: 'colegiatura', label: 'Colegiatura', icon: '📅',
+                        note: 'Precio mensual por alumno'
+                    },
+                ]
+            },
+            uniforme: {
+                label: 'Uniforme — Precio por Pieza',
+                icon: '👕',
+                items: [
+                    { key: 'uniforme_jumper', label: 'Jumper', icon: '👗' },
+                    { key: 'uniforme_pantalon', label: 'Pantalón', icon: '👖' },
+                    { key: 'uniforme_sueter', label: 'Suéter', icon: '🧥' },
+                    { key: 'uniforme_playera_polo', label: 'Playera Polo', icon: '👔' },
+                    { key: 'uniforme_pants', label: 'Pants', icon: '🩳' },
+                    { key: 'uniforme_chamarra', label: 'Chamarra del Pants', icon: '🧤' },
+                    { key: 'uniforme_playera_deportiva', label: 'Playera Deportiva', icon: '👕' },
+                ]
+            },
+            bata: {
+                label: 'Bata — Precio por Talla',
+                icon: '🥼',
+                items: [
+                    { key: 'bata_chica', label: 'Bata Talla Chica', icon: '🔹' },
+                    { key: 'bata_mediana', label: 'Bata Talla Mediana', icon: '🔷' },
+                    { key: 'bata_grande', label: 'Bata Talla Grande', icon: '🔵' },
+                ]
+            }
+        };
+
+        const GRADOS = [
+            {
+                key: 'Maternal', color: 'var(--color-maternal)', light: 'var(--color-maternal-light)',
+                dark: 'var(--color-maternal-dark)', icon: '🔵', textColor: 'var(--color-maternal-dark)'
+            },
+            {
+                key: 'Kinder 1', color: 'var(--color-kinder1)', light: 'var(--color-kinder1-light)',
+                dark: 'var(--color-kinder1-dark)', icon: '🟡', textColor: 'var(--color-kinder1-dark)'
+            },
+            {
+                key: 'Kinder 2', color: 'var(--color-kinder2)', light: 'var(--color-kinder2-light)',
+                dark: 'var(--color-kinder2-dark)', icon: '🔴', textColor: 'var(--color-kinder2-dark)'
+            },
+            {
+                key: 'Kinder 3', color: 'var(--color-kinder3)', light: 'var(--color-kinder3-light)',
+                dark: 'var(--color-kinder3-dark)', icon: '🟢', textColor: 'var(--color-kinder3-dark)'
+            },
+        ];
+
+        /* ══════════════════════════════════════════════════════════════
+           STATE
+           ══════════════════════════════════════════════════════════════ */
+        // precios[grado][concepto] = { precio_nuevo_ingreso, precio_reinscripcion }
+        const precios = {};
+        let activeGrade = 'Maternal';
+        let pendingCount = 0;
+
+        /* ══════════════════════════════════════════════════════════════
+           BUILD UI
+           ══════════════════════════════════════════════════════════════ */
+        function buildPanels() {
+            const container = document.getElementById('pricePanels');
+            container.innerHTML = '';
+
+            GRADOS.forEach(grado => {
+                const isMaternal = grado.key === 'Maternal';
+                const panelId = `panel-${grado.key.replace(' ', '_')}`;
+
+                const panel = document.createElement('div');
+                panel.className = 'price-panel' + (grado.key === activeGrade ? ' active' : '');
+                panel.id = panelId;
+                panel.dataset.grade = grado.key;
+
+                // Header del panel con color del grado
+                panel.innerHTML = `
+      <div class="grade-panel-header"
+           style="background: ${grado.light}; color: ${grado.textColor};">
+        <div class="grade-panel-header__left">
+          <div class="grade-panel-icon">${grado.icon}</div>
+          <div>
+            <div class="grade-panel-title">${grado.key}</div>
+            <div class="grade-panel-subtitle">Configura los precios de Nuevo Ingreso y Reinscripción</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+                // Secciones de conceptos
+                Object.entries(CONCEPTOS).forEach(([sectionKey, section]) => {
+                    const sectionEl = document.createElement('div');
+                    sectionEl.className = 'price-section';
+
+                    // Contar items visibles para esta sección/grado
+                    const visibleItems = section.items.filter(item => !(isMaternal && item.noMaternal));
+
+                    sectionEl.innerHTML = `
+        <div class="price-section__header">
+          <span class="price-section__icon">${section.icon}</span>
+          <span class="price-section__title">${section.label}</span>
+          <span class="price-section__badge">${visibleItems.length} concepto${visibleItems.length !== 1 ? 's' : ''}</span>
+        </div>
+
+        <div class="price-col-header">
+          <div class="price-col-label">Concepto</div>
+          <div class="price-col-label nuevo">🟢 Nuevo Ingreso</div>
+          <div class="price-col-label reinscripcion">🟣 Reinscripción</div>
+          <div class="price-col-label"></div>
+        </div>
+
+        <div class="price-section__body" id="body-${grado.key.replace(' ', '_')}-${sectionKey}">
+        </div>
+      `;
+
+                    panel.appendChild(sectionEl);
+
+                    // Insertar nota especial de inscripción maternal y rows
+                    const body = sectionEl.querySelector(`#body-${grado.key.replace(' ', '_')}-${sectionKey}`);
+
+                    section.items.forEach(item => {
+                        // Si es Maternal y el item no aplica → nota informativa
+                        if (isMaternal && item.noMaternal) {
+                            const noteEl = document.createElement('div');
+                            noteEl.className = 'maternal-note';
+                            noteEl.innerHTML = `<span>ℹ️</span> <span>${item.note}</span>`;
+                            body.appendChild(noteEl);
+                            return;
+                        }
+
+                        const rowId = `${grado.key.replace(' ', '_')}-${item.key}`;
+                        const row = document.createElement('div');
+                        row.className = 'price-row';
+                        row.dataset.grade = grado.key;
+                        row.dataset.concepto = item.key;
+
+                        row.innerHTML = `
+          <div class="price-row__label">
+            <span class="price-row__label-icon">${item.icon}</span>
+            <div>
+              <div>${item.label}</div>
+              ${item.note ? `<div class="price-row__note">${item.note}</div>` : ''}
+            </div>
+          </div>
+
+          <div class="price-input-wrapper">
+            <span class="prefix">$</span>
+            <input
+              type="number"
+              class="price-input"
+              id="ni-${rowId}"
+              data-grade="${grado.key}"
+              data-concepto="${item.key}"
+              data-tipo="nuevo_ingreso"
+              placeholder="0.00"
+              min="0"
+              step="0.01"
+              value=""
+            />
+          </div>
+
+          <div class="price-input-wrapper">
+            <span class="prefix">$</span>
+            <input
+              type="number"
+              class="price-input"
+              id="ri-${rowId}"
+              data-grade="${grado.key}"
+              data-concepto="${item.key}"
+              data-tipo="reinscripcion"
+              placeholder="0.00"
+              min="0"
+              step="0.01"
+              value=""
+            />
+          </div>
+
+          <button
+            class="btn-save-row"
+            id="save-${rowId}"
+            data-grade="${grado.key}"
+            data-concepto="${item.key}"
+            onclick="saveRow('${grado.key}', '${item.key}')"
+          >
+            Guardar
+          </button>
+        `;
+
+                        body.appendChild(row);
+                    });
+                });
+
+                container.appendChild(panel);
+            });
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           CARGAR PRECIOS DESDE SUPABASE
+           ══════════════════════════════════════════════════════════════ */
+        async function loadPrecios() {
+            document.getElementById('saveStatus').textContent = 'Cargando precios...';
+
+            try {
+                const { data, error } = await db
+                    .from('precios')
+                    .select('*');
+
+                if (error) throw error;
+
+                // Poblar el estado local
+                data.forEach(row => {
+                    if (!precios[row.grado]) precios[row.grado] = {};
+                    precios[row.grado][row.concepto] = {
+                        precio_nuevo_ingreso: row.precio_nuevo_ingreso,
+                        precio_reinscripcion: row.precio_reinscripcion,
+                    };
+                });
+
+                // Pintar valores en los inputs
+                populateInputs();
+                document.getElementById('saveStatus').textContent = '✅ Precios cargados';
+                setTimeout(() => document.getElementById('saveStatus').textContent = '', 2000);
+
+            } catch (err) {
+                console.warn('No se pudieron cargar los precios:', err.message);
+                document.getElementById('saveStatus').textContent = '⚠️ Modo sin conexión — configura Supabase';
+            }
+        }
+
+        function populateInputs() {
+            GRADOS.forEach(grado => {
+                const gradoData = precios[grado.key] || {};
+                Object.values(CONCEPTOS).forEach(section => {
+                    section.items.forEach(item => {
+                        if (grado.key === 'Maternal' && item.noMaternal) return;
+
+                        const rowId = `${grado.key.replace(' ', '_')}-${item.key}`;
+                        const niInput = document.getElementById(`ni-${rowId}`);
+                        const riInput = document.getElementById(`ri-${rowId}`);
+                        const data = gradoData[item.key] || {};
+
+                        if (niInput) niInput.value = data.precio_nuevo_ingreso != null
+                            ? parseFloat(data.precio_nuevo_ingreso).toFixed(2) : '';
+                        if (riInput) riInput.value = data.precio_reinscripcion != null
+                            ? parseFloat(data.precio_reinscripcion).toFixed(2) : '';
+                    });
+                });
+            });
+
+            // Detectar cambios para el contador de pendientes
+            document.querySelectorAll('.price-input').forEach(input => {
+                input.addEventListener('input', () => {
+                    const saveBtn = document.getElementById(
+                        `save-${input.dataset.grade.replace(' ', '_')}-${input.dataset.concepto}`
+                    );
+                    if (saveBtn) {
+                        saveBtn.classList.remove('saved');
+                        saveBtn.textContent = 'Guardar';
+                    }
+                });
+            });
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           GUARDAR FILA INDIVIDUAL
+           ══════════════════════════════════════════════════════════════ */
+        async function saveRow(grade, concepto) {
+            const rowId = `${grade.replace(' ', '_')}-${concepto}`;
+            const niInput = document.getElementById(`ni-${rowId}`);
+            const riInput = document.getElementById(`ri-${rowId}`);
+            const saveBtn = document.getElementById(`save-${rowId}`);
+
+            const niVal = parseFloat(niInput.value) || 0;
+            const riVal = parseFloat(riInput.value) || 0;
+
+            saveBtn.classList.add('saving');
+            saveBtn.textContent = '...';
+
+            try {
+                const { error } = await db
+                    .from('precios')
+                    .upsert({
+                        grado: grade,
+                        concepto: concepto,
+                        precio_nuevo_ingreso: niVal,
+                        precio_reinscripcion: riVal,
+                        updated_at: new Date().toISOString(),
+                    }, { onConflict: 'grado,concepto' });
+
+                if (error) throw error;
+
+                saveBtn.classList.remove('saving');
+                saveBtn.classList.add('saved');
+                saveBtn.textContent = '✓ Listo';
+
+                // Actualizar estado local
+                if (!precios[grade]) precios[grade] = {};
+                precios[grade][concepto] = {
+                    precio_nuevo_ingreso: niVal,
+                    precio_reinscripcion: riVal,
+                };
+
+                showToast('✅ Precio guardado correctamente', 'success');
+
+            } catch (err) {
+                saveBtn.classList.remove('saving');
+                saveBtn.textContent = 'Guardar';
+                showToast('❌ Error al guardar: ' + err.message, 'error');
+                console.error(err);
+            }
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           GUARDAR TODOS LOS PRECIOS DEL GRADO ACTIVO
+           ══════════════════════════════════════════════════════════════ */
+        async function saveAllGrade() {
+            const btn = document.getElementById('btnSaveAll');
+            btn.disabled = true;
+            btn.textContent = 'Guardando...';
+
+            const upserts = [];
+
+            Object.values(CONCEPTOS).forEach(section => {
+                section.items.forEach(item => {
+                    if (activeGrade === 'Maternal' && item.noMaternal) return;
+                    const rowId = `${activeGrade.replace(' ', '_')}-${item.key}`;
+                    const niInput = document.getElementById(`ni-${rowId}`);
+                    const riInput = document.getElementById(`ri-${rowId}`);
+
+                    upserts.push({
+                        grado: activeGrade,
+                        concepto: item.key,
+                        precio_nuevo_ingreso: parseFloat(niInput?.value) || 0,
+                        precio_reinscripcion: parseFloat(riInput?.value) || 0,
+                        updated_at: new Date().toISOString(),
+                    });
+                });
+            });
+
+            try {
+                const { error } = await db
+                    .from('precios')
+                    .upsert(upserts, { onConflict: 'grado,concepto' });
+
+                if (error) throw error;
+
+                // Marcar todos como guardados
+                document.querySelectorAll(`.btn-save-row`).forEach(b => {
+                    if (b.closest('.price-panel.active')) {
+                        b.classList.add('saved');
+                        b.textContent = '✓ Listo';
+                    }
+                });
+
+                showToast(`✅ Todos los precios de ${activeGrade} guardados`, 'success');
+
+            } catch (err) {
+                showToast('❌ Error al guardar: ' + err.message, 'error');
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 Guardar todos los precios del grado';
+            }
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           CAMBIAR GRADO ACTIVO
+           ══════════════════════════════════════════════════════════════ */
+        function switchGrade(grade) {
+            activeGrade = grade;
+
+            // Tabs
+            document.querySelectorAll('.grade-tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.grade === grade);
+            });
+
+            // Paneles
+            document.querySelectorAll('.price-panel').forEach(p => {
+                p.classList.toggle('active', p.dataset.grade === grade);
+            });
+
+            // Label del botón guardar
+            document.getElementById('activeGradeLabel').textContent = grade;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           TOAST
+           ══════════════════════════════════════════════════════════════ */
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3200);
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           SIDEBAR MÓVIL
+           ══════════════════════════════════════════════════════════════ */
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const menuBtn = document.getElementById('menuToggle');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+        menuBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        function handleResize() {
+            menuBtn.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+        }
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        /* ══════════════════════════════════════════════════════════════
+           INIT
+           ══════════════════════════════════════════════════════════════ */
+        Auth.checkSession();
+
+        Auth.getCurrentUser().then(user => {
+            if (user?.email) {
+                document.getElementById('userName').textContent = user.email.split('@')[0];
+                document.getElementById('userInitial').textContent = user.email[0].toUpperCase();
+            }
+        });
+
+        document.getElementById('sidebarUser').addEventListener('click', () => {
+            if (confirm('¿Deseas cerrar sesión?')) Auth.logout();
+        });
+
+        // Tabs de grado
+        document.getElementById('gradeTabs').addEventListener('click', e => {
+            const btn = e.target.closest('.grade-tab-btn');
+            if (btn) switchGrade(btn.dataset.grade);
+        });
+
+        // Botón guardar todo
+        document.getElementById('btnSaveAll').addEventListener('click', saveAllGrade);
+
+        // Construir UI y cargar datos
+        buildPanels();
+        loadPrecios();
+    </script>
+</body>
+
+</html>
