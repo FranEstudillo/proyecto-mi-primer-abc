@@ -13,11 +13,11 @@ miprimerabc/
 │
 ├── pages/
 │   ├── dashboard.html          ← Panel principal (Fase 0 ✅)
-│   ├── alumnos.html            ← Módulo de alumnos (Fase 2)
+│   ├── alumnos.html            ← Módulo de alumnos (Fase ✅)
 │   ├── pagos.html              ← Pagos del alumno (Fase 3 y 4)
 │   ├── colegiaturas.html       ← Colegiaturas (Fase 5)
 │   ├── ingresos-gastos.html    ← Dashboard financiero (Fase 6)
-│   └── configuracion.html      ← Catálogo de precios (Fase 1)
+│   └── configuracion.html      ← Catálogo de precios (Fase ✅)
 │
 ├── css/
 │   ├── design-system.css       ← Variables, colores, tipografía ✅
@@ -50,8 +50,8 @@ miprimerabc/
 Edita el archivo `js/supabase-config.js` y reemplaza:
 
 ```js
-const SUPABASE_URL     = 'https://XXXXXX.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJ...tu_clave...';
+const SUPABASE_URL = "https://XXXXXX.supabase.co";
+const SUPABASE_ANON_KEY = "eyJ...tu_clave...";
 ```
 
 ### 3. Crear el esquema de base de datos
@@ -63,6 +63,7 @@ const SUPABASE_ANON_KEY = 'eyJ...tu_clave...';
 ### 4. Crear el usuario de la directora
 
 En Supabase → **Authentication** → **Users** → **Add User**:
+
 - Email: `directora@miprimerabc.mx` (o el que prefieras)
 - Password: contraseña segura
 
@@ -71,6 +72,7 @@ En Supabase → **Authentication** → **Users** → **Add User**:
 Coloca el logo del kínder en `assets/img/logo.png` (PNG con fondo transparente, mínimo 200×200px).
 
 Descomenta la línea del `<img>` en el login y el sidebar:
+
 ```html
 <img class="hero-logo" src="assets/img/logo.png" alt="Mi Primer ABC" />
 ```
@@ -89,21 +91,24 @@ Descomenta la línea del `<img>` en el login y el sidebar:
 ## 🎨 Sistema de Diseño
 
 ### Colores principales
-| Variable | Color | Uso |
-|---|---|---|
-| `--color-primary` | `#2E9E5B` Verde | Botones, links activos |
-| `--color-pink` | `#F06B8A` Rosa | Alertas, estados |
-| `--color-yellow` | `#F5C842` Amarillo | Pendientes |
+
+| Variable          | Color              | Uso                    |
+| ----------------- | ------------------ | ---------------------- |
+| `--color-primary` | `#2E9E5B` Verde    | Botones, links activos |
+| `--color-pink`    | `#F06B8A` Rosa     | Alertas, estados       |
+| `--color-yellow`  | `#F5C842` Amarillo | Pendientes             |
 
 ### Colores por grado
-| Variable | Color | Grado |
-|---|---|---|
+
+| Variable           | Color                | Grado    |
+| ------------------ | -------------------- | -------- |
 | `--color-maternal` | `#64B5F6` Azul cielo | Maternal |
-| `--color-kinder1` | `#F5C842` Amarillo | Kínder 1 |
-| `--color-kinder2` | `#EF5350` Rojo | Kínder 2 |
-| `--color-kinder3` | `#2E9E5B` Verde | Kínder 3 |
+| `--color-kinder1`  | `#F5C842` Amarillo   | Kínder 1 |
+| `--color-kinder2`  | `#EF5350` Rojo       | Kínder 2 |
+| `--color-kinder3`  | `#2E9E5B` Verde      | Kínder 3 |
 
 ### Tipografía
+
 - **Headings:** Quicksand (bold)
 - **Body:** Nunito
 
@@ -111,16 +116,16 @@ Descomenta la línea del `<img>` en el login y el sidebar:
 
 ## 📋 Plan de Fases
 
-| Fase | Módulo | Estado |
-|---|---|---|
-| 0 | Setup, diseño base, login, dashboard shell | ✅ Completo |
-| 1 | Catálogo de precios (Nuevo Ingreso / Reinscripción) | ⏳ Pendiente |
-| 2 | Módulo de alumnos (CRUD + foto) | ⏳ Pendiente |
-| 3 | Pagos: Inscripción, Material, Libros, Manuales | ⏳ Pendiente |
-| 4 | Pedidos de Uniforme y Bata | ⏳ Pendiente |
-| 5 | Módulo de Colegiaturas | ⏳ Pendiente |
-| 6 | Dashboard de Ingresos y Gastos | ⏳ Pendiente |
-| 7 | QA, ajustes finales y deploy | ⏳ Pendiente |
+| Fase | Módulo                                              | Estado       |
+| ---- | --------------------------------------------------- | ------------ |
+| 0    | Setup, diseño base, login, dashboard shell          | ✅ Completo  |
+| 1    | Catálogo de precios (Nuevo Ingreso / Reinscripción) | ⏳ Pendiente |
+| 2    | Módulo de alumnos (CRUD + foto)                     | ⏳ Pendiente |
+| 3    | Pagos: Inscripción, Material, Libros, Manuales      | ⏳ Pendiente |
+| 4    | Pedidos de Uniforme y Bata                          | ⏳ Pendiente |
+| 5    | Módulo de Colegiaturas                              | ⏳ Pendiente |
+| 6    | Dashboard de Ingresos y Gastos                      | ⏳ Pendiente |
+| 7    | QA, ajustes finales y deploy                        | ⏳ Pendiente |
 
 ---
 
@@ -134,4 +139,4 @@ Descomenta la línea del `<img>` en el login y el sidebar:
 
 ---
 
-*Mi Primer ABC — Sistema de Control Escolar © 2025*
+_Mi Primer ABC — Sistema de Control Escolar © 2025_
