@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Primer ABC — Dashboard</title>
+
+  <link rel="stylesheet" href="../css/design-system.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+
+  <style>
+    /* Tarjetas resumen del dashboard */
+    .dashboard-welcome {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      color: white;
+      margin-bottom: var(--space-6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dashboard-welcome::after {
+      content: '🏫';
+      position: absolute;
+      right: var(--space-8);
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 5rem;
+      opacity: 0.15;
+    }
+
+    .dashboard-welcome h2 {
+      color: white;
+      font-size: var(--text-2xl);
+      margin-bottom: var(--space-1);
+    }
+
+    .dashboard-welcome p {
+      opacity: 0.85;
+      font-size: var(--text-sm);
+    }
+
+    /* Accesos rápidos */
+    .quick-access-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+
+    .quick-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .quick-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+      border-color: var(--color-primary);
+    }
+
+    .quick-card__icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .quick-card__label {
+      font-size: var(--text-sm);
+      font-weight: var(--font-bold);
+      color: var(--color-text-primary);
+    }
+
+    /* Tabla de alumnos recientes */
+    .student-row-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      object-fit: cover;
+      background: var(--color-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--font-bold);
+      font-size: var(--text-sm);
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- ======================================================
+       SIDEBAR
+       ====================================================== -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar__brand">
+      <!-- Logo placeholder — reemplazar con img cuando esté disponible -->
+      <div class="sidebar__logo-placeholder">A</div>
+      <div class="sidebar__brand-text">
+        <div class="sidebar__brand-name">Mi Primer ABC</div>
+        <div class="sidebar__brand-sub">Jardín de Niños</div>
+      </div>
+    </div>
+
+    <nav class="sidebar__nav">
+
+      <span class="nav-section-label">Principal</span>
+
+      <a href="dashboard.html" class="nav-item active" data-page="dashboard">
+        <span class="nav-item__icon">🏠</span>
+        <span class="nav-item__text">Dashboard</span>
+      </a>
+
+      <a href="alumnos.html" class="nav-item" data-page="alumnos">
+        <span class="nav-item__icon">👦</span>
+        <span class="nav-item__text">Alumnos</span>
+      </a>
+
+      <span class="nav-section-label">Financiero</span>
+
+      <a href="pagos.html" class="nav-item" data-page="pagos">
+        <span class="nav-item__icon">💳</span>
+        <span class="nav-item__text">Pagos</span>
+      </a>
+
+      <a href="colegiaturas.html" class="nav-item" data-page="colegiaturas">
+        <span class="nav-item__icon">📅</span>
+        <span class="nav-item__text">Colegiaturas</span>
+      </a>
+
+      <a href="ingresos-gastos.html" class="nav-item" data-page="ingresos-gastos">
+        <span class="nav-item__icon">📊</span>
+        <span class="nav-item__text">Ingresos y Gastos</span>
+      </a>
+
+      <span class="nav-section-label">Sistema</span>
+
+      <a href="configuracion.html" class="nav-item" data-page="configuracion">
+        <span class="nav-item__icon">⚙️</span>
+        <span class="nav-item__text">Configuración</span>
+      </a>
+
+    </nav>
+
+    <div class="sidebar__footer">
+      <div class="sidebar__user" id="sidebarUser" title="Cerrar sesión">
+        <div class="sidebar__user-avatar" id="userInitial">D</div>
+        <div class="sidebar__user-info">
+          <div class="sidebar__user-name" id="userName">Directora</div>
+          <div class="sidebar__user-role">Administradora</div>
+        </div>
+        <span style="color: var(--color-text-muted); font-size: 0.75rem;" title="Salir">↩</span>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- Overlay para móvil -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ======================================================
+       CONTENIDO PRINCIPAL
+       ====================================================== -->
+  <main class="main-content">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar__left">
+        <button class="btn btn-icon btn-secondary" id="menuToggle" style="display:none;">☰</button>
+        <h1 class="topbar__title">Dashboard</h1>
+      </div>
+      <div class="topbar__actions">
+        <span id="todayDate" style="font-size: var(--text-sm); color: var(--color-text-muted);"></span>
+      </div>
+    </div>
+
+    <!-- Contenido del Dashboard -->
+    <div class="page-content">
+
+      <!-- Bienvenida -->
+      <div class="dashboard-welcome">
+        <h2>¡Buenos días! 👋</h2>
+        <p>Bienvenida al sistema de control escolar de <strong>Mi Primer ABC</strong></p>
+      </div>
+
+      <!-- Tarjetas de estadística -->
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+          <div class="stat-card__icon" style="background: var(--color-primary-light);">👦</div>
+          <div>
+            <div class="stat-card__label">Total Alumnos</div>
+            <div class="stat-card__value" id="statAlumnos">—</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon" style="background: var(--color-maternal-light);">🔵</div>
+          <div>
+            <div class="stat-card__label">Maternal</div>
+            <div class="stat-card__value" id="statMaternal">—</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon" style="background: var(--color-kinder1-light);">🟡</div>
+          <div>
+            <div class="stat-card__label">Kínder 1</div>
+            <div class="stat-card__value" id="statK1">—</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon" style="background: var(--color-kinder2-light);">🔴</div>
+          <div>
+            <div class="stat-card__label">Kínder 2</div>
+            <div class="stat-card__value" id="statK2">—</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon" style="background: var(--color-kinder3-light);">🟢</div>
+          <div>
+            <div class="stat-card__label">Kínder 3</div>
+            <div class="stat-card__value" id="statK3">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accesos rápidos -->
+      <h3 style="margin-bottom: var(--space-4); font-size: var(--text-lg);">Accesos rápidos</h3>
+      <div class="quick-access-grid">
+        <a href="alumnos.html" class="quick-card">
+          <div class="quick-card__icon" style="background: var(--color-primary-light);">👦</div>
+          <span class="quick-card__label">Registrar Alumno</span>
+        </a>
+        <a href="pagos.html" class="quick-card">
+          <div class="quick-card__icon" style="background: #E3F2FD;">💳</div>
+          <span class="quick-card__label">Registrar Pago</span>
+        </a>
+        <a href="colegiaturas.html" class="quick-card">
+          <div class="quick-card__icon" style="background: #FFFDE7;">📅</div>
+          <span class="quick-card__label">Colegiaturas</span>
+        </a>
+        <a href="ingresos-gastos.html" class="quick-card">
+          <div class="quick-card__icon" style="background: #FFEBEE;">📊</div>
+          <span class="quick-card__label">Ver Finanzas</span>
+        </a>
+        <a href="configuracion.html" class="quick-card">
+          <div class="quick-card__icon" style="background: var(--color-bg);">⚙️</div>
+          <span class="quick-card__label">Configuración</span>
+        </a>
+      </div>
+
+      <!-- Indicadores por grado -->
+      <h3 style="margin-bottom: var(--space-4); font-size: var(--text-lg);">Alumnos por grado</h3>
+      <div class="content-grid content-grid-2" style="margin-bottom: var(--space-6);">
+
+        <div class="card grade-maternal">
+          <div class="card-header" style="background: var(--color-maternal-light); border-bottom-color: rgba(100,181,246,0.2);">
+            <div>
+              <div style="font-weight: var(--font-bold); color: var(--color-maternal-dark);">🔵 Maternal</div>
+              <div style="font-size: var(--text-xs); color: var(--color-maternal-dark); opacity:0.7;">Grupo A y B</div>
+            </div>
+            <span class="grade-badge grade-maternal" id="badgeMaternal">0 alumnos</span>
+          </div>
+          <div class="card-body" style="padding: var(--space-4);">
+            <div id="listMaternal" style="color: var(--color-text-muted); font-size: var(--text-sm);">Cargando...</div>
+          </div>
+        </div>
+
+        <div class="card grade-kinder1">
+          <div class="card-header" style="background: var(--color-kinder1-light); border-bottom-color: rgba(245,200,66,0.2);">
+            <div>
+              <div style="font-weight: var(--font-bold); color: var(--color-kinder1-dark);">🟡 Kínder 1</div>
+              <div style="font-size: var(--text-xs); color: var(--color-kinder1-dark); opacity:0.7;">Grupo A y B</div>
+            </div>
+            <span class="grade-badge grade-kinder1" id="badgeK1">0 alumnos</span>
+          </div>
+          <div class="card-body" style="padding: var(--space-4);">
+            <div id="listK1" style="color: var(--color-text-muted); font-size: var(--text-sm);">Cargando...</div>
+          </div>
+        </div>
+
+        <div class="card grade-kinder2">
+          <div class="card-header" style="background: var(--color-kinder2-light); border-bottom-color: rgba(239,83,80,0.2);">
+            <div>
+              <div style="font-weight: var(--font-bold); color: var(--color-kinder2-dark);">🔴 Kínder 2</div>
+              <div style="font-size: var(--text-xs); color: var(--color-kinder2-dark); opacity:0.7;">Grupo A y B</div>
+            </div>
+            <span class="grade-badge grade-kinder2" id="badgeK2">0 alumnos</span>
+          </div>
+          <div class="card-body" style="padding: var(--space-4);">
+            <div id="listK2" style="color: var(--color-text-muted); font-size: var(--text-sm);">Cargando...</div>
+          </div>
+        </div>
+
+        <div class="card grade-kinder3">
+          <div class="card-header" style="background: var(--color-kinder3-light); border-bottom-color: rgba(46,158,91,0.2);">
+            <div>
+              <div style="font-weight: var(--font-bold); color: var(--color-kinder3-dark);">🟢 Kínder 3</div>
+              <div style="font-size: var(--text-xs); color: var(--color-kinder3-dark); opacity:0.7;">Grupo A y B</div>
+            </div>
+            <span class="grade-badge grade-kinder3" id="badgeK3">0 alumnos</span>
+          </div>
+          <div class="card-body" style="padding: var(--space-4);">
+            <div id="listK3" style="color: var(--color-text-muted); font-size: var(--text-sm);">Cargando...</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /page-content -->
+  </main>
+
+</div><!-- /app-layout -->
+
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-config.js"></script>
+<script src="../js/auth.js"></script>
+
+<script>
+  // Verificar sesión
+  Auth.checkSession();
+
+  // Mostrar fecha actual
+  const dateEl = document.getElementById('todayDate');
+  dateEl.textContent = new Date().toLocaleDateString('es-MX', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+
+  // Mostrar nombre del usuario
+  Auth.getCurrentUser().then(user => {
+    if (user?.email) {
+      document.getElementById('userName').textContent = user.email.split('@')[0];
+      document.getElementById('userInitial').textContent = user.email[0].toUpperCase();
+    }
+  });
+
+  // Cerrar sesión
+  document.getElementById('sidebarUser').addEventListener('click', () => {
+    if (confirm('¿Deseas cerrar sesión?')) Auth.logout();
+  });
+
+  // Toggle sidebar en móvil
+  const sidebar  = document.getElementById('sidebar');
+  const overlay  = document.getElementById('sidebarOverlay');
+  const menuBtn  = document.getElementById('menuToggle');
+
+  function toggleSidebar() {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+  }
+
+  menuBtn.addEventListener('click', toggleSidebar);
+  overlay.addEventListener('click', toggleSidebar);
+
+  // Mostrar botón hamburguesa en móvil
+  function handleResize() {
+    menuBtn.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+  }
+  handleResize();
+  window.addEventListener('resize', handleResize);
+
+  // ---- Cargar estadísticas desde Supabase ----
+  async function loadStats() {
+    try {
+      const { data: alumnos } = await db
+        .from('alumnos')
+        .select('grado')
+        .eq('activo', true);
+
+      if (!alumnos) return;
+
+      const total    = alumnos.length;
+      const maternal = alumnos.filter(a => a.grado === 'Maternal').length;
+      const k1       = alumnos.filter(a => a.grado === 'Kinder 1').length;
+      const k2       = alumnos.filter(a => a.grado === 'Kinder 2').length;
+      const k3       = alumnos.filter(a => a.grado === 'Kinder 3').length;
+
+      document.getElementById('statAlumnos').textContent = total;
+      document.getElementById('statMaternal').textContent = maternal;
+      document.getElementById('statK1').textContent = k1;
+      document.getElementById('statK2').textContent = k2;
+      document.getElementById('statK3').textContent = k3;
+
+      document.getElementById('badgeMaternal').textContent = maternal + ' alumno' + (maternal !== 1 ? 's' : '');
+      document.getElementById('badgeK1').textContent = k1 + ' alumno' + (k1 !== 1 ? 's' : '');
+      document.getElementById('badgeK2').textContent = k2 + ' alumno' + (k2 !== 1 ? 's' : '');
+      document.getElementById('badgeK3').textContent = k3 + ' alumno' + (k3 !== 1 ? 's' : '');
+
+      // Placeholder para las listas
+      const noData = '<span style="color: var(--color-text-muted);">Sin alumnos registrados</span>';
+      document.getElementById('listMaternal').innerHTML = maternal > 0 ? `${maternal} alumno(s) registrado(s)` : noData;
+      document.getElementById('listK1').innerHTML = k1 > 0 ? `${k1} alumno(s) registrado(s)` : noData;
+      document.getElementById('listK2').innerHTML = k2 > 0 ? `${k2} alumno(s) registrado(s)` : noData;
+      document.getElementById('listK3').innerHTML = k3 > 0 ? `${k3} alumno(s) registrado(s)` : noData;
+
+    } catch (err) {
+      console.warn('Supabase aún no configurado:', err.message);
+      ['statAlumnos','statMaternal','statK1','statK2','statK3'].forEach(id => {
+        document.getElementById(id).textContent = '—';
+      });
+    }
+  }
+
+  loadStats();
+</script>
+
+</body>
+</html>
