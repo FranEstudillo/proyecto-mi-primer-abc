@@ -170,7 +170,7 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--color-border);
+            background: var(--color-error);
             flex-shrink: 0;
         }
 
@@ -183,7 +183,7 @@
         }
 
         .concept-tab .tab-status.pendiente {
-            background: var(--color-border);
+            background: var(--color-error);
         }
 
         /* ── Panel de concepto ───────────────────────────────── */
@@ -895,16 +895,13 @@
 
         <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
-
             <div class="sidebar__brand">
-                <div class="sidebar__logo-placeholder"><img class="hero-logo" src="../assets/img/logo.png"
-                        alt="Mi Primer ABC" /></div>
+                <div class="sidebar__logo-placeholder">A</div>
                 <div class="sidebar__brand-text">
                     <div class="sidebar__brand-name">Mi Primer ABC</div>
                     <div class="sidebar__brand-sub">Jardín de Niños</div>
                 </div>
             </div>
-
             <nav class="sidebar__nav">
                 <span class="nav-section-label">Principal</span>
                 <a href="dashboard.html" class="nav-item"><span class="nav-item__icon">🏠</span><span
@@ -929,7 +926,7 @@
                         <div class="sidebar__user-name" id="userName">Directora</div>
                         <div class="sidebar__user-role">Administradora</div>
                     </div>
-                    <span style="color: var(--color-kinder2);font-size: 1 rem;">↩</span>
+                    <span style="color:var(--color-text-muted);font-size:.75rem;">↩</span>
                 </div>
             </div>
         </aside>
@@ -951,7 +948,7 @@
                 <div class="page-header" style="margin-bottom:var(--space-6);">
                     <div class="page-header__text">
                         <h1 class="page-title">Pagos del Alumno</h1>
-                        <p class="page-subtitle">Inscripción, Material Escolar, Libros y Manuales</p>
+                        <p class="page-subtitle">Inscripción, Material Escolar y Libros y Manuales</p>
                     </div>
                 </div>
 
@@ -1192,29 +1189,59 @@
                     </div>
                 </div>
 
+                <!-- Tipo de precio del pedido -->
                 <div style="margin-top:var(--space-4);">
-                    <div class="precio-paquete-section" id="precioPaqueteSection">
-                        <label class="precio-paquete-toggle">
-                            <div class="toggle-switch">
-                                <input type="checkbox" id="togglePrecioPaquete" onchange="onTogglePrecioPaquete()" />
-                                <span class="toggle-slider"></span>
-                            </div>
-                            <div>
-                                <div style="font-size:var(--text-sm);font-weight:var(--font-bold);">Precio Paquete</div>
-                                <div style="font-size:var(--text-xs);color:var(--color-text-muted);">
-                                    Reemplaza el total con un precio manual acordado
-                                </div>
-                            </div>
-                        </label>
-                        <div id="precioPaqueteInput" style="display:none;margin-top:var(--space-3);">
-                            <label class="form-label">Precio paquete</label>
-                            <div style="position:relative;">
-                                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);
-                           color:var(--color-text-muted);font-weight:700;">$</span>
-                                <input type="number" class="form-control" id="precioPaqueteValue"
-                                    style="padding-left:24px;font-family:var(--font-heading);font-weight:700;"
-                                    placeholder="0.00" min="0" step="0.01" oninput="updateUniformeTotal()" />
-                            </div>
+                    <label class="form-label" style="margin-bottom:var(--space-2);display:block;">
+                        Tipo de precio a aplicar
+                    </label>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-2);"
+                        id="uniformePriceTipoGrid">
+                        <div style="position:relative;">
+                            <input type="radio" name="uniformePriceTipo" id="upNuevo" value="nuevo_ingreso"
+                                style="position:absolute;opacity:0;pointer-events:none;" checked />
+                            <label for="upNuevo" class="uniforme-price-label" id="upLabelNuevo" style="display:flex;flex-direction:column;align-items:center;padding:var(--space-3) var(--space-2);
+                          border:2px solid var(--color-primary);background:var(--color-primary-light);
+                          color:var(--color-primary);border-radius:var(--radius-md);cursor:pointer;
+                          text-align:center;font-size:var(--text-xs);font-weight:var(--font-bold);gap:2px;
+                          transition:all var(--transition-fast);">
+                                <span>🟢</span>
+                                <span>Nuevo Ingreso</span>
+                            </label>
+                        </div>
+                        <div style="position:relative;">
+                            <input type="radio" name="uniformePriceTipo" id="upReinsc" value="reinscripcion"
+                                style="position:absolute;opacity:0;pointer-events:none;" />
+                            <label for="upReinsc" class="uniforme-price-label" id="upLabelReinsc" style="display:flex;flex-direction:column;align-items:center;padding:var(--space-3) var(--space-2);
+                          border:2px solid var(--color-border);background:var(--color-surface);
+                          color:var(--color-text-secondary);border-radius:var(--radius-md);cursor:pointer;
+                          text-align:center;font-size:var(--text-xs);font-weight:var(--font-bold);gap:2px;
+                          transition:all var(--transition-fast);">
+                                <span>🟣</span>
+                                <span>Reinscripción</span>
+                            </label>
+                        </div>
+                        <div style="position:relative;">
+                            <input type="radio" name="uniformePriceTipo" id="upPaquete" value="paquete"
+                                style="position:absolute;opacity:0;pointer-events:none;" />
+                            <label for="upPaquete" class="uniforme-price-label" id="upLabelPaquete" style="display:flex;flex-direction:column;align-items:center;padding:var(--space-3) var(--space-2);
+                          border:2px solid var(--color-border);background:var(--color-surface);
+                          color:var(--color-text-secondary);border-radius:var(--radius-md);cursor:pointer;
+                          text-align:center;font-size:var(--text-xs);font-weight:var(--font-bold);gap:2px;
+                          transition:all var(--transition-fast);">
+                                <span>✏️</span>
+                                <span>Precio Paquete</span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Input precio paquete manual -->
+                    <div id="precioPaqueteInput" style="display:none;margin-top:var(--space-3);">
+                        <label class="form-label">Precio paquete manual</label>
+                        <div style="position:relative;">
+                            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);
+                         color:var(--color-text-muted);font-weight:700;">$</span>
+                            <input type="number" class="form-control" id="precioPaqueteValue"
+                                style="padding-left:24px;font-family:var(--font-heading);font-weight:700;"
+                                placeholder="0.00" min="0" step="0.01" oninput="updateUniformeTotal()" />
                         </div>
                     </div>
                 </div>
@@ -1409,8 +1436,7 @@
         const CONCEPTOS_CONFIG = [
             { key: 'inscripcion', label: 'Inscripción', icon: '📝', noMaternal: true },
             { key: 'material_escolar', label: 'Material Escolar', icon: '📦' },
-            { key: 'libros', label: 'Libros', icon: '📚' },
-            { key: 'manuales', label: 'Manuales', icon: '📒' },
+            { key: 'libros_manuales', label: 'Libros y Manuales', icon: '📚' },
             { key: 'uniforme', label: 'Uniforme', icon: '👕', tipo: 'pedido' },
             { key: 'bata', label: 'Bata', icon: '🥼', tipo: 'pedido' },
         ];
@@ -1786,13 +1812,17 @@
           💵 Efectivo: ${fmtMoney(totalEfectivo)} &nbsp; 💳 Tarjeta: ${fmtMoney(totalTarjeta)}
         </div>
       </div>
-      <div class="summary-card">
-        <div class="summary-card__label">⏳ Saldo pendiente</div>
-        <div class="summary-card__value ${saldo > 0 ? 'warning' : saldo < 0 ? 'error' : 'success'}">
-          ${fmtMoney(Math.max(0, saldo))}
+      <div class="summary-card" style="border-color:${saldo > 0 ? 'var(--color-warning)' : saldo === 0 && montoTotal > 0 ? 'var(--color-success)' : 'var(--color-border)'};">
+        <div class="summary-card__label">⏳ Monto restante</div>
+        <div class="summary-card__value ${saldo > 0 ? 'warning' : saldo === 0 && montoTotal > 0 ? 'success' : 'muted'}">
+          ${montoTotal > 0 ? fmtMoney(Math.max(0, saldo)) : '—'}
         </div>
         <div class="summary-card__sub">
-          Estado: <span style="font-weight:700;text-transform:capitalize;">${estado}</span>
+          ${montoTotal === 0
+                    ? 'Sin precio asignado aún'
+                    : saldo <= 0
+                        ? '✅ Pagado completo'
+                        : `Falta ${fmtMoney(saldo)} de ${fmtMoney(montoTotal)}`}
         </div>
       </div>
     </div>
@@ -2302,7 +2332,10 @@
                          margin-bottom:var(--space-3);">
                ✏️ Precio paquete aplicado
              </div>`
-                    : ''}
+                    : `<div style="font-size:var(--text-xs);color:var(--color-text-muted);
+                         margin-bottom:var(--space-3);">
+               ${pedido.tipo_precio === 'reinscripcion' ? '🟣 Reinscripción' : '🟢 Nuevo Ingreso'}
+             </div>`}
         <div class="pedido-card__total">
           <span class="pedido-card__total-label">Total del pedido</span>
           <span class="pedido-card__total-value">${fmtMoney(pedido.monto_total)}</span>
@@ -2468,30 +2501,62 @@
             currentPieceCounts = {};
             PIEZAS_UNIFORME.forEach(p => { currentPieceCounts[p.key] = 0; });
 
-            // Llenar grid de piezas
+            // Llenar grid de piezas con precios según tipo seleccionado
+            renderUniformePieceGrid();
+
+            // Reset selector de tipo de precio — default Nuevo Ingreso
+            document.getElementById('upNuevo').checked = true;
+            updateUniformePriceTipoUI('nuevo_ingreso');
+            document.getElementById('precioPaqueteInput').style.display = 'none';
+            document.getElementById('precioPaqueteValue').value = '';
+            document.getElementById('uniformePedidoError').style.display = 'none';
+
+            // Wire radio change
+            document.querySelectorAll('input[name="uniformePriceTipo"]').forEach(r => {
+                r.onchange = () => {
+                    updateUniformePriceTipoUI(r.value);
+                    renderUniformePieceGrid();
+                    updateUniformeTotal();
+                };
+            });
+
+            updateUniformeTotal();
+            document.getElementById('modalNuevoPedidoUniforme').classList.add('active');
+        }
+
+        function renderUniformePieceGrid() {
+            const tipo = document.querySelector('input[name="uniformePriceTipo"]:checked')?.value || 'nuevo_ingreso';
+            const priceKey = tipo === 'reinscripcion' ? 'reinscripcion' : 'nuevo_ingreso';
             const grid = document.getElementById('pieceCounterGrid');
             grid.innerHTML = PIEZAS_UNIFORME.map(p => {
-                const precio = parseFloat(precios[p.key]?.nuevo_ingreso || 0);
+                const precio = parseFloat(precios[p.key]?.[priceKey] || 0);
+                const qty = currentPieceCounts[p.key] || 0;
                 return `
-      <div class="piece-counter-row" id="counterRow-${p.key}">
+      <div class="piece-counter-row ${qty > 0 ? 'has-items' : ''}" id="counterRow-${p.key}">
         <div>
           <div class="piece-counter-row__name">${p.icon} ${p.label}</div>
-          <div class="piece-counter-row__price">${fmtMoney(precio)} c/u</div>
+          <div class="piece-counter-row__price" id="priceLabel-${p.key}">${fmtMoney(precio)} c/u</div>
         </div>
         <span style="flex:1;"></span>
-        <button class="counter-btn" onclick="changePiece('${p.key}', -1)" disabled id="dec-${p.key}">−</button>
-        <span class="counter-value" id="qty-${p.key}">0</span>
+        <button class="counter-btn" onclick="changePiece('${p.key}', -1)"
+                ${qty === 0 ? 'disabled' : ''} id="dec-${p.key}">−</button>
+        <span class="counter-value" id="qty-${p.key}">${qty}</span>
         <button class="counter-btn" onclick="changePiece('${p.key}', 1)" id="inc-${p.key}">＋</button>
       </div>`;
             }).join('');
+        }
 
-            document.getElementById('togglePrecioPaquete').checked = false;
-            document.getElementById('precioPaqueteInput').style.display = 'none';
-            document.getElementById('precioPaqueteSection').classList.remove('active');
-            document.getElementById('precioPaqueteValue').value = '';
-            document.getElementById('uniformePedidoError').style.display = 'none';
-            updateUniformeTotal();
-            document.getElementById('modalNuevoPedidoUniforme').classList.add('active');
+        function updateUniformePriceTipoUI(val) {
+            const active = 'border:2px solid var(--color-primary);background:var(--color-primary-light);color:var(--color-primary);';
+            const purple = 'border:2px solid #7B5EA7;background:#F3EEF9;color:#7B5EA7;';
+            const def = 'border:2px solid var(--color-border);background:var(--color-surface);color:var(--color-text-secondary);';
+            const base = 'display:flex;flex-direction:column;align-items:center;padding:var(--space-3) var(--space-2);border-radius:var(--radius-md);cursor:pointer;text-align:center;font-size:var(--text-xs);font-weight:var(--font-bold);gap:2px;transition:all var(--transition-fast);';
+
+            document.getElementById('upLabelNuevo').style.cssText = (val === 'nuevo_ingreso' ? active : def) + base;
+            document.getElementById('upLabelReinsc').style.cssText = (val === 'reinscripcion' ? purple : def) + base;
+            document.getElementById('upLabelPaquete').style.cssText = (val === 'paquete' ? purple : def) + base;
+            document.getElementById('precioPaqueteInput').style.display = val === 'paquete' ? 'block' : 'none';
+            if (val !== 'paquete') document.getElementById('precioPaqueteValue').value = '';
         }
 
         function changePiece(key, delta) {
@@ -2499,21 +2564,21 @@
             const qty = currentPieceCounts[key];
             document.getElementById(`qty-${key}`).textContent = qty;
             document.getElementById(`dec-${key}`).disabled = qty === 0;
-            const row = document.getElementById(`counterRow-${key}`);
-            row.classList.toggle('has-items', qty > 0);
+            document.getElementById(`counterRow-${key}`).classList.toggle('has-items', qty > 0);
             updateUniformeTotal();
         }
 
         function updateUniformeTotal() {
-            const usaPaquete = document.getElementById('togglePrecioPaquete').checked;
+            const tipo = document.querySelector('input[name="uniformePriceTipo"]:checked')?.value || 'nuevo_ingreso';
             let total = 0;
 
-            if (usaPaquete) {
+            if (tipo === 'paquete') {
                 total = parseFloat(document.getElementById('precioPaqueteValue').value) || 0;
             } else {
+                const priceKey = tipo === 'reinscripcion' ? 'reinscripcion' : 'nuevo_ingreso';
                 PIEZAS_UNIFORME.forEach(p => {
                     const qty = currentPieceCounts[p.key] || 0;
-                    const price = parseFloat(precios[p.key]?.nuevo_ingreso || 0);
+                    const price = parseFloat(precios[p.key]?.[priceKey] || 0);
                     total += qty * price;
                 });
             }
@@ -2521,23 +2586,18 @@
             document.getElementById('uniformeTotalValue').textContent = fmtMoney(total);
         }
 
-        function onTogglePrecioPaquete() {
-            const checked = document.getElementById('togglePrecioPaquete').checked;
-            document.getElementById('precioPaqueteInput').style.display = checked ? 'block' : 'none';
-            document.getElementById('precioPaqueteSection').classList.toggle('active', checked);
-            updateUniformeTotal();
-        }
-
         async function guardarPedidoUniforme() {
             const errEl = document.getElementById('uniformePedidoError');
             errEl.style.display = 'none';
 
+            const tipo = document.querySelector('input[name="uniformePriceTipo"]:checked')?.value || 'nuevo_ingreso';
+            const priceKey = tipo === 'reinscripcion' ? 'reinscripcion' : 'nuevo_ingreso';
             const totalPiezas = PIEZAS_UNIFORME.reduce((s, p) => {
-                return s + (currentPieceCounts[p.key] || 0) * parseFloat(precios[p.key]?.nuevo_ingreso || 0);
+                return s + (currentPieceCounts[p.key] || 0) * parseFloat(precios[p.key]?.[priceKey] || 0);
             }, 0);
 
             const totalItems = Object.values(currentPieceCounts).reduce((s, v) => s + v, 0);
-            const usaPaquete = document.getElementById('togglePrecioPaquete').checked;
+            const usaPaquete = tipo === 'paquete';
             const paqueteVal = parseFloat(document.getElementById('precioPaqueteValue').value) || 0;
 
             if (totalItems === 0) {
@@ -2561,6 +2621,7 @@
                     piezas: currentPieceCounts,
                     total_piezas: totalPiezas,
                     precio_paquete: usaPaquete ? paqueteVal : null,
+                    tipo_precio: tipo,
                     monto_total: montoTotal,
                     estado: 'pendiente',
                 });

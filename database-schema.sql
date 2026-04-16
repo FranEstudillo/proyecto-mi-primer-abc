@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS alumnos (
   telefono_1        TEXT,
   telefono_2        TEXT,
   fecha_inscripcion DATE,
+  tipo_alumno       TEXT DEFAULT 'nuevo_ingreso' CHECK (tipo_alumno IN ('nuevo_ingreso','reinscripcion') OR tipo_alumno IS NULL),
   activo            BOOLEAN DEFAULT TRUE,
   created_at        TIMESTAMPTZ DEFAULT NOW(),
   updated_at        TIMESTAMPTZ DEFAULT NOW()
@@ -40,7 +41,7 @@ CREATE TABLE IF NOT EXISTS precios (
   id                UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   grado             TEXT NOT NULL CHECK (grado IN ('Maternal', 'Kinder 1', 'Kinder 2', 'Kinder 3')),
   concepto          TEXT NOT NULL,
-  -- Conceptos: 'inscripcion', 'material_escolar', 'libros', 'manuales',
+  -- Conceptos: 'inscripcion', 'material_escolar', 'libros_manuales',
   --            'colegiatura',
   --            'uniforme_jumper', 'uniforme_pantalon', 'uniforme_sueter',
   --            'uniforme_playera_polo', 'uniforme_pants', 'uniforme_chamarra',
@@ -96,6 +97,7 @@ CREATE TABLE IF NOT EXISTS pedidos_uniforme (
   -- Formato: { "jumper": 1, "pantalon": 2, "sueter": 0, ... }
   total_piezas    NUMERIC(10, 2) DEFAULT 0,
   precio_paquete  NUMERIC(10, 2),  -- NULL = usa total de piezas; valor = precio paquete manual
+  tipo_precio     TEXT DEFAULT 'nuevo_ingreso' CHECK (tipo_precio IN ('nuevo_ingreso','reinscripcion','paquete')),
   monto_total     NUMERIC(10, 2) DEFAULT 0,
   estado          TEXT DEFAULT 'pendiente' CHECK (estado IN ('pendiente', 'parcial', 'liquidado')),
   created_at      TIMESTAMPTZ DEFAULT NOW(),
@@ -272,7 +274,7 @@ FROM (VALUES
   ('Maternal'), ('Kinder 1'), ('Kinder 2'), ('Kinder 3')
 ) AS grades(g)
 CROSS JOIN (VALUES
-  ('inscripcion'), ('material_escolar'), ('libros'), ('manuales'), ('colegiatura'),
+  ('inscripcion'), ('material_escolar'), ('libros_manuales'), ('colegiatura'),
   ('uniforme_jumper'), ('uniforme_pantalon'), ('uniforme_sueter'),
   ('uniforme_playera_polo'), ('uniforme_pants'), ('uniforme_chamarra'),
   ('uniforme_playera_deportiva'),
