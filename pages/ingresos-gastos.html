@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 
 <head>
@@ -69,7 +69,9 @@
             margin-bottom: var(--space-6);
             padding: var(--space-6);
             border-radius: var(--radius-xl);
-            background: linear-gradient(135deg, var(--g-color, var(--color-primary)) 0%, var(--g-dark, var(--color-primary-dark)) 100%);
+            background: linear-gradient(135deg,
+                    var(--g-color, var(--color-primary)) 0%,
+                    var(--g-dark, var(--color-primary-dark)) 100%);
             transition: background var(--transition-slow);
         }
 
@@ -79,8 +81,8 @@
             font-size: var(--text-xs);
             font-weight: var(--font-bold);
             text-transform: uppercase;
-            letter-spacing: .08em;
-            color: rgba(255, 255, 255, .75);
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.75);
             margin-bottom: var(--space-1);
         }
 
@@ -97,15 +99,15 @@
             flex-direction: column;
             justify-content: center;
             padding-left: var(--space-4);
-            border-left: 1px solid rgba(255, 255, 255, .2);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .totales-grado__stat-label {
             font-size: var(--text-xs);
             font-weight: var(--font-bold);
             text-transform: uppercase;
-            letter-spacing: .06em;
-            color: rgba(255, 255, 255, .7);
+            letter-spacing: 0.06em;
+            color: rgba(255, 255, 255, 0.7);
             white-space: nowrap;
         }
 
@@ -163,7 +165,7 @@
 
         .category-panel.active {
             display: block;
-            animation: fadeInUp .25s ease;
+            animation: fadeInUp 0.25s ease;
         }
 
         @keyframes fadeInUp {
@@ -197,7 +199,7 @@
             font-size: var(--text-xs);
             font-weight: var(--font-bold);
             text-transform: uppercase;
-            letter-spacing: .05em;
+            letter-spacing: 0.05em;
             color: var(--color-text-muted);
             margin-bottom: var(--space-2);
         }
@@ -325,11 +327,11 @@
         }
 
         .history-row__icon.ingreso {
-            background: #E8F5EE;
+            background: #e8f5ee;
         }
 
         .history-row__icon.egreso {
-            background: #FFEBEE;
+            background: #ffebee;
         }
 
         .history-row__info {}
@@ -377,7 +379,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: .8rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all var(--transition-fast);
             border: none;
@@ -389,7 +391,7 @@
         }
 
         .icon-btn-del {
-            background: #FFEBEE;
+            background: #ffebee;
             color: var(--color-error);
         }
 
@@ -461,7 +463,7 @@
 
             .totales-grado__stat {
                 border-left: none;
-                border-top: 1px solid rgba(255, 255, 255, .2);
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
                 padding-left: 0;
                 padding-top: var(--space-3);
             }
@@ -483,16 +485,18 @@
 
 <body>
     <div class="app-layout">
-
         <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar__brand">
-                <div class="sidebar__logo-placeholder">A</div>
+                <div class="sidebar__logo-placeholder">
+                    <img class="hero-logo" src="../assets/img/logo.png" alt="Mi Primer ABC" />
+                </div>
                 <div class="sidebar__brand-text">
                     <div class="sidebar__brand-name">Mi Primer ABC</div>
                     <div class="sidebar__brand-sub">Jardín de Niños</div>
                 </div>
             </div>
+
             <nav class="sidebar__nav">
                 <span class="nav-section-label">Principal</span>
                 <a href="dashboard.html" class="nav-item"><span class="nav-item__icon">🏠</span><span
@@ -517,7 +521,7 @@
                         <div class="sidebar__user-name" id="userName">Directora</div>
                         <div class="sidebar__user-role">Administradora</div>
                     </div>
-                    <span style="color:var(--color-text-muted);font-size:.75rem;">↩</span>
+                    <span style="color: var(--color-kinder2); font-size: 1 rem">↩</span>
                 </div>
             </div>
         </aside>
@@ -527,10 +531,12 @@
         <main class="main-content">
             <div class="topbar">
                 <div class="topbar__left">
-                    <button class="btn btn-icon btn-secondary" id="menuToggle" style="display:none">☰</button>
+                    <button class="btn btn-icon btn-secondary" id="menuToggle" style="display: none">
+                        ☰
+                    </button>
                     <div class="topbar__breadcrumb">
                         <span>Financiero</span><span>›</span>
-                        <span style="color:var(--color-text-primary);font-weight:600;">Ingresos y Gastos</span>
+                        <span style="color: var(--color-text-primary); font-weight: 600">Ingresos y Gastos</span>
                     </div>
                 </div>
             </div>
@@ -539,52 +545,76 @@
                 <div class="page-header">
                     <div class="page-header__text">
                         <h1 class="page-title">Ingresos y Gastos</h1>
-                        <p class="page-subtitle">Análisis financiero por grado y categoría</p>
+                        <p class="page-subtitle">
+                            Análisis financiero por grado y categoría
+                        </p>
                     </div>
                 </div>
 
                 <!-- Selector de grado -->
                 <div class="grade-selector" id="gradeSelector">
-                    <div class="grade-card active" data-grade="Maternal"
-                        style="--g-color:var(--color-maternal);--g-light:var(--color-maternal-light);--g-dark:var(--color-maternal-dark);">
+                    <div class="grade-card active" data-grade="Maternal" style="
+                --g-color: var(--color-maternal);
+                --g-light: var(--color-maternal-light);
+                --g-dark: var(--color-maternal-dark);
+              ">
                         <div class="grade-card__dot"></div>
                         <div class="grade-card__name">Maternal</div>
                     </div>
-                    <div class="grade-card" data-grade="Kinder 1"
-                        style="--g-color:var(--color-kinder1);--g-light:var(--color-kinder1-light);--g-dark:var(--color-kinder1-dark);">
+                    <div class="grade-card" data-grade="Kinder 1" style="
+                --g-color: var(--color-kinder1);
+                --g-light: var(--color-kinder1-light);
+                --g-dark: var(--color-kinder1-dark);
+              ">
                         <div class="grade-card__dot"></div>
                         <div class="grade-card__name">Kínder 1</div>
                     </div>
-                    <div class="grade-card" data-grade="Kinder 2"
-                        style="--g-color:var(--color-kinder2);--g-light:var(--color-kinder2-light);--g-dark:var(--color-kinder2-dark);">
+                    <div class="grade-card" data-grade="Kinder 2" style="
+                --g-color: var(--color-kinder2);
+                --g-light: var(--color-kinder2-light);
+                --g-dark: var(--color-kinder2-dark);
+              ">
                         <div class="grade-card__dot"></div>
                         <div class="grade-card__name">Kínder 2</div>
                     </div>
-                    <div class="grade-card" data-grade="Kinder 3"
-                        style="--g-color:var(--color-kinder3);--g-light:var(--color-kinder3-light);--g-dark:var(--color-kinder3-dark);">
+                    <div class="grade-card" data-grade="Kinder 3" style="
+                --g-color: var(--color-kinder3);
+                --g-light: var(--color-kinder3-light);
+                --g-dark: var(--color-kinder3-dark);
+              ">
                         <div class="grade-card__dot"></div>
                         <div class="grade-card__name">Kínder 3</div>
                     </div>
                 </div>
 
                 <!-- Banner totales del grado -->
-                <div class="totales-grado" id="totalesGrado"
-                    style="--g-color:var(--color-maternal);--g-dark:var(--color-maternal-dark);">
+                <div class="totales-grado" id="totalesGrado" style="
+              --g-color: var(--color-maternal);
+              --g-dark: var(--color-maternal-dark);
+            ">
                     <div class="totales-grado__main">
-                        <div class="totales-grado__label">Total Ingresos — <span id="gradoLabel">Maternal</span></div>
+                        <div class="totales-grado__label">
+                            Total Ingresos — <span id="gradoLabel">Maternal</span>
+                        </div>
                         <div class="totales-grado__value" id="totalIngresos">$0.00</div>
                     </div>
                     <div class="totales-grado__stat">
                         <div class="totales-grado__stat-label">💵 Efectivo</div>
-                        <div class="totales-grado__stat-value" id="totalEfectivo">$0.00</div>
+                        <div class="totales-grado__stat-value" id="totalEfectivo">
+                            $0.00
+                        </div>
                     </div>
                     <div class="totales-grado__stat">
                         <div class="totales-grado__stat-label">💳 Tarjeta</div>
-                        <div class="totales-grado__stat-value" id="totalTarjeta">$0.00</div>
+                        <div class="totales-grado__stat-value" id="totalTarjeta">
+                            $0.00
+                        </div>
                     </div>
                     <div class="totales-grado__stat">
                         <div class="totales-grado__stat-label">📤 Egresos</div>
-                        <div class="totales-grado__stat-value" id="totalEgresos">$0.00</div>
+                        <div class="totales-grado__stat-value" id="totalEgresos">
+                            $0.00
+                        </div>
                     </div>
                 </div>
 
@@ -593,7 +623,6 @@
 
                 <!-- Paneles de categoría -->
                 <div id="categoryPanels"></div>
-
             </div>
         </main>
     </div>
@@ -602,7 +631,7 @@
      MODAL: REGISTRAR / EDITAR EGRESO
      ══════════════════════════════════════════════════════════════ -->
     <div class="modal-overlay" id="modalEgreso">
-        <div class="modal" style="max-width:460px;">
+        <div class="modal" style="max-width: 460px">
             <div class="modal-header">
                 <h3 class="modal-title" id="modalEgresoTitle">Registrar Egreso</h3>
                 <button class="modal-close" onclick="closeModalEgreso()">✕</button>
@@ -611,20 +640,33 @@
                 <input type="hidden" id="editEgresoId" />
                 <input type="hidden" id="egresoCategoria" />
 
-                <div style="display:flex;flex-direction:column;gap:var(--space-4);">
-
-                    <div id="egresoContextInfo" style="background:var(--color-bg);border-radius:var(--radius-md);
-                    padding:var(--space-3) var(--space-4);font-size:var(--text-sm);
-                    color:var(--color-text-secondary);font-weight:var(--font-semibold);">
-                    </div>
+                <div style="display: flex; flex-direction: column; gap: var(--space-4)">
+                    <div id="egresoContextInfo" style="
+                background: var(--color-bg);
+                border-radius: var(--radius-md);
+                padding: var(--space-3) var(--space-4);
+                font-size: var(--text-sm);
+                color: var(--color-text-secondary);
+                font-weight: var(--font-semibold);
+              "></div>
 
                     <div class="form-group">
                         <label class="form-label">Monto del egreso</label>
-                        <div style="position:relative;">
-                            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);
-                         color:var(--color-text-muted);font-weight:700;">$</span>
-                            <input type="number" class="form-control" id="egresoMonto" style="padding-left:24px;font-family:var(--font-heading);
-                          font-weight:700;font-size:var(--text-lg);" placeholder="0.00" min="0.01" step="0.01" />
+                        <div style="position: relative">
+                            <span style="
+                    position: absolute;
+                    left: 12px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: var(--color-text-muted);
+                    font-weight: 700;
+                  ">$</span>
+                            <input type="number" class="form-control" id="egresoMonto" style="
+                    padding-left: 24px;
+                    font-family: var(--font-heading);
+                    font-weight: 700;
+                    font-size: var(--text-lg);
+                  " placeholder="0.00" min="0.01" step="0.01" />
                         </div>
                     </div>
 
@@ -637,9 +679,13 @@
                         <label class="form-label">Método</label>
                         <div class="method-toggle">
                             <button type="button" class="method-btn active" id="egresoBtnEfectivo"
-                                onclick="setEgresoMetodo('efectivo')">💵 Efectivo</button>
+                                onclick="setEgresoMetodo('efectivo')">
+                                💵 Efectivo
+                            </button>
                             <button type="button" class="method-btn" id="egresoBtnTarjeta"
-                                onclick="setEgresoMetodo('tarjeta')">💳 Tarjeta</button>
+                                onclick="setEgresoMetodo('tarjeta')">
+                                💳 Tarjeta
+                            </button>
                         </div>
                         <input type="hidden" id="egresoMetodo" value="efectivo" />
                     </div>
@@ -647,18 +693,23 @@
                     <div class="form-group">
                         <label class="form-label">Descripción</label>
                         <textarea class="form-control" id="egresoDescripcion" rows="3"
-                            placeholder="¿En qué se gastó? (opcional)" style="resize:vertical;"></textarea>
+                            placeholder="¿En qué se gastó? (opcional)" style="resize: vertical"></textarea>
                     </div>
 
-                    <div id="egresoFormError" style="display:none;padding:var(--space-3) var(--space-4);
-                    background:#FFEBEE;border-radius:var(--radius-md);
-                    font-size:var(--text-sm);color:var(--color-error);">
-                    </div>
-
+                    <div id="egresoFormError" style="
+                display: none;
+                padding: var(--space-3) var(--space-4);
+                background: #ffebee;
+                border-radius: var(--radius-md);
+                font-size: var(--text-sm);
+                color: var(--color-error);
+              "></div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModalEgreso()">Cancelar</button>
+                <button class="btn btn-secondary" onclick="closeModalEgreso()">
+                    Cancelar
+                </button>
                 <button class="btn btn-danger" id="btnGuardarEgreso" onclick="guardarEgreso()">
                     📤 Registrar egreso
                 </button>
@@ -668,20 +719,34 @@
 
     <!-- Modal confirmar eliminar -->
     <div class="modal-overlay" id="modalDelEgreso">
-        <div class="modal" style="max-width:400px;">
+        <div class="modal" style="max-width: 400px">
             <div class="modal-header">
-                <h3 class="modal-title" style="color:var(--color-error);">⚠️ Eliminar egreso</h3>
-                <button class="modal-close"
-                    onclick="document.getElementById('modalDelEgreso').classList.remove('active')">✕</button>
+                <h3 class="modal-title" style="color: var(--color-error)">
+                    ⚠️ Eliminar egreso
+                </h3>
+                <button class="modal-close" onclick="
+              document
+                .getElementById('modalDelEgreso')
+                .classList.remove('active')
+            ">
+                    ✕
+                </button>
             </div>
             <div class="modal-body">
-                <p style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:1.7;">
+                <p style="
+              font-size: var(--text-sm);
+              color: var(--color-text-secondary);
+              line-height: 1.7;
+            ">
                     ¿Eliminar este egreso? Esta acción no se puede deshacer.
                 </p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary"
-                    onclick="document.getElementById('modalDelEgreso').classList.remove('active')">
+                <button class="btn btn-secondary" onclick="
+              document
+                .getElementById('modalDelEgreso')
+                .classList.remove('active')
+            ">
                     Cancelar
                 </button>
                 <button class="btn btn-danger" id="btnConfirmDelEgreso" onclick="confirmarDelEgreso()">
@@ -699,59 +764,91 @@
 
     <script>
         /* ════════════════════════════════════════════════════════════
-           CONFIGURACIÓN DE CATEGORÍAS
-           ════════════════════════════════════════════════════════════ */
+             CONFIGURACIÓN DE CATEGORÍAS
+             ════════════════════════════════════════════════════════════ */
         const CATEGORIAS = [
-            { key: 'inscripcion', label: 'Inscripción', icon: '📝', noMaternal: true },
-            { key: 'material_escolar', label: 'Material Escolar', icon: '📦' },
-            { key: 'libros', label: 'Libros', icon: '📚' },
-            { key: 'manuales', label: 'Manuales', icon: '📒' },
-            { key: 'uniforme', label: 'Uniforme', icon: '👕', esPedido: true },
-            { key: 'bata', label: 'Bata', icon: '🥼', esPedido: true },
-            { key: 'colegiatura', label: 'Colegiaturas', icon: '📅', esColegiatura: true },
+            {
+                key: "inscripcion",
+                label: "Inscripción",
+                icon: "📝",
+                noMaternal: true,
+            },
+            { key: "material_escolar", label: "Material Escolar", icon: "📦" },
+            { key: "libros", label: "Libros", icon: "📚" },
+            { key: "manuales", label: "Manuales", icon: "📒" },
+            { key: "uniforme", label: "Uniforme", icon: "👕", esPedido: true },
+            { key: "bata", label: "Bata", icon: "🥼", esPedido: true },
+            {
+                key: "colegiatura",
+                label: "Colegiaturas",
+                icon: "📅",
+                esColegiatura: true,
+            },
         ];
 
         const GRADE_COLORS = {
-            'Maternal': { color: 'var(--color-maternal)', light: 'var(--color-maternal-light)', dark: 'var(--color-maternal-dark)' },
-            'Kinder 1': { color: 'var(--color-kinder1)', light: 'var(--color-kinder1-light)', dark: 'var(--color-kinder1-dark)' },
-            'Kinder 2': { color: 'var(--color-kinder2)', light: 'var(--color-kinder2-light)', dark: 'var(--color-kinder2-dark)' },
-            'Kinder 3': { color: 'var(--color-kinder3)', light: 'var(--color-kinder3-light)', dark: 'var(--color-kinder3-dark)' },
+            Maternal: {
+                color: "var(--color-maternal)",
+                light: "var(--color-maternal-light)",
+                dark: "var(--color-maternal-dark)",
+            },
+            "Kinder 1": {
+                color: "var(--color-kinder1)",
+                light: "var(--color-kinder1-light)",
+                dark: "var(--color-kinder1-dark)",
+            },
+            "Kinder 2": {
+                color: "var(--color-kinder2)",
+                light: "var(--color-kinder2-light)",
+                dark: "var(--color-kinder2-dark)",
+            },
+            "Kinder 3": {
+                color: "var(--color-kinder3)",
+                light: "var(--color-kinder3-light)",
+                dark: "var(--color-kinder3-dark)",
+            },
         };
 
         /* ════════════════════════════════════════════════════════════
-           ESTADO GLOBAL
-           ════════════════════════════════════════════════════════════ */
-        let activeGrade = 'Maternal';
+             ESTADO GLOBAL
+             ════════════════════════════════════════════════════════════ */
+        let activeGrade = "Maternal";
         let activeCategory = null;
-        let historyFilter = 'todos'; // 'todos' | 'ingresos' | 'egresos'
+        let historyFilter = "todos"; // 'todos' | 'ingresos' | 'egresos'
 
         // Datos cargados de Supabase
         let allAlumnos = [];
-        let allPagos = [];     // movimientos_pago con alumno y concepto
+        let allPagos = []; // movimientos_pago con alumno y concepto
         let allPedidosUniforme = [];
         let allMovsUniforme = [];
         let allPedidosBata = [];
         let allMovsBata = [];
         let allColegiaturas = [];
         let allMovsColegiatura = [];
-        let allEgresos = [];     // tabla egresos
+        let allEgresos = []; // tabla egresos
 
         let pendingDelEgresoId = null;
 
         /* ════════════════════════════════════════════════════════════
-           HELPERS
-           ════════════════════════════════════════════════════════════ */
+             HELPERS
+             ════════════════════════════════════════════════════════════ */
         function fmt(date) {
-            if (!date) return '—';
-            return new Date(date + 'T12:00:00').toLocaleDateString('es-MX',
-                { day: '2-digit', month: 'short', year: 'numeric' });
+            if (!date) return "—";
+            return new Date(date + "T12:00:00").toLocaleDateString("es-MX", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+            });
         }
         function fmtMoney(v) {
-            return '$' + Number(v || 0).toLocaleString('es-MX', { minimumFractionDigits: 2 });
+            return (
+                "$" +
+                Number(v || 0).toLocaleString("es-MX", { minimumFractionDigits: 2 })
+            );
         }
-        function showToast(msg, type = 'success') {
-            const c = document.getElementById('toastContainer');
-            const t = document.createElement('div');
+        function showToast(msg, type = "success") {
+            const c = document.getElementById("toastContainer");
+            const t = document.createElement("div");
             t.className = `toast ${type}`;
             t.textContent = msg;
             c.appendChild(t);
@@ -759,86 +856,125 @@
         }
 
         /* ════════════════════════════════════════════════════════════
-           CARGAR TODOS LOS DATOS
-           ════════════════════════════════════════════════════════════ */
+             CARGAR TODOS LOS DATOS
+             ════════════════════════════════════════════════════════════ */
         async function loadAll() {
             try {
                 // Alumnos activos
-                const { data: al } = await db.from('alumnos').select('id,nombre_completo,grado').eq('activo', true);
+                const { data: al } = await db
+                    .from("alumnos")
+                    .select("id,nombre_completo,grado")
+                    .eq("activo", true);
                 allAlumnos = al || [];
 
-                const alumnoIds = allAlumnos.map(a => a.id);
+                const alumnoIds = allAlumnos.map((a) => a.id);
                 if (!alumnoIds.length) return;
 
                 // Pagos conceptos simples (con su pago padre)
-                const { data: pagos } = await db.from('pagos').select('*').in('alumno_id', alumnoIds);
-                const pagoIds = (pagos || []).map(p => p.id);
+                const { data: pagos } = await db
+                    .from("pagos")
+                    .select("*")
+                    .in("alumno_id", alumnoIds);
+                const pagoIds = (pagos || []).map((p) => p.id);
                 let movsSimples = [];
                 if (pagoIds.length) {
-                    const { data: ms } = await db.from('movimientos_pago').select('*').in('pago_id', pagoIds);
+                    const { data: ms } = await db
+                        .from("movimientos_pago")
+                        .select("*")
+                        .in("pago_id", pagoIds);
                     movsSimples = ms || [];
                 }
                 // Enriquecer movimientos simples con alumno_id y concepto
-                allPagos = movsSimples.map(m => {
-                    const pago = (pagos || []).find(p => p.id === m.pago_id);
-                    return { ...m, alumno_id: pago?.alumno_id, concepto: pago?.concepto };
+                allPagos = movsSimples.map((m) => {
+                    const pago = (pagos || []).find((p) => p.id === m.pago_id);
+                    return {
+                        ...m,
+                        alumno_id: pago?.alumno_id,
+                        concepto: pago?.concepto,
+                    };
                 });
 
                 // Pedidos uniforme
-                const { data: pu } = await db.from('pedidos_uniforme').select('*').in('alumno_id', alumnoIds);
+                const { data: pu } = await db
+                    .from("pedidos_uniforme")
+                    .select("*")
+                    .in("alumno_id", alumnoIds);
                 allPedidosUniforme = pu || [];
-                const puIds = allPedidosUniforme.map(p => p.id);
+                const puIds = allPedidosUniforme.map((p) => p.id);
                 if (puIds.length) {
-                    const { data: mu } = await db.from('movimientos_uniforme').select('*').in('pedido_id', puIds);
+                    const { data: mu } = await db
+                        .from("movimientos_uniforme")
+                        .select("*")
+                        .in("pedido_id", puIds);
                     allMovsUniforme = mu || [];
                 }
 
                 // Pedidos bata
-                const { data: pb } = await db.from('pedidos_bata').select('*').in('alumno_id', alumnoIds);
+                const { data: pb } = await db
+                    .from("pedidos_bata")
+                    .select("*")
+                    .in("alumno_id", alumnoIds);
                 allPedidosBata = pb || [];
-                const pbIds = allPedidosBata.map(p => p.id);
+                const pbIds = allPedidosBata.map((p) => p.id);
                 if (pbIds.length) {
-                    const { data: mb } = await db.from('movimientos_bata').select('*').in('pedido_id', pbIds);
+                    const { data: mb } = await db
+                        .from("movimientos_bata")
+                        .select("*")
+                        .in("pedido_id", pbIds);
                     allMovsBata = mb || [];
                 }
 
                 // Colegiaturas
-                const { data: cols } = await db.from('colegiaturas').select('*').in('alumno_id', alumnoIds);
+                const { data: cols } = await db
+                    .from("colegiaturas")
+                    .select("*")
+                    .in("alumno_id", alumnoIds);
                 allColegiaturas = cols || [];
-                const colIds = allColegiaturas.map(c => c.id);
+                const colIds = allColegiaturas.map((c) => c.id);
                 if (colIds.length) {
-                    const { data: mc } = await db.from('movimientos_colegiatura').select('*').in('colegiatura_id', colIds);
+                    const { data: mc } = await db
+                        .from("movimientos_colegiatura")
+                        .select("*")
+                        .in("colegiatura_id", colIds);
                     allMovsColegiatura = mc || [];
                 }
 
                 // Egresos
-                const { data: eg } = await db.from('egresos').select('*').order('fecha', { ascending: false });
+                const { data: eg } = await db
+                    .from("egresos")
+                    .select("*")
+                    .order("fecha", { ascending: false });
                 allEgresos = eg || [];
-
             } catch (e) {
-                console.warn('Sin conexión:', e.message);
+                console.warn("Sin conexión:", e.message);
             }
 
             switchGrade(activeGrade);
         }
 
         /* ════════════════════════════════════════════════════════════
-           CAMBIAR GRADO ACTIVO
-           ════════════════════════════════════════════════════════════ */
+             CAMBIAR GRADO ACTIVO
+             ════════════════════════════════════════════════════════════ */
         function switchGrade(grade) {
             activeGrade = grade;
 
             // Actualizar tarjetas de grado
-            document.querySelectorAll('.grade-card').forEach(c => {
-                c.classList.toggle('active', c.dataset.grade === grade);
+            document.querySelectorAll(".grade-card").forEach((c) => {
+                c.classList.toggle("active", c.dataset.grade === grade);
             });
 
             // Actualizar banner con colores del grado
             const gColors = GRADE_COLORS[grade] || {};
-            const banner = document.getElementById('totalesGrado');
-            banner.style.setProperty('--g-color', gColors.color || 'var(--color-primary)');
-            banner.style.setProperty('--g-dark', gColors.dark || 'var(--color-primary-dark)');
-            document.getElementById('gradoLabel').textContent = grade;
+            const banner = document.getElementById("totalesGrado");
+            banner.style.setProperty(
+                "--g-color",
+                gColors.color || "var(--color-primary)",
+            );
+            banner.style.setProperty(
+                "--g-dark",
+                gColors.dark || "var(--color-primary-dark)",
+            );
+            document.getElementById("gradoLabel").textContent = grade;
 
             // Calcular totales globales del grado
             updateGradeTotals();
@@ -850,69 +986,95 @@
         }
 
         /* ════════════════════════════════════════════════════════════
-           TOTALES GLOBALES DEL GRADO
-           ════════════════════════════════════════════════════════════ */
+             TOTALES GLOBALES DEL GRADO
+             ════════════════════════════════════════════════════════════ */
         function updateGradeTotals() {
-            const alumnosGrado = allAlumnos.filter(a => a.grado === activeGrade).map(a => a.id);
+            const alumnosGrado = allAlumnos
+                .filter((a) => a.grado === activeGrade)
+                .map((a) => a.id);
 
             // Todos los ingresos del grado (todas las categorías)
             const allIngresos = getIngresosDeGrado(alumnosGrado);
             const total = allIngresos.reduce((s, m) => s + parseFloat(m.monto), 0);
-            const efectivo = allIngresos.filter(m => m.metodo === 'efectivo').reduce((s, m) => s + parseFloat(m.monto), 0);
-            const tarjeta = allIngresos.filter(m => m.metodo === 'tarjeta').reduce((s, m) => s + parseFloat(m.monto), 0);
+            const efectivo = allIngresos
+                .filter((m) => m.metodo === "efectivo")
+                .reduce((s, m) => s + parseFloat(m.monto), 0);
+            const tarjeta = allIngresos
+                .filter((m) => m.metodo === "tarjeta")
+                .reduce((s, m) => s + parseFloat(m.monto), 0);
 
             // Egresos del grado (todas las categorías)
-            const egresosGrado = allEgresos.filter(e => e.grado === activeGrade);
-            const totalEg = egresosGrado.reduce((s, e) => s + parseFloat(e.monto), 0);
+            const egresosGrado = allEgresos.filter((e) => e.grado === activeGrade);
+            const totalEg = egresosGrado.reduce(
+                (s, e) => s + parseFloat(e.monto),
+                0,
+            );
 
-            document.getElementById('totalIngresos').textContent = fmtMoney(total);
-            document.getElementById('totalEfectivo').textContent = fmtMoney(efectivo);
-            document.getElementById('totalTarjeta').textContent = fmtMoney(tarjeta);
-            document.getElementById('totalEgresos').textContent = fmtMoney(totalEg);
+            document.getElementById("totalIngresos").textContent = fmtMoney(total);
+            document.getElementById("totalEfectivo").textContent =
+                fmtMoney(efectivo);
+            document.getElementById("totalTarjeta").textContent = fmtMoney(tarjeta);
+            document.getElementById("totalEgresos").textContent = fmtMoney(totalEg);
         }
 
         function getIngresosDeGrado(alumnoIds) {
             const ingresos = [];
             // Conceptos simples
-            allPagos.filter(m => alumnoIds.includes(m.alumno_id)).forEach(m => ingresos.push(m));
+            allPagos
+                .filter((m) => alumnoIds.includes(m.alumno_id))
+                .forEach((m) => ingresos.push(m));
             // Uniforme
-            const puGrado = allPedidosUniforme.filter(p => alumnoIds.includes(p.alumno_id)).map(p => p.id);
-            allMovsUniforme.filter(m => puGrado.includes(m.pedido_id)).forEach(m => ingresos.push(m));
+            const puGrado = allPedidosUniforme
+                .filter((p) => alumnoIds.includes(p.alumno_id))
+                .map((p) => p.id);
+            allMovsUniforme
+                .filter((m) => puGrado.includes(m.pedido_id))
+                .forEach((m) => ingresos.push(m));
             // Bata
-            const pbGrado = allPedidosBata.filter(p => alumnoIds.includes(p.alumno_id)).map(p => p.id);
-            allMovsBata.filter(m => pbGrado.includes(m.pedido_id)).forEach(m => ingresos.push(m));
+            const pbGrado = allPedidosBata
+                .filter((p) => alumnoIds.includes(p.alumno_id))
+                .map((p) => p.id);
+            allMovsBata
+                .filter((m) => pbGrado.includes(m.pedido_id))
+                .forEach((m) => ingresos.push(m));
             // Colegiaturas
-            const colGrado = allColegiaturas.filter(c => alumnoIds.includes(c.alumno_id)).map(c => c.id);
-            allMovsColegiatura.filter(m => colGrado.includes(m.colegiatura_id)).forEach(m => ingresos.push(m));
+            const colGrado = allColegiaturas
+                .filter((c) => alumnoIds.includes(c.alumno_id))
+                .map((c) => c.id);
+            allMovsColegiatura
+                .filter((m) => colGrado.includes(m.colegiatura_id))
+                .forEach((m) => ingresos.push(m));
             return ingresos;
         }
 
         /* ════════════════════════════════════════════════════════════
-           CATEGORÍAS DISPONIBLES PARA EL GRADO
-           ════════════════════════════════════════════════════════════ */
+             CATEGORÍAS DISPONIBLES PARA EL GRADO
+             ════════════════════════════════════════════════════════════ */
         function getCategorias() {
-            return CATEGORIAS.filter(c => !(c.noMaternal && activeGrade === 'Maternal'));
+            return CATEGORIAS.filter(
+                (c) => !(c.noMaternal && activeGrade === "Maternal"),
+            );
         }
 
         /* ════════════════════════════════════════════════════════════
-           BUILD TABS
-           ════════════════════════════════════════════════════════════ */
+             BUILD TABS
+             ════════════════════════════════════════════════════════════ */
         function buildCategoryTabs() {
-            const tabsEl = document.getElementById('categoryTabs');
-            const panelsEl = document.getElementById('categoryPanels');
-            tabsEl.innerHTML = '';
-            panelsEl.innerHTML = '';
+            const tabsEl = document.getElementById("categoryTabs");
+            const panelsEl = document.getElementById("categoryPanels");
+            tabsEl.innerHTML = "";
+            panelsEl.innerHTML = "";
 
-            getCategorias().forEach(cat => {
-                const tab = document.createElement('button');
-                tab.className = 'category-tab';
+            getCategorias().forEach((cat) => {
+                const tab = document.createElement("button");
+                tab.className = "category-tab";
                 tab.dataset.cat = cat.key;
                 tab.innerHTML = `${cat.icon} ${cat.label}`;
-                tab.addEventListener('click', () => switchCategory(cat.key));
+                tab.addEventListener("click", () => switchCategory(cat.key));
                 tabsEl.appendChild(tab);
 
-                const panel = document.createElement('div');
-                panel.className = 'category-panel';
+                const panel = document.createElement("div");
+                panel.className = "category-panel";
                 panel.id = `catpanel-${cat.key}`;
                 panel.dataset.cat = cat.key;
                 panelsEl.appendChild(panel);
@@ -921,34 +1083,48 @@
 
         function switchCategory(key) {
             activeCategory = key;
-            historyFilter = 'todos';
+            historyFilter = "todos";
 
-            document.querySelectorAll('.category-tab').forEach(t => {
-                t.classList.toggle('active', t.dataset.cat === key);
+            document.querySelectorAll(".category-tab").forEach((t) => {
+                t.classList.toggle("active", t.dataset.cat === key);
             });
-            document.querySelectorAll('.category-panel').forEach(p => {
-                p.classList.toggle('active', p.dataset.cat === key);
+            document.querySelectorAll(".category-panel").forEach((p) => {
+                p.classList.toggle("active", p.dataset.cat === key);
             });
 
             renderCategoryPanel(key);
         }
 
         /* ════════════════════════════════════════════════════════════
-           RENDER PANEL DE CATEGORÍA
-           ════════════════════════════════════════════════════════════ */
+             RENDER PANEL DE CATEGORÍA
+             ════════════════════════════════════════════════════════════ */
         function renderCategoryPanel(key) {
             const panel = document.getElementById(`catpanel-${key}`);
-            const cat = CATEGORIAS.find(c => c.key === key);
-            const alumnosGrado = allAlumnos.filter(a => a.grado === activeGrade).map(a => a.id);
+            const cat = CATEGORIAS.find((c) => c.key === key);
+            const alumnosGrado = allAlumnos
+                .filter((a) => a.grado === activeGrade)
+                .map((a) => a.id);
 
             // Obtener ingresos de esta categoría para el grado
             const ingresos = getIngresosDeCategoria(key, alumnosGrado);
-            const egresos = allEgresos.filter(e => e.grado === activeGrade && e.categoria === key);
+            const egresos = allEgresos.filter(
+                (e) => e.grado === activeGrade && e.categoria === key,
+            );
 
-            const totalIngreso = ingresos.reduce((s, m) => s + parseFloat(m.monto), 0);
-            const totalEfectivo = ingresos.filter(m => m.metodo === 'efectivo').reduce((s, m) => s + parseFloat(m.monto), 0);
-            const totalTarjeta = ingresos.filter(m => m.metodo === 'tarjeta').reduce((s, m) => s + parseFloat(m.monto), 0);
-            const totalEgreso = egresos.reduce((s, e) => s + parseFloat(e.monto), 0);
+            const totalIngreso = ingresos.reduce(
+                (s, m) => s + parseFloat(m.monto),
+                0,
+            );
+            const totalEfectivo = ingresos
+                .filter((m) => m.metodo === "efectivo")
+                .reduce((s, m) => s + parseFloat(m.monto), 0);
+            const totalTarjeta = ingresos
+                .filter((m) => m.metodo === "tarjeta")
+                .reduce((s, m) => s + parseFloat(m.monto), 0);
+            const totalEgreso = egresos.reduce(
+                (s, e) => s + parseFloat(e.monto),
+                0,
+            );
             const neto = totalIngreso - totalEgreso;
 
             panel.innerHTML = `
@@ -977,7 +1153,7 @@
       <div>
         <div class="egreso-bar__title">📋 Historial de movimientos</div>
         <div style="font-size:var(--text-sm);color:var(--color-text-muted);margin-top:2px;">
-          Neto: <strong style="color:${neto >= 0 ? 'var(--color-success)' : 'var(--color-error)'};">
+          Neto: <strong style="color:${neto >= 0 ? "var(--color-success)" : "var(--color-error)"};">
             ${fmtMoney(neto)}
           </strong>
         </div>
@@ -1002,101 +1178,126 @@
         </div>
       </div>
       <div id="historial-${key}">
-        ${renderHistorial(key, ingresos, egresos, 'todos')}
+        ${renderHistorial(key, ingresos, egresos, "todos")}
       </div>
     </div>`;
         }
 
         /* ════════════════════════════════════════════════════════════
-           OBTENER INGRESOS DE UNA CATEGORÍA PARA EL GRADO
-           ════════════════════════════════════════════════════════════ */
+             OBTENER INGRESOS DE UNA CATEGORÍA PARA EL GRADO
+             ════════════════════════════════════════════════════════════ */
         function getIngresosDeCategoria(key, alumnoIds) {
-            const cat = CATEGORIAS.find(c => c.key === key);
+            const cat = CATEGORIAS.find((c) => c.key === key);
             if (!cat) return [];
 
             if (cat.esColegiatura) {
-                const colIds = allColegiaturas.filter(c => alumnoIds.includes(c.alumno_id)).map(c => c.id);
+                const colIds = allColegiaturas
+                    .filter((c) => alumnoIds.includes(c.alumno_id))
+                    .map((c) => c.id);
                 return allMovsColegiatura
-                    .filter(m => colIds.includes(m.colegiatura_id))
-                    .map(m => {
-                        const col = allColegiaturas.find(c => c.id === m.colegiatura_id);
-                        return { ...m, alumno_id: col?.alumno_id, concepto: 'colegiatura' };
+                    .filter((m) => colIds.includes(m.colegiatura_id))
+                    .map((m) => {
+                        const col = allColegiaturas.find(
+                            (c) => c.id === m.colegiatura_id,
+                        );
+                        return {
+                            ...m,
+                            alumno_id: col?.alumno_id,
+                            concepto: "colegiatura",
+                        };
                     });
             }
 
-            if (key === 'uniforme') {
-                const puIds = allPedidosUniforme.filter(p => alumnoIds.includes(p.alumno_id)).map(p => p.id);
+            if (key === "uniforme") {
+                const puIds = allPedidosUniforme
+                    .filter((p) => alumnoIds.includes(p.alumno_id))
+                    .map((p) => p.id);
                 return allMovsUniforme
-                    .filter(m => puIds.includes(m.pedido_id))
-                    .map(m => {
-                        const pu = allPedidosUniforme.find(p => p.id === m.pedido_id);
-                        return { ...m, alumno_id: pu?.alumno_id, concepto: 'uniforme', pedido_num: pu?.numero_pedido };
+                    .filter((m) => puIds.includes(m.pedido_id))
+                    .map((m) => {
+                        const pu = allPedidosUniforme.find((p) => p.id === m.pedido_id);
+                        return {
+                            ...m,
+                            alumno_id: pu?.alumno_id,
+                            concepto: "uniforme",
+                            pedido_num: pu?.numero_pedido,
+                        };
                     });
             }
 
-            if (key === 'bata') {
-                const pbIds = allPedidosBata.filter(p => alumnoIds.includes(p.alumno_id)).map(p => p.id);
+            if (key === "bata") {
+                const pbIds = allPedidosBata
+                    .filter((p) => alumnoIds.includes(p.alumno_id))
+                    .map((p) => p.id);
                 return allMovsBata
-                    .filter(m => pbIds.includes(m.pedido_id))
-                    .map(m => {
-                        const pb = allPedidosBata.find(p => p.id === m.pedido_id);
-                        return { ...m, alumno_id: pb?.alumno_id, concepto: 'bata', pedido_num: pb?.numero_pedido };
+                    .filter((m) => pbIds.includes(m.pedido_id))
+                    .map((m) => {
+                        const pb = allPedidosBata.find((p) => p.id === m.pedido_id);
+                        return {
+                            ...m,
+                            alumno_id: pb?.alumno_id,
+                            concepto: "bata",
+                            pedido_num: pb?.numero_pedido,
+                        };
                     });
             }
 
             // Conceptos simples
-            return allPagos.filter(m => alumnoIds.includes(m.alumno_id) && m.concepto === key);
+            return allPagos.filter(
+                (m) => alumnoIds.includes(m.alumno_id) && m.concepto === key,
+            );
         }
 
         /* ════════════════════════════════════════════════════════════
-           RENDER HISTORIAL UNIFICADO
-           ════════════════════════════════════════════════════════════ */
+             RENDER HISTORIAL UNIFICADO
+             ════════════════════════════════════════════════════════════ */
         function renderHistorial(key, ingresos, egresos, filtro) {
             // Construir lista unificada y ordenada por fecha
             let items = [];
 
-            if (filtro !== 'egresos') {
-                ingresos.forEach(m => {
-                    const alumno = allAlumnos.find(a => a.id === m.alumno_id);
+            if (filtro !== "egresos") {
+                ingresos.forEach((m) => {
+                    const alumno = allAlumnos.find((a) => a.id === m.alumno_id);
                     items.push({
-                        tipo: 'ingreso',
+                        tipo: "ingreso",
                         fecha: m.fecha_pago || m.fecha,
                         monto: parseFloat(m.monto),
                         metodo: m.metodo,
-                        alumno: alumno?.nombre_completo || '—',
-                        tipoPago: m.es_total ? 'total' : 'parcial',
-                        extra: m.pedido_num ? `Pedido #${m.pedido_num}` : '',
+                        alumno: alumno?.nombre_completo || "—",
+                        tipoPago: m.es_total ? "total" : "parcial",
+                        extra: m.pedido_num ? `Pedido #${m.pedido_num}` : "",
                         id: m.id,
                     });
                 });
             }
 
-            if (filtro !== 'ingresos') {
-                egresos.forEach(e => {
+            if (filtro !== "ingresos") {
+                egresos.forEach((e) => {
                     items.push({
-                        tipo: 'egreso',
+                        tipo: "egreso",
                         fecha: e.fecha,
                         monto: parseFloat(e.monto),
                         metodo: e.metodo,
-                        descripcion: e.descripcion || '—',
+                        descripcion: e.descripcion || "—",
                         id: e.id,
                     });
                 });
             }
 
             // Ordenar por fecha descendente
-            items.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+            items.sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
 
             if (items.length === 0) {
                 return `<div class="history-empty">
       <div style="font-size:2rem;margin-bottom:var(--space-3);">📭</div>
-      <div>Sin movimientos registrados${filtro !== 'todos' ? ' en este filtro' : ''}.</div>
+      <div>Sin movimientos registrados${filtro !== "todos" ? " en este filtro" : ""}.</div>
     </div>`;
             }
 
-            return items.map(item => {
-                if (item.tipo === 'ingreso') {
-                    return `
+            return items
+                .map((item) => {
+                    if (item.tipo === "ingreso") {
+                        return `
         <div class="history-row">
           <div class="history-row__icon ingreso">📥</div>
           <div class="history-row__info">
@@ -1104,12 +1305,12 @@
             <div class="history-row__meta">
               <span>${fmt(item.fecha)}</span>
               <span>·</span>
-              <span>${item.metodo === 'efectivo' ? '💵 Efectivo' : '💳 Tarjeta'}</span>
+              <span>${item.metodo === "efectivo" ? "💵 Efectivo" : "💳 Tarjeta"}</span>
               <span>·</span>
-              <span class="badge ${item.tipoPago === 'total' ? 'badge-pago-total' : 'badge-pago-parcial'}">
-                ${item.tipoPago === 'total' ? 'Pago total' : 'Pago parcial'}
+              <span class="badge ${item.tipoPago === "total" ? "badge-pago-total" : "badge-pago-parcial"}">
+                ${item.tipoPago === "total" ? "Pago total" : "Pago parcial"}
               </span>
-              ${item.extra ? `<span>· ${item.extra}</span>` : ''}
+              ${item.extra ? `<span>· ${item.extra}</span>` : ""}
             </div>
           </div>
           <div class="history-row__amount ingreso">+${fmtMoney(item.monto)}</div>
@@ -1117,8 +1318,8 @@
             <span style="font-size:.7rem;color:var(--color-text-muted);">ver en pagos</span>
           </div>
         </div>`;
-                } else {
-                    return `
+                    } else {
+                        return `
         <div class="history-row">
           <div class="history-row__icon egreso">📤</div>
           <div class="history-row__info">
@@ -1126,7 +1327,7 @@
             <div class="history-row__meta">
               <span>${fmt(item.fecha)}</span>
               <span>·</span>
-              <span>${item.metodo === 'efectivo' ? '💵 Efectivo' : '💳 Tarjeta'}</span>
+              <span>${item.metodo === "efectivo" ? "💵 Efectivo" : "💳 Tarjeta"}</span>
               <span>·</span>
               <span class="badge badge-error" style="background:#FFEBEE;color:var(--color-error);">Egreso</span>
             </div>
@@ -1139,94 +1340,117 @@
                     onclick="pedirDelEgreso('${item.id}')" title="Eliminar">🗑️</button>
           </div>
         </div>`;
-                }
-            }).join('');
+                    }
+                })
+                .join("");
         }
 
         function setHistoryFilter(catKey, filtro) {
             historyFilter = filtro;
 
             // Actualizar botones del filtro
-            document.querySelectorAll(`#hf-${catKey} .history-filter-btn`).forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.filter === filtro);
-            });
+            document
+                .querySelectorAll(`#hf-${catKey} .history-filter-btn`)
+                .forEach((btn) => {
+                    btn.classList.toggle("active", btn.dataset.filter === filtro);
+                });
 
             // Re-renderizar historial con el filtro
-            const alumnosGrado = allAlumnos.filter(a => a.grado === activeGrade).map(a => a.id);
+            const alumnosGrado = allAlumnos
+                .filter((a) => a.grado === activeGrade)
+                .map((a) => a.id);
             const ingresos = getIngresosDeCategoria(catKey, alumnosGrado);
-            const egresos = allEgresos.filter(e => e.grado === activeGrade && e.categoria === catKey);
+            const egresos = allEgresos.filter(
+                (e) => e.grado === activeGrade && e.categoria === catKey,
+            );
             document.getElementById(`historial-${catKey}`).innerHTML =
                 renderHistorial(catKey, ingresos, egresos, filtro);
         }
 
         /* ════════════════════════════════════════════════════════════
-           MODAL EGRESO
-           ════════════════════════════════════════════════════════════ */
+             MODAL EGRESO
+             ════════════════════════════════════════════════════════════ */
         function abrirModalEgreso(catKey, egresoId = null) {
-            const cat = CATEGORIAS.find(c => c.key === catKey);
-            document.getElementById('editEgresoId').value = egresoId || '';
-            document.getElementById('egresoCategoria').value = catKey;
-            document.getElementById('egresoFormError').style.display = 'none';
-            document.getElementById('egresoContextInfo').innerHTML =
+            const cat = CATEGORIAS.find((c) => c.key === catKey);
+            document.getElementById("editEgresoId").value = egresoId || "";
+            document.getElementById("egresoCategoria").value = catKey;
+            document.getElementById("egresoFormError").style.display = "none";
+            document.getElementById("egresoContextInfo").innerHTML =
                 `📤 Egreso en <strong>${cat.icon} ${cat.label}</strong> — <strong>${activeGrade}</strong>`;
 
             if (egresoId) {
-                const eg = allEgresos.find(e => e.id === egresoId);
-                document.getElementById('modalEgresoTitle').textContent = 'Editar Egreso';
-                document.getElementById('btnGuardarEgreso').textContent = 'Guardar cambios';
-                document.getElementById('egresoMonto').value = parseFloat(eg.monto).toFixed(2);
-                document.getElementById('egresoFecha').value = eg.fecha;
-                document.getElementById('egresoDescripcion').value = eg.descripcion || '';
+                const eg = allEgresos.find((e) => e.id === egresoId);
+                document.getElementById("modalEgresoTitle").textContent =
+                    "Editar Egreso";
+                document.getElementById("btnGuardarEgreso").textContent =
+                    "Guardar cambios";
+                document.getElementById("egresoMonto").value = parseFloat(
+                    eg.monto,
+                ).toFixed(2);
+                document.getElementById("egresoFecha").value = eg.fecha;
+                document.getElementById("egresoDescripcion").value =
+                    eg.descripcion || "";
                 setEgresoMetodo(eg.metodo);
             } else {
-                document.getElementById('modalEgresoTitle').textContent = 'Registrar Egreso';
-                document.getElementById('btnGuardarEgreso').textContent = '📤 Registrar egreso';
-                document.getElementById('egresoMonto').value = '';
-                document.getElementById('egresoFecha').value = new Date().toISOString().split('T')[0];
-                document.getElementById('egresoDescripcion').value = '';
-                setEgresoMetodo('efectivo');
+                document.getElementById("modalEgresoTitle").textContent =
+                    "Registrar Egreso";
+                document.getElementById("btnGuardarEgreso").textContent =
+                    "📤 Registrar egreso";
+                document.getElementById("egresoMonto").value = "";
+                document.getElementById("egresoFecha").value = new Date()
+                    .toISOString()
+                    .split("T")[0];
+                document.getElementById("egresoDescripcion").value = "";
+                setEgresoMetodo("efectivo");
             }
 
-            document.getElementById('modalEgreso').classList.add('active');
+            document.getElementById("modalEgreso").classList.add("active");
         }
 
         function abrirEditarEgreso(id) {
-            const eg = allEgresos.find(e => e.id === id);
+            const eg = allEgresos.find((e) => e.id === id);
             if (eg) abrirModalEgreso(eg.categoria, id);
         }
 
         function closeModalEgreso() {
-            document.getElementById('modalEgreso').classList.remove('active');
+            document.getElementById("modalEgreso").classList.remove("active");
         }
 
         function setEgresoMetodo(m) {
-            document.getElementById('egresoMetodo').value = m;
-            document.getElementById('egresoBtnEfectivo').classList.toggle('active', m === 'efectivo');
-            document.getElementById('egresoBtnTarjeta').classList.toggle('active', m === 'tarjeta');
+            document.getElementById("egresoMetodo").value = m;
+            document
+                .getElementById("egresoBtnEfectivo")
+                .classList.toggle("active", m === "efectivo");
+            document
+                .getElementById("egresoBtnTarjeta")
+                .classList.toggle("active", m === "tarjeta");
         }
 
         async function guardarEgreso() {
-            const errEl = document.getElementById('egresoFormError');
-            errEl.style.display = 'none';
+            const errEl = document.getElementById("egresoFormError");
+            errEl.style.display = "none";
 
-            const id = document.getElementById('editEgresoId').value;
-            const categoria = document.getElementById('egresoCategoria').value;
-            const monto = parseFloat(document.getElementById('egresoMonto').value);
-            const fecha = document.getElementById('egresoFecha').value;
-            const metodo = document.getElementById('egresoMetodo').value;
-            const descr = document.getElementById('egresoDescripcion').value.trim();
+            const id = document.getElementById("editEgresoId").value;
+            const categoria = document.getElementById("egresoCategoria").value;
+            const monto = parseFloat(document.getElementById("egresoMonto").value);
+            const fecha = document.getElementById("egresoFecha").value;
+            const metodo = document.getElementById("egresoMetodo").value;
+            const descr = document.getElementById("egresoDescripcion").value.trim();
 
             if (!monto || monto <= 0) {
-                errEl.textContent = 'El monto debe ser mayor a cero.';
-                errEl.style.display = 'block'; return;
+                errEl.textContent = "El monto debe ser mayor a cero.";
+                errEl.style.display = "block";
+                return;
             }
             if (!fecha) {
-                errEl.textContent = 'La fecha es obligatoria.';
-                errEl.style.display = 'block'; return;
+                errEl.textContent = "La fecha es obligatoria.";
+                errEl.style.display = "block";
+                return;
             }
 
-            const btn = document.getElementById('btnGuardarEgreso');
-            btn.disabled = true; btn.textContent = 'Guardando…';
+            const btn = document.getElementById("btnGuardarEgreso");
+            btn.disabled = true;
+            btn.textContent = "Guardando…";
 
             try {
                 const payload = {
@@ -1239,83 +1463,100 @@
                 };
 
                 if (id) {
-                    const { error } = await db.from('egresos').update(payload).eq('id', id);
+                    const { error } = await db
+                        .from("egresos")
+                        .update(payload)
+                        .eq("id", id);
                     if (error) throw error;
                 } else {
-                    const { error } = await db.from('egresos').insert(payload);
+                    const { error } = await db.from("egresos").insert(payload);
                     if (error) throw error;
                 }
 
                 await loadAll();
                 closeModalEgreso();
-                showToast('✅ Egreso registrado', 'success');
+                showToast("✅ Egreso registrado", "success");
             } catch (err) {
-                errEl.textContent = 'Error: ' + err.message;
-                errEl.style.display = 'block';
+                errEl.textContent = "Error: " + err.message;
+                errEl.style.display = "block";
             } finally {
                 btn.disabled = false;
-                btn.textContent = id ? 'Guardar cambios' : '📤 Registrar egreso';
+                btn.textContent = id ? "Guardar cambios" : "📤 Registrar egreso";
             }
         }
 
         /* ════════════════════════════════════════════════════════════
-           ELIMINAR EGRESO
-           ════════════════════════════════════════════════════════════ */
+             ELIMINAR EGRESO
+             ════════════════════════════════════════════════════════════ */
         function pedirDelEgreso(id) {
             pendingDelEgresoId = id;
-            document.getElementById('modalDelEgreso').classList.add('active');
+            document.getElementById("modalDelEgreso").classList.add("active");
         }
 
         async function confirmarDelEgreso() {
-            const btn = document.getElementById('btnConfirmDelEgreso');
-            btn.disabled = true; btn.textContent = 'Eliminando…';
+            const btn = document.getElementById("btnConfirmDelEgreso");
+            btn.disabled = true;
+            btn.textContent = "Eliminando…";
             try {
-                const { error } = await db.from('egresos').delete().eq('id', pendingDelEgresoId);
+                const { error } = await db
+                    .from("egresos")
+                    .delete()
+                    .eq("id", pendingDelEgresoId);
                 if (error) throw error;
-                document.getElementById('modalDelEgreso').classList.remove('active');
+                document.getElementById("modalDelEgreso").classList.remove("active");
                 await loadAll();
-                showToast('🗑️ Egreso eliminado', 'success');
+                showToast("🗑️ Egreso eliminado", "success");
             } catch (err) {
-                showToast('❌ Error: ' + err.message, 'error');
+                showToast("❌ Error: " + err.message, "error");
             } finally {
-                btn.disabled = false; btn.textContent = 'Sí, eliminar';
+                btn.disabled = false;
+                btn.textContent = "Sí, eliminar";
                 pendingDelEgresoId = null;
             }
         }
 
         /* ════════════════════════════════════════════════════════════
-           EVENTOS: SELECTOR DE GRADO
-           ════════════════════════════════════════════════════════════ */
-        document.getElementById('gradeSelector').addEventListener('click', e => {
-            const card = e.target.closest('.grade-card');
-            if (card) switchGrade(card.dataset.grade);
-        });
+             EVENTOS: SELECTOR DE GRADO
+             ════════════════════════════════════════════════════════════ */
+        document
+            .getElementById("gradeSelector")
+            .addEventListener("click", (e) => {
+                const card = e.target.closest(".grade-card");
+                if (card) switchGrade(card.dataset.grade);
+            });
 
         /* ════════════════════════════════════════════════════════════
-           SIDEBAR MÓVIL
-           ════════════════════════════════════════════════════════════ */
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebarOverlay');
-        const menuBtn = document.getElementById('menuToggle');
-        function toggleSidebar() { sidebar.classList.toggle('open'); overlay.classList.toggle('active'); }
-        menuBtn.addEventListener('click', toggleSidebar);
-        overlay.addEventListener('click', toggleSidebar);
-        function handleResize() { menuBtn.style.display = window.innerWidth <= 768 ? 'flex' : 'none'; }
+             SIDEBAR MÓVIL
+             ════════════════════════════════════════════════════════════ */
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const menuBtn = document.getElementById("menuToggle");
+        function toggleSidebar() {
+            sidebar.classList.toggle("open");
+            overlay.classList.toggle("active");
+        }
+        menuBtn.addEventListener("click", toggleSidebar);
+        overlay.addEventListener("click", toggleSidebar);
+        function handleResize() {
+            menuBtn.style.display = window.innerWidth <= 768 ? "flex" : "none";
+        }
         handleResize();
-        window.addEventListener('resize', handleResize);
+        window.addEventListener("resize", handleResize);
 
         /* ════════════════════════════════════════════════════════════
-           INIT
-           ════════════════════════════════════════════════════════════ */
+             INIT
+             ════════════════════════════════════════════════════════════ */
         Auth.checkSession();
-        Auth.getCurrentUser().then(user => {
+        Auth.getCurrentUser().then((user) => {
             if (user?.email) {
-                document.getElementById('userName').textContent = user.email.split('@')[0];
-                document.getElementById('userInitial').textContent = user.email[0].toUpperCase();
+                document.getElementById("userName").textContent =
+                    user.email.split("@")[0];
+                document.getElementById("userInitial").textContent =
+                    user.email[0].toUpperCase();
             }
         });
-        document.getElementById('sidebarUser').addEventListener('click', () => {
-            if (confirm('¿Deseas cerrar sesión?')) Auth.logout();
+        document.getElementById("sidebarUser").addEventListener("click", () => {
+            if (confirm("¿Deseas cerrar sesión?")) Auth.logout();
         });
 
         loadAll();
