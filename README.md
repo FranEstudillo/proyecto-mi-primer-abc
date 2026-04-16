@@ -14,8 +14,8 @@ miprimerabc/
 ├── pages/
 │   ├── dashboard.html          ← Panel principal (Fase 0 ✅)
 │   ├── alumnos.html            ← Módulo de alumnos (Fase ✅)
-│   ├── pagos.html              ← Pagos del alumno (Fase 3 y 4)
-│   ├── colegiaturas.html       ← Colegiaturas (Fase 5)
+│   ├── pagos.html              ← Pagos del alumno (Fase 3 y 4 ✅)
+│   ├── colegiaturas.html       ← Colegiaturas (Fase 5 ✅)
 │   ├── ingresos-gastos.html    ← Dashboard financiero (Fase 6)
 │   └── configuracion.html      ← Catálogo de precios (Fase ✅)
 │
@@ -30,7 +30,7 @@ miprimerabc/
 │
 ├── assets/
 │   └── img/
-│       └── logo.png            ← ⚠️ Pendiente de agregar
+│       └── logo.png
 │
 └── database-schema.sql         ← Esquema completo de BD ✅
 ```
@@ -119,11 +119,11 @@ Descomenta la línea del `<img>` en el login y el sidebar:
 | Fase | Módulo                                              | Estado       |
 | ---- | --------------------------------------------------- | ------------ |
 | 0    | Setup, diseño base, login, dashboard shell          | ✅ Completo  |
-| 1    | Catálogo de precios (Nuevo Ingreso / Reinscripción) | ⏳ Pendiente |
-| 2    | Módulo de alumnos (CRUD + foto)                     | ⏳ Pendiente |
-| 3    | Pagos: Inscripción, Material, Libros, Manuales      | ⏳ Pendiente |
-| 4    | Pedidos de Uniforme y Bata                          | ⏳ Pendiente |
-| 5    | Módulo de Colegiaturas                              | ⏳ Pendiente |
+| 1    | Catálogo de precios (Nuevo Ingreso / Reinscripción) | ✅ Completo  |
+| 2    | Módulo de alumnos (CRUD + foto)                     | ✅ Completo  |
+| 3    | Pagos: Inscripción, Material, Libros, Manuales      | ✅ Completo  |
+| 4    | Pedidos de Uniforme y Bata                          | ✅ Completo  |
+| 5    | Módulo de Colegiaturas                              | ✅ Completo  |
 | 6    | Dashboard de Ingresos y Gastos                      | ⏳ Pendiente |
 | 7    | QA, ajustes finales y deploy                        | ⏳ Pendiente |
 
