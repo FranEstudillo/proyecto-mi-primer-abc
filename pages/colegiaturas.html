@@ -1586,14 +1586,12 @@
     async function recalcularEstadoCol(colId) {
       const { data: movs } = await db.from('movimientos_colegiatura')
         .select('monto,es_total').eq('colegiatura_id', colId);
-      const { data: col } = await db.from('colegiaturas')
-        .select('monto_total').eq('id', colId).single();
 
       const total = (movs || []).reduce((s, m) => s + parseFloat(m.monto), 0);
       const hayTotal = (movs || []).some(m => m.es_total);
-      const ref = parseFloat(col?.monto_total || 0);
+
       let estado = 'pendiente';
-      if (hayTotal || (ref > 0 && total >= ref)) estado = 'liquidado';
+      if (hayTotal) estado = 'liquidado';
       else if (total > 0) estado = 'parcial';
 
       await db.from('colegiaturas').update({ estado }).eq('id', colId);
