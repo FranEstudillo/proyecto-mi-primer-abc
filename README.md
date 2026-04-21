@@ -8,135 +8,162 @@ Sistema web responsivo para la gestión administrativa del Jardín de Niños **M
 
 ```
 miprimerabc/
-│
-├── index.html                  ← Página de login
-│
+├── index.html                    ← Página de login
+├── netlify.toml                  ← Configuración de deploy
 ├── pages/
-│   ├── dashboard.html          ← Panel principal (Fase 0 ✅)
-│   ├── alumnos.html            ← Módulo de alumnos (Fase ✅)
-│   ├── pagos.html              ← Pagos del alumno (Fase 3 y 4 ✅)
-│   ├── colegiaturas.html       ← Colegiaturas (Fase 5 ✅)
-│   ├── ingresos-gastos.html    ← Dashboard financiero (Fase 6)
-│   └── configuracion.html      ← Catálogo de precios (Fase ✅)
-│
+│   ├── dashboard.html            ← Panel principal con estadísticas
+│   ├── alumnos.html              ← Módulo de alumnos (CRUD + foto)
+│   ├── pagos.html                ← Pagos por concepto + pedidos uniforme/bata
+│   ├── colegiaturas.html         ← Módulo de colegiaturas mensuales
+│   ├── ingresos-gastos.html      ← Dashboard financiero por grado
+│   └── configuracion.html        ← Catálogo de precios
 ├── css/
-│   ├── design-system.css       ← Variables, colores, tipografía ✅
-│   ├── components.css          ← Botones, cards, forms, modales ✅
-│   └── layout.css              ← Sidebar, topbar, responsive ✅
-│
+│   ├── design-system.css         ← Variables, colores por grado, tipografía
+│   ├── components.css            ← Botones, cards, forms, modales, badges
+│   └── layout.css                ← Sidebar, topbar, grids, responsive
 ├── js/
-│   ├── supabase-config.js      ← Conexión a Supabase ✅
-│   └── auth.js                 ← Login / sesión / logout ✅
-│
-├── assets/
-│   └── img/
-│       └── logo.png
-│
-└── database-schema.sql         ← Esquema completo de BD ✅
+│   ├── supabase-config.js        ← ⚠️ Configurar con credenciales reales
+│   └── auth.js                   ← Login / sesión / logout / redirección
+├── assets/img/logo.png           ← Logo del kínder (PNG fondo transparente)
+├── database-schema.sql           ← Esquema completo de BD (instalación nueva)
+├── migration-libros-manuales.sql ← Migración si ya existía BD previa
+└── storage-setup.sql             ← Configuración del bucket de fotos
 ```
 
 ---
 
-## 🚀 Configuración Inicial
+## 🚀 Pasos para poner en producción
 
-### 1. Crear proyecto en Supabase
+### 1. Configurar Supabase
 
-1. Ve a [https://supabase.com](https://supabase.com) y crea una cuenta gratuita
-2. Crea un nuevo proyecto
-3. Anota tu **Project URL** y tu **anon/public key** (en Project Settings → API)
-
-### 2. Configurar las credenciales
-
-Edita el archivo `js/supabase-config.js` y reemplaza:
+1. Crea una cuenta en [supabase.com](https://supabase.com) y un nuevo proyecto
+2. Ve a **Project Settings → API**
+3. Edita `js/supabase-config.js` y reemplaza:
 
 ```js
 const SUPABASE_URL = "https://XXXXXX.supabase.co";
 const SUPABASE_ANON_KEY = "eyJ...tu_clave...";
 ```
 
-### 3. Crear el esquema de base de datos
+### 2. Crear el esquema de base de datos
 
-1. En tu proyecto de Supabase → **SQL Editor** → **New Query**
-2. Pega el contenido de `database-schema.sql`
-3. Ejecuta con **Run**
+En **Supabase → SQL Editor → New Query**, ejecuta en este orden:
 
-### 4. Crear el usuario de la directora
+1. `database-schema.sql` → crea todas las tablas
+2. `storage-setup.sql` → configura el bucket de fotos
 
-En Supabase → **Authentication** → **Users** → **Add User**:
+> Si ya tenías BD con `libros` y `manuales` separados, ejecuta
+> `migration-libros-manuales.sql` antes del schema completo.
 
-- Email: `directora@miprimerabc.mx` (o el que prefieras)
+### 3. Crear el usuario administrador
+
+En **Supabase → Authentication → Users → Add User**:
+
+- Email: el correo de la directora
 - Password: contraseña segura
+- Marcar "Auto Confirm User"
 
-### 5. Subir el logo
+### 4. Subir el logo
 
-Coloca el logo del kínder en `assets/img/logo.png` (PNG con fondo transparente, mínimo 200×200px).
+Coloca el logo en `assets/img/logo.png` (PNG con fondo transparente, mínimo 200×200px).
 
-Descomenta la línea del `<img>` en el login y el sidebar:
+### 5. Deploy en Netlify
 
-```html
-<img class="hero-logo" src="assets/img/logo.png" alt="Mi Primer ABC" />
-```
-
-### 6. Deploy en Netlify
-
-1. Sube el proyecto a un repositorio de GitHub
-2. En [netlify.com](https://netlify.com) → **Add new site** → **Import from Git**
+1. Sube el proyecto a un repositorio de **GitHub**
+2. En [netlify.com](https://netlify.com): **Add new site → Import from Git**
 3. Selecciona el repositorio
-4. Build command: (vacío)
-5. Publish directory: `.` (raíz)
-6. Deploy 🚀
+4. Configuración:
+   - **Build command:** _(dejar vacío)_
+   - **Publish directory:** `.` _(punto — raíz del proyecto)_
+5. Clic en **Deploy** 🚀
+
+---
+
+## ⚠️ Comandos SQL adicionales (BD existente)
+
+Si actualizas un proyecto con datos previos, ejecuta también:
+
+```sql
+-- Campo tipo de alumno
+ALTER TABLE alumnos
+  ADD COLUMN IF NOT EXISTS tipo_alumno TEXT DEFAULT 'nuevo_ingreso';
+
+-- Campo tipo de precio en pedidos uniforme
+ALTER TABLE pedidos_uniforme
+  ADD COLUMN IF NOT EXISTS tipo_precio TEXT DEFAULT 'nuevo_ingreso';
+
+-- Campos opcionales de alumnos
+ALTER TABLE alumnos
+  ALTER COLUMN fecha_nacimiento  DROP NOT NULL,
+  ALTER COLUMN grado             DROP NOT NULL,
+  ALTER COLUMN grupo             DROP NOT NULL,
+  ALTER COLUMN nombre_tutor      DROP NOT NULL,
+  ALTER COLUMN relacion_tutor    DROP NOT NULL,
+  ALTER COLUMN telefono_1        DROP NOT NULL,
+  ALTER COLUMN fecha_inscripcion DROP NOT NULL;
+```
 
 ---
 
 ## 🎨 Sistema de Diseño
 
-### Colores principales
+### Colores de marca
 
-| Variable          | Color              | Uso                    |
-| ----------------- | ------------------ | ---------------------- |
-| `--color-primary` | `#2E9E5B` Verde    | Botones, links activos |
-| `--color-pink`    | `#F06B8A` Rosa     | Alertas, estados       |
-| `--color-yellow`  | `#F5C842` Amarillo | Pendientes             |
+| Variable          | Hex       | Uso                        |
+| ----------------- | --------- | -------------------------- |
+| `--color-primary` | `#2E9E5B` | Verde — botones, activos   |
+| `--color-error`   | `#EF5350` | Rojo — errores, pendientes |
+| `--color-warning` | `#F5C842` | Amarillo — pagos parciales |
 
 ### Colores por grado
 
-| Variable           | Color                | Grado    |
-| ------------------ | -------------------- | -------- |
-| `--color-maternal` | `#64B5F6` Azul cielo | Maternal |
-| `--color-kinder1`  | `#F5C842` Amarillo   | Kínder 1 |
-| `--color-kinder2`  | `#EF5350` Rojo       | Kínder 2 |
-| `--color-kinder3`  | `#2E9E5B` Verde      | Kínder 3 |
+| Grado    | Color                | Variable           |
+| -------- | -------------------- | ------------------ |
+| Maternal | Azul cielo `#64B5F6` | `--color-maternal` |
+| Kínder 1 | Amarillo `#F5C842`   | `--color-kinder1`  |
+| Kínder 2 | Rojo `#EF5350`       | `--color-kinder2`  |
+| Kínder 3 | Verde `#2E9E5B`      | `--color-kinder3`  |
 
 ### Tipografía
 
-- **Headings:** Quicksand (bold)
-- **Body:** Nunito
-
----
-
-## 📋 Plan de Fases
-
-| Fase | Módulo                                              | Estado       |
-| ---- | --------------------------------------------------- | ------------ |
-| 0    | Setup, diseño base, login, dashboard shell          | ✅ Completo  |
-| 1    | Catálogo de precios (Nuevo Ingreso / Reinscripción) | ✅ Completo  |
-| 2    | Módulo de alumnos (CRUD + foto)                     | ✅ Completo  |
-| 3    | Pagos: Inscripción, Material, Libros, Manuales      | ✅ Completo  |
-| 4    | Pedidos de Uniforme y Bata                          | ✅ Completo  |
-| 5    | Módulo de Colegiaturas                              | ✅ Completo  |
-| 6    | Dashboard de Ingresos y Gastos                      | ⏳ Pendiente |
-| 7    | QA, ajustes finales y deploy                        | ⏳ Pendiente |
+- **Headings:** Quicksand (bold, extrabold)
+- **Body:** Nunito (regular, semibold, bold)
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-- **Frontend:** HTML5 + CSS3 + JavaScript Vanilla (ES6+)
-- **Base de datos:** Supabase (PostgreSQL)
-- **Auth:** Supabase Auth (email + contraseña)
-- **Storage:** Supabase Storage (fotos de alumnos)
-- **Hosting:** Netlify
+| Capa                 | Tecnología                             |
+| -------------------- | -------------------------------------- |
+| Frontend             | HTML5 + CSS3 + JavaScript Vanilla ES6+ |
+| Base de datos        | Supabase (PostgreSQL)                  |
+| Autenticación        | Supabase Auth (email + contraseña)     |
+| Almacenamiento fotos | Supabase Storage                       |
+| Hosting              | Netlify (free tier)                    |
 
 ---
 
-_Mi Primer ABC — Sistema de Control Escolar © 2025_
+## 📋 Módulos del sistema
+
+| Módulo            | Descripción                                                                                   |
+| ----------------- | --------------------------------------------------------------------------------------------- |
+| Login             | Autenticación con email y contraseña, sesión persistente                                      |
+| Dashboard         | Estadísticas de alumnos por grado y accesos rápidos                                           |
+| Alumnos           | CRUD completo con foto, tipo de alumno, filtro por grado                                      |
+| Pagos             | Inscripción, Material, Libros y Manuales, Uniforme, Bata — con historial, parciales y totales |
+| Colegiaturas      | Registro mensual por alumno con drawer de historial                                           |
+| Ingresos y Gastos | Dashboard financiero neto por grado y categoría                                               |
+| Configuración     | Catálogo de precios Nuevo Ingreso / Reinscripción por grado                                   |
+
+---
+
+## 🔐 Seguridad
+
+- Row Level Security (RLS) en todas las tablas
+- Solo usuarios autenticados acceden a los datos
+- Headers de seguridad configurados en `netlify.toml`
+- Sin credenciales expuestas en el frontend más allá de la `anon key` pública de Supabase
+
+---
+
+_Mi Primer ABC — Sistema de Control Escolar © 2026_
