@@ -265,7 +265,7 @@
   margin-bottom: var(--space-8);
 }
 
-.page-header__text {}
+ /* .page-header__text {} */
 .page-title {
   font-family: var(--font-heading);
   font-size: var(--text-3xl);
